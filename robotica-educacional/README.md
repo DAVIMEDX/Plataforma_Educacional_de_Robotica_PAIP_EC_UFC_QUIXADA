@@ -13,7 +13,7 @@
 
 Esta plataforma web interativa original possui **7 práticas completas** de robótica, organizadas em 3 módulos progressivos. Cada prática inclui objetivos, materiais, teoria, passo a passo detalhado, troubleshooting e desafios em múltiplos níveis.
 
-### ♻️ Vertente de Robótica Sustentável (Bolsa PAIP / TCC)
+### ♻️ Vertente de Robótica Sustentável (Projeto PAIP / Projeto de Pesquisa)
 O projeto está sendo aperfeiçoado e expandido para integrar os conceitos de **robótica sustentável com o uso de sucata**. Essa iniciativa faz parte das atividades da bolsa de iniciação acadêmica **PAIP (Programa de Apoio à Iniciação às Práticas Docentes)** na **UFC Campus Quixadá** e serve como base para o desenvolvimento de um **Trabalho de Conclusão de Curso (TCC)**. O objetivo é demonstrar como o lixo eletrônico e materiais recicláveis do dia a dia podem ser reutilizados na construção de estruturas robóticas de baixo custo e alto impacto pedagógico.
 
 **🎯 Público-alvo:** Estudantes, pesquisadores e educadores interessados em robótica educacional e de baixo custo  
