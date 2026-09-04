@@ -14,11 +14,10 @@
 Esta plataforma web interativa original possui **7 práticas completas** de robótica, organizadas em 3 módulos progressivos. Cada prática inclui objetivos, materiais, teoria, passo a passo detalhado, troubleshooting e desafios em múltiplos níveis.
 
 ### ♻️ Vertente de Robótica Sustentável (Projeto PAIP / Projeto de Pesquisa)
-O projeto está sendo aperfeiçoado e expandido para integrar os conceitos de **robótica sustentável com o uso de sucata**. Essa iniciativa faz parte das atividades da bolsa de iniciação acadêmica **PAIP (Programa de Apoio à Iniciação às Práticas Docentes)** na **UFC Campus Quixadá** e serve como base para o desenvolvimento de um **Trabalho de Conclusão de Curso (TCC)**. O objetivo é demonstrar como o lixo eletrônico e materiais recicláveis do dia a dia podem ser reutilizados na construção de estruturas robóticas de baixo custo e alto impacto pedagógico.
+O projeto está sendo aperfeiçoado e expandido para integrar os conceitos de **robótica sustentável com o uso de sucata**. Essa iniciativa faz parte das atividades da bolsa de iniciação acadêmica **PAIP (Programa de Apoio e Incentivo a Permanência)** na **UFC Campus Quixadá** e serve como base para o desenvolvimento de um **Trabalho de Conclusão de Curso (TCC)**. O objetivo é demonstrar como o lixo eletrônico e materiais recicláveis do dia a dia podem ser reutilizados na construção de estruturas robóticas de baixo custo e alto impacto pedagógico.
 
-**🎯 Público-alvo:** Estudantes, pesquisadores e educadores interessados em robótica educacional e de baixo custo  
+**🎯 Público-alvo:** Estudantes do curso de Engenharia de Computação da UFC de Quixadá-CE, interessados em robótica
 **⏱️ Duração total:** 17-24 horas de aprendizado prático  
-**🌍 Idiomas:** Português e Inglês (alternância em tempo real)
 
 ---
 
@@ -138,10 +137,10 @@ Contribuições são bem-vindas! Áreas para contribuir:
 | Componente | Status |
 |------------|--------|
 | Interface Web | ✅ Completo |
-| Práticas PT | 🔄 Em atualização (Adaptação para Sucata) |
+| Práticas PT | 🔄 Em atualização (Adaptação para Robbótica Sustentável) |
 | Práticas EN | ✅ 7/7 |
 | Responsividade | ✅ Completo |
-| Testes e Validação PAIP | 🔄 Em andamento |
+| Testes e Validação | 🔄 Em andamento |
 
 ---
 
@@ -154,4 +153,4 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 ## 👨‍💻 Autores e Créditos
 
 * **Desenvolvedor Original:** [Guilherme Floriano](https://github.com/guiaf04) - Idealizador e desenvolvedor da arquitetura base da Plataforma Educacional de Robótica.
-* **Pesquisa, Adaptação e Extensão (PAIP / TCC):** [Davi / DAVIMEDX](https://github.com) - Adaptação metodológica para a robótica sustentável com sucata no contexto da Universidade Federal do Ceará (UFC) - Campus Quixadá.
+* **Pesquisa, Adaptação e Extensão (PAIP / TCC):** [Davi / DAVIMEDX](https://github.com/DAVIMEDX) - Adaptação metodológica para a robótica sustentável com sucata no contexto da Universidade Federal do Ceará (UFC) - Campus Quixadá.
