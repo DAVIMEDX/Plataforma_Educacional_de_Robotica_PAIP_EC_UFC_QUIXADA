@@ -1,0 +1,191 @@
+{
+  "id": "ultrassonico",
+  "title": "HC-SR04 Ultrasonic Sensor",
+  "description": "Use HC-SR04 ultrasonic sensor to measure distances and create obstacle detection systems.",
+  "duration": "2 hours",
+  "difficulty": "Beginner",
+  "objectives": [
+    "Understand ultrasonic sensor operation",
+    "Connect and configure HC-SR04",
+    "Read distances accurately",
+    "Create proximity-based alerts",
+    "Implement basic anti-collision system"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "HC-SR04 Sensor",
+      "quantity": 1,
+      "notes": "Ultrasonic distance sensor"
+    },
+    {
+      "name": "Red LED",
+      "quantity": 1,
+      "notes": "For proximity alert"
+    },
+    {
+      "name": "Green LED",
+      "quantity": 1,
+      "notes": "To indicate safe distance"
+    },
+    {
+      "name": "Buzzer",
+      "quantity": 1,
+      "notes": "Optional, for sound alert"
+    },
+    {
+      "name": "220Ω Resistors",
+      "quantity": 2,
+      "notes": "For LEDs"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1
+    },
+    {
+      "name": "Jumper Wires",
+      "quantity": 8
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "HC-SR04 VCC → Pico 5V (VBUS)",
+      "HC-SR04 GND → Pico GND",
+      "HC-SR04 TRIG → GPIO 16",
+      "HC-SR04 ECHO → GPIO 17",
+      "Green LED (+) → GPIO 14 → 220Ω Resistor → GND",
+      "Red LED (+) → GPIO 15 → 220Ω Resistor → GND",
+      "Buzzer (+) → GPIO 18",
+      "Buzzer (-) → GND"
+    ],
+    "diagram": "assets/diagrams/ultrasonic-wiring.png",
+    "warnings": [
+      "HC-SR04 requires 5V power supply (use VBUS pin)",
+      "Don't connect ECHO directly if using level converters",
+      "Keep sensor stable during measurements"
+    ]
+  },
+  "theory": {
+    "ultrasonic": "Ultrasonic sensors emit high-frequency sound waves (40kHz) and measure time taken to return after reflecting on an object. Distance = (time × speed of sound) / 2.",
+    "hcsr04": "HC-SR04 has range of 2cm to 4m with 3mm precision. Works by sending 10µs pulse on TRIG pin and measuring HIGH pulse duration on ECHO pin.",
+    "soundspeed": "Speed of sound in air is ~343 m/s (at 20°C). In microseconds: distance_cm = duration_µs / 58."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Connect the Sensor",
+      "description": "Assemble circuit with HC-SR04 and LEDs",
+      "details": [
+        "Connect HC-SR04 according to wiring diagram",
+        "Verify you're using 5V for sensor",
+        "Connect green and red LEDs",
+        "Test connections before powering"
+      ],
+      "time": "20 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Configure Sensor in BIPES",
+      "description": "Create distance reading function",
+      "details": [
+        "Use 'Ultrasonic Sensor HC-SR04' block",
+        "Configure TRIG on GPIO 16 and ECHO on GPIO 17",
+        "Add 'Print' block to see distance",
+        "Set up continuous reading loop"
+      ],
+      "time": "25 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Implement Alert System",
+      "description": "Create proximity logic with LEDs",
+      "details": [
+        "If distance < 10cm: red LED on, green off",
+        "If distance >= 10cm: green LED on, red off",
+        "Add 100ms delay between readings",
+        "Test by approaching objects to sensor"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Add Sound Alert (Optional)",
+      "description": "Configure buzzer for proximity beeps",
+      "details": [
+        "Connect buzzer to GPIO 18",
+        "If distance < 5cm: continuous buzzer beep",
+        "If distance 5-10cm: intermittent beeps",
+        "If distance > 10cm: buzzer off"
+      ],
+      "time": "25 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_hcsr04",
+    "description": "BIPES project with HC-SR04 ultrasonic sensor configured. Includes distance reading and visual alert system."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Sensor always returns 0 or inconsistent values",
+      "solutions": [
+        "Check if TRIG and ECHO are on correct pins",
+        "Confirm sensor is receiving 5V",
+        "Make sure no objects are too close (<2cm)",
+        "Check if GND is well connected"
+      ]
+    },
+    {
+      "problem": "Very unstable readings",
+      "solutions": [
+        "Add delay of at least 60ms between readings",
+        "Avoid very angled or sound-absorbing surfaces",
+        "Fix sensor to avoid vibrations",
+        "Calculate average of 3-5 readings for stability"
+      ]
+    },
+    {
+      "problem": "Sensor doesn't detect distant objects",
+      "solutions": [
+        "Check if object isn't too small or absorbent",
+        "Point sensor perpendicular to surface",
+        "Clean sensor transducers (metallic circles)",
+        "Test with large flat surface (wall, book)"
+      ]
+    },
+    {
+      "problem": "LEDs don't respond to distance",
+      "solutions": [
+        "Check code logic (< or > correct)",
+        "Test LEDs individually with Digital Write",
+        "Confirm resistors are present",
+        "Check if distance thresholds are adequate"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Liquid Level Meter",
+      "description": "Use sensor to measure water level in container by positioning it on top pointing downward."
+    },
+    {
+      "level": "Intermediate",
+      "title": "Parking System",
+      "description": "Create system with 3 LEDs (green, yellow, red) and buzzer that increases beep frequency as car approaches."
+    },
+    {
+      "level": "Advanced",
+      "title": "Environment Mapping",
+      "description": "Mount sensor on servomotor to sweep 180° and create obstacle map around, sending data via serial for graph visualization."
+    }
+  ],
+  "nextSteps": [
+    "Combine with servomotor to create radar",
+    "Integrate with DC motors for autonomous robot",
+    "Use multiple sensors for 360° coverage",
+    "Implement Kalman filter for more accurate readings"
+  ]
+}

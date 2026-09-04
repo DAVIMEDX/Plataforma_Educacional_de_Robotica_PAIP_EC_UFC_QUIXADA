@@ -1,0 +1,215 @@
+{
+  "id": "microros",
+  "title": "micro-ROS Teleoperation",
+  "description": "Integrate Raspberry Pi Pico W with ROS2 ecosystem using micro-ROS to control robots remotely.",
+  "duration": "4-5 hours",
+  "difficulty": "Intermediate",
+  "objectives": [
+    "Understand micro-ROS architecture and ROS2 integration",
+    "Configure micro-ROS agent on PC",
+    "Create publishers and subscribers on Pico W",
+    "Implement robot teleoperation with velocity commands",
+    "Monitor topics and debug with ROS2 tools"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1,
+      "notes": "With MicroPython + micro-ROS firmware"
+    },
+    {
+      "name": "2WD Robot Chassis",
+      "quantity": 1,
+      "notes": "With 2 DC motors"
+    },
+    {
+      "name": "L298N Motor Driver",
+      "quantity": 1
+    },
+    {
+      "name": "External Battery 7.4V",
+      "quantity": 1,
+      "notes": "LiPo 2S or 6x AA"
+    },
+    {
+      "name": "USB Cable",
+      "quantity": 1
+    },
+    {
+      "name": "PC with Ubuntu 22.04",
+      "quantity": 1,
+      "notes": "ROS2 Humble installed"
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "Motor Right IN1 → GPIO 10",
+      "Motor Right IN2 → GPIO 11",
+      "Motor Right ENA → GPIO 12 (PWM)",
+      "Motor Left IN3 → GPIO 13",
+      "Motor Left IN4 → GPIO 14",
+      "Motor Left ENB → GPIO 15 (PWM)",
+      "L298N 12V → Battery +",
+      "L298N GND → Battery GND + Pico GND",
+      "L298N OUT1/OUT2 → Right Motor",
+      "L298N OUT3/OUT4 → Left Motor"
+    ],
+    "diagram": "assets/diagrams/microros-wiring.png",
+    "warnings": [
+      "NEVER connect battery directly to Pico (only through L298N)",
+      "Always share GND between all components",
+      "Verify motor polarity before final assembly",
+      "Use external battery for motors, USB only for Pico"
+    ]
+  },
+  "theory": {
+    "microros": "micro-ROS brings ROS2 to microcontrollers. Uses XRCE-DDS protocol to communicate with ROS2 via agent running on PC.",
+    "agent": "micro-ROS agent acts as bridge between Pico W and ROS2. Receives XRCE-DDS messages and translates to DDS (ROS2 standard).",
+    "cmdvel": "geometry_msgs/Twist is standard message for velocity commands. Contains linear (x,y,z) and angular (x,y,z) velocities. Differential robots use linear.x (forward) and angular.z (rotation).",
+    "qos": "Quality of Service defines communication reliability. For teleoperation: RELIABLE for critical commands, BEST_EFFORT for high-frequency data (sensors)."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Install micro-ROS Agent",
+      "description": "Set up development environment on PC",
+      "details": [
+        "Install ROS2 Humble: https://docs.ros.org/en/humble/Installation.html",
+        "Create workspace: mkdir -p ~/microros_ws/src && cd ~/microros_ws",
+        "Clone agent: git clone https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup",
+        "Build: colcon build && source install/setup.bash",
+        "Create agent: ros2 run micro_ros_setup create_agent_ws.sh",
+        "Build agent: ros2 run micro_ros_setup build_agent.sh",
+        "Test: ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888"
+      ],
+      "time": "45 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Configure Pico W with micro-ROS",
+      "description": "Flash firmware and configure WiFi",
+      "details": [
+        "Download micro-ROS MicroPython: https://github.com/micro-ROS/micro_ros_micropython",
+        "Flash firmware to Pico W using Thonny or esptool",
+        "In BIPES, add 'micro-ROS Init' block",
+        "Configure agent IP (PC IP address on WiFi network)",
+        "Set port 8888 (UDP)",
+        "Connect to WiFi first, then initialize micro-ROS"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Create Twist Subscriber",
+      "description": "Receive velocity commands from ROS2",
+      "details": [
+        "In BIPES, add 'micro-ROS Subscriber' block",
+        "Topic: /cmd_vel",
+        "Message type: geometry_msgs/Twist",
+        "Callback: extract linear.x and angular.z",
+        "Convert to differential drive: left = linear.x - angular.z, right = linear.x + angular.z",
+        "Map to PWM range (0-255) and apply to motors"
+      ],
+      "time": "60 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Test with teleop_twist_keyboard",
+      "description": "Control robot remotely",
+      "details": [
+        "On PC terminal: source ~/microros_ws/install/setup.bash",
+        "Run agent: ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888",
+        "New terminal: ros2 run teleop_twist_keyboard teleop_twist_keyboard",
+        "Use keys: u/i/o (forward), j/k/l (rotation), m/</, (backward)",
+        "Verify robot moves according to commands",
+        "Monitor with: ros2 topic echo /cmd_vel"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 5,
+      "title": "Add Odometry Publisher",
+      "description": "Publish robot state to ROS2",
+      "details": [
+        "Add 'micro-ROS Publisher' block in BIPES",
+        "Topic: /odom",
+        "Message type: nav_msgs/Odometry",
+        "Publish: position (x,y), orientation (theta), velocities",
+        "If no encoders: publish commanded velocities",
+        "Update at 10Hz",
+        "Visualize in RViz2: ros2 run rviz2 rviz2"
+      ],
+      "time": "60 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_microros",
+    "description": "BIPES project with micro-ROS configured for differential robot. Includes Twist subscriber, motor control and odometry publisher."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Pico W doesn't connect to agent",
+      "solutions": [
+        "Verify PC and Pico W are on same WiFi network",
+        "Check agent IP address is correct (use ifconfig on PC)",
+        "Confirm agent is running: ros2 run micro_ros_agent...",
+        "Test connectivity: ping [PICO_IP] from PC",
+        "Check firewall rules (UDP port 8888 must be open)"
+      ]
+    },
+    {
+      "problem": "Robot doesn't move",
+      "solutions": [
+        "Verify battery is charged (minimum 6V)",
+        "Check motor connections to L298N",
+        "Test motors individually with Digital Write",
+        "Confirm PWM signals are being generated (use oscilloscope or LED)",
+        "Verify differential drive calculations are correct"
+      ]
+    },
+    {
+      "problem": "Messages not received on topics",
+      "solutions": [
+        "Check topic name matches exactly (case-sensitive)",
+        "Verify message type is correct: ros2 topic info /cmd_vel",
+        "List active topics: ros2 topic list",
+        "Echo topic: ros2 topic echo /cmd_vel",
+        "Restart agent and Pico W"
+      ]
+    },
+    {
+      "problem": "Robot moves erratically",
+      "solutions": [
+        "Reduce maximum velocity in teleop (x/X keys)",
+        "Add smoothing/filtering to velocity commands",
+        "Implement acceleration limits (rate limiter)",
+        "Check motor polarity (one motor might be inverted)",
+        "Verify WiFi latency isn't too high (ping test)"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Emergency Stop Service",
+      "description": "Implement ROS2 service /emergency_stop that immediately stops motors. Call with: ros2 service call /emergency_stop std_srvs/srv/Trigger"
+    },
+    {
+      "level": "Intermediate",
+      "title": "Sensor Data Fusion",
+      "description": "Add ultrasonic sensor, publish to /scan (sensor_msgs/LaserScan), implement obstacle avoidance that overrides teleop commands when object is too close."
+    },
+    {
+      "level": "Advanced",
+      "title": "Autonomous Navigation with Nav2",
+      "description": "Integrate robot with Nav2 stack. Add IMU and encoders for accurate odometry, create map with SLAM, implement navigation to waypoints using Nav2 action server."
+    }
+  ],
+  "nextSteps": [
+    "Add camera for visual servoing",
+    "Implement SLAM with ROS2 slam_toolbox",
+    "Create custom ROS2 messages for specific sensors",
+    "Integrate with MoveIt2 for arm control",
+    "Deploy autonomous missions with Behavior Trees"
+  ]
+}

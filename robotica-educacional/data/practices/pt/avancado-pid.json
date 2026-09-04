@@ -1,0 +1,271 @@
+{
+  "id": "pid",
+  "title": "Controle PID para Robótica",
+  "description": "Domine o controle PID (Proporcional-Integral-Derivativo) para criar sistemas robóticos precisos e estáveis com micro-ROS.",
+  "duration": "5-6 horas",
+  "difficulty": "Avançado",
+  "objectives": [
+    "Compreender teoria de controle PID e seus componentes",
+    "Implementar controlador PID discreto no Pico W",
+    "Sintonizar ganhos Kp, Ki, Kd experimentalmente",
+    "Aplicar PID para controle de velocidade de motor",
+    "Integrar PID com micro-ROS para controle remoto",
+    "Visualizar resposta do sistema em tempo real"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "Motor DC com encoder",
+      "quantity": 1,
+      "notes": "Preferencialmente com caixa de redução"
+    },
+    {
+      "name": "Driver Motor L298N",
+      "quantity": 1
+    },
+    {
+      "name": "Encoder Rotativo Incremental",
+      "quantity": 1,
+      "notes": "Acoplado ao motor"
+    },
+    {
+      "name": "Fonte Externa 9-12V",
+      "quantity": 1,
+      "notes": "Para motor DC"
+    },
+    {
+      "name": "Display OLED 128x64 I2C",
+      "quantity": 1,
+      "notes": "Para visualizar valores PID"
+    },
+    {
+      "name": "Potenciômetro 10kΩ",
+      "quantity": 3,
+      "notes": "Para ajuste manual de Kp, Ki, Kd"
+    },
+    {
+      "name": "Capacitores 100nF",
+      "quantity": 2,
+      "notes": "Para debounce do encoder"
+    },
+    {
+      "name": "Protoboard Grande",
+      "quantity": 1
+    },
+    {
+      "name": "Jumpers",
+      "quantity": 20
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "Motor IN1 → GPIO 10",
+      "Motor IN2 → GPIO 11",
+      "Motor ENA (PWM) → GPIO 12",
+      "Encoder A → GPIO 16 + Capacitor 100nF para GND",
+      "Encoder B → GPIO 17 + Capacitor 100nF para GND",
+      "Encoder GND → Pico GND",
+      "Encoder VCC → 3.3V",
+      "L298N 12V → Fonte +",
+      "L298N GND → Fonte GND + Pico GND (comum)",
+      "Display SDA → GPIO 4",
+      "Display SCL → GPIO 5",
+      "Pot Kp → ADC0 (GPIO 26)",
+      "Pot Ki → ADC1 (GPIO 27)",
+      "Pot Kd → ADC2 (GPIO 28)",
+      "Pots GND/VCC → Pico GND/3.3V"
+    ],
+    "diagram": "assets/diagrams/pid-wiring.png",
+    "warnings": [
+      "CRÍTICO: Isole fonte do motor do Pico (apenas GND comum)",
+      "Capacitores no encoder reduzem ruído elétrico",
+      "Verifique polaridade do motor antes de ligar",
+      "Encoder deve estar mecanicamente seguro ao eixo do motor",
+      "Fonte deve fornecer corrente adequada (>1A para maioria dos motores)"
+    ]
+  },
+  "theory": {
+    "pid_basic": "PID é um algoritmo de controle em malha fechada. Calcula sinal de controle baseado em três componentes: erro atual (P), acúmulo de erros passados (I), taxa de variação do erro (D).",
+    "proportional": "Termo Proporcional (Kp × erro) responde ao erro atual. Kp alto = resposta rápida mas com overshoot. Sozinho, causa erro em regime permanente (steady-state error).",
+    "integral": "Termo Integral (Ki × ∫erro·dt) elimina erro em regime permanente acumulando erros passados. Ki alto pode causar overshoot e wind-up (saturação do integrador).",
+    "derivative": "Termo Derivativo (Kd × Δerro/Δt) prevê comportamento futuro baseando-se na taxa de mudança. Reduz overshoot mas amplifica ruído. Requer filtro.",
+    "discrete_pid": "Em sistemas digitais: P = Kp×e[k], I = Ki×Σe[k]×Δt, D = Kd×(e[k]-e[k-1])/Δt. Implementar anti-windup (limitar I) e filtro passa-baixa no D.",
+    "tuning": "Métodos de sintonia: Ziegler-Nichols (aumenta Kp até oscilar), manual (Kp→Ki→Kd), ou otimização automática. Começar com Ki=Kd=0, ajustar Kp, depois adicionar I e D."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Montar Sistema Completo",
+      "description": "Construa o circuito com motor, encoder e display",
+      "details": [
+        "Conecte todos os componentes conforme diagrama detalhado",
+        "Verifique isolação elétrica entre fonte do motor e Pico",
+        "Teste encoder isoladamente (prática anterior)",
+        "Teste motor com PWM manual (50%, 75%, 100%)",
+        "Valide leitura dos potenciômetros (0-65535)",
+        "Configure display OLED para mostrar valores"
+      ],
+      "time": "60 minutos"
+    },
+    {
+      "number": 2,
+      "title": "Implementar Controle Proporcional (P)",
+      "description": "Comece apenas com termo proporcional",
+      "details": [
+        "Configure setpoint de velocidade (ex: 100 RPM)",
+        "Leia velocidade atual do encoder",
+        "Calcule erro = setpoint - velocidade_atual",
+        "Sinal de controle = Kp × erro",
+        "Limite sinal entre 0-255 (PWM)",
+        "Teste com Kp = 1.0 inicialmente",
+        "Aumente Kp até observar oscilações",
+        "Encontre Kp ótimo (aproximadamente 60% do crítico)"
+      ],
+      "time": "45 minutos"
+    },
+    {
+      "number": 3,
+      "title": "Adicionar Termo Integral (PI)",
+      "description": "Elimine erro em regime permanente",
+      "details": [
+        "Adicione variável integral_acumulado = 0",
+        "A cada iteração: integral_acumulado += erro × Δt",
+        "Sinal de controle = Kp×erro + Ki×integral_acumulado",
+        "Implemente anti-windup: limite integral entre -100 e 100",
+        "Inicie com Ki = Kp / 10",
+        "Ajuste Ki observando tempo de assentamento",
+        "Objetivo: eliminar erro residual sem overshoot excessivo"
+      ],
+      "time": "50 minutos"
+    },
+    {
+      "number": 4,
+      "title": "Adicionar Termo Derivativo (PID)",
+      "description": "Reduza overshoot e melhore estabilidade",
+      "details": [
+        "Armazene erro_anterior",
+        "Calcule derivada = (erro - erro_anterior) / Δt",
+        "Implemente filtro passa-baixa: derivada_filtrada = α×derivada + (1-α)×derivada_anterior (α=0.1)",
+        "Sinal de controle = Kp×erro + Ki×integral + Kd×derivada_filtrada",
+        "Inicie com Kd = Kp / 100",
+        "Ajuste Kd para reduzir overshoot sem tornar sistema lento",
+        "Documente os ganhos finais encontrados"
+      ],
+      "time": "60 minutos"
+    },
+    {
+      "number": 5,
+      "title": "Interface de Sintonia com Potenciômetros",
+      "description": "Ajuste ganhos em tempo real",
+      "details": [
+        "Leia ADC0, ADC1, ADC2 dos potenciômetros",
+        "Normalize para Kp: 0-10, Ki: 0-5, Kd: 0-2",
+        "Atualize ganhos PID dinamicamente",
+        "Exiba no OLED: setpoint, velocidade atual, erro, Kp, Ki, Kd",
+        "Crie gráfico no display mostrando velocidade vs tempo",
+        "Teste resposta ao degrau: mude setpoint abruptamente"
+      ],
+      "time": "50 minutos"
+    },
+    {
+      "number": 6,
+      "title": "Integração com micro-ROS",
+      "description": "Controle PID remotamente via ROS2",
+      "details": [
+        "Configure micro-ROS no Pico W",
+        "Crie subscriber no tópico /pid/setpoint (std_msgs/Float32)",
+        "Crie publisher em /pid/state com: setpoint, velocidade, erro, Kp, Ki, Kd",
+        "Crie service /pid/tune para ajustar ganhos remotamente",
+        "Use rqt_plot para visualizar resposta em tempo real",
+        "Implemente dynamic_reconfigure para sintonia interativa",
+        "Grave experimentos com ros2 bag para análise"
+      ],
+      "time": "90 minutos"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_pid",
+    "description": "Projeto BIPES com controlador PID completo para motor DC. Inclui anti-windup, filtro derivativo e interface OLED para visualização em tempo real."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Sistema oscila constantemente",
+      "solutions": [
+        "Reduza Kp (ganho proporcional muito alto)",
+        "Reduza Ki (wind-up no integrador)",
+        "Aumente Kd se oscilação for de alta frequência",
+        "Verifique se Δt (tempo de amostragem) está correto",
+        "Adicione zona morta no PWM (motor não responde abaixo de ~30)",
+        "Implemente rate limiter (limite variação máxima por ciclo)"
+      ]
+    },
+    {
+      "problem": "Erro em regime permanente persiste",
+      "solutions": [
+        "Aumente Ki (termo integral insuficiente)",
+        "Verifique se anti-windup não está muito restritivo",
+        "Confirme que não há atrito estático excessivo no motor",
+        "Verifique se PWM está chegando no valor correto",
+        "Teste com carga constante aplicada ao motor"
+      ]
+    },
+    {
+      "problem": "Resposta muito lenta",
+      "solutions": [
+        "Aumente Kp (resposta proporcional maior)",
+        "Reduza filtro no termo derivativo (se α muito baixo)",
+        "Verifique se Δt não está muito grande (reduza para 10-20ms)",
+        "Confirme que motor não está com carga excessiva",
+        "Verifique alimentação adequada do motor"
+      ]
+    },
+    {
+      "problem": "Termo derivativo causa ruído",
+      "solutions": [
+        "Implemente filtro passa-baixa mais agressivo (α = 0.05)",
+        "Use média móvel no cálculo da derivada (3-5 amostras)",
+        "Adicione capacitores de debounce no encoder (100nF)",
+        "Calcule derivada baseando-se em tempo entre pulsos, não em pulsos por tempo",
+        "Considere usar apenas PI se D não trouxer benefícios"
+      ]
+    },
+    {
+      "problem": "Integrador satura (wind-up)",
+      "solutions": [
+        "Implemente clamping: limite integral_acumulado entre valores fixos",
+        "Use back-calculation: quando PWM satura, pare de acumular erro",
+        "Implemente conditional integration: só integra se |erro| < threshold",
+        "Reduza Ki se saturação ocorre frequentemente",
+        "Zere integral quando setpoint muda abruptamente"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Básico",
+      "title": "Sintonia com Método Ziegler-Nichols",
+      "description": "Aplique o método clássico: configure Ki=Kd=0, aumente Kp até oscilação sustentada (Kc), meça período (Pc), calcule ganhos: Kp=0.6×Kc, Ki=1.2×Kc/Pc, Kd=0.075×Kc×Pc. Compare com sintonia manual."
+    },
+    {
+      "level": "Intermediário",
+      "title": "PID Adaptativo com Gain Scheduling",
+      "description": "Implemente múltiplos conjuntos de ganhos PID para diferentes faixas de velocidade. Use ganhos agressivos em baixa velocidade e conservadores em alta velocidade. Switch automático baseado em setpoint."
+    },
+    {
+      "level": "Avançado",
+      "title": "Controle em Cascata com Duplo PID",
+      "description": "Implemente controle cascata: PID externo controla posição angular (lento, Δt=50ms), PID interno controla velocidade (rápido, Δt=10ms). Setpoint do PID interno vem do output do PID externo. Publique ambos loops em ROS2."
+    }
+  ],
+  "nextSteps": [
+    "Implemente controle Model Predictive Control (MPC)",
+    "Use aprendizado por reforço para sintonia automática",
+    "Adicione feedforward para melhorar resposta a transientes",
+    "Implemente controle robusto H-infinity",
+    "Crie sistema de identificação de planta automático",
+    "Desenvolva controle de trajetória multi-variável (MIMO)"
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "id": "ultrassonico",
+  "title": "Sensor Ultrassônico HC-SR04",
+  "description": "Use o sensor ultrassônico HC-SR04 para medir distâncias e criar sistemas de detecção de obstáculos.",
+  "duration": "2 horas",
+  "difficulty": "Iniciante",
+  "objectives": [
+    "Entender o funcionamento de sensores ultrassônicos",
+    "Conectar e configurar o HC-SR04",
+    "Ler distâncias com precisão",
+    "Criar alertas baseados em proximidade",
+    "Implementar um sistema anti-colisão básico"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "Sensor HC-SR04",
+      "quantity": 1,
+      "notes": "Sensor ultrassônico de distância"
+    },
+    {
+      "name": "LED Vermelho",
+      "quantity": 1,
+      "notes": "Para alerta de proximidade"
+    },
+    {
+      "name": "LED Verde",
+      "quantity": 1,
+      "notes": "Para indicar distância segura"
+    },
+    {
+      "name": "Buzzer",
+      "quantity": 1,
+      "notes": "Opcional, para alerta sonoro"
+    },
+    {
+      "name": "Resistores 220Ω",
+      "quantity": 2,
+      "notes": "Para os LEDs"
+    },
+    {
+      "name": "Protoboard",
+      "quantity": 1
+    },
+    {
+      "name": "Jumpers",
+      "quantity": 8
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "HC-SR04 VCC → Pico 5V (VBUS)",
+      "HC-SR04 GND → Pico GND",
+      "HC-SR04 TRIG → GPIO 16",
+      "HC-SR04 ECHO → GPIO 17",
+      "LED Verde (+) → GPIO 14 → Resistor 220Ω → GND",
+      "LED Vermelho (+) → GPIO 15 → Resistor 220Ω → GND",
+      "Buzzer (+) → GPIO 18",
+      "Buzzer (-) → GND"
+    ],
+    "diagram": "assets/diagrams/ultrasonic-wiring.png",
+    "warnings": [
+      "O HC-SR04 requer alimentação de 5V (use o pino VBUS)",
+      "Não conecte ECHO diretamente se usar conversores de nível lógico",
+      "Mantenha o sensor estável durante as medições"
+    ]
+  },
+  "theory": {
+    "ultrasonic": "Sensores ultrassônicos emitem ondas sonoras de alta frequência (40kHz) e medem o tempo que levam para retornar após refletir em um objeto. Distância = (tempo × velocidade do som) / 2.",
+    "hcsr04": "O HC-SR04 tem alcance de 2cm a 4m com precisão de 3mm. Funciona enviando um pulso de 10µs no pino TRIG e medindo a duração do pulso HIGH no pino ECHO.",
+    "soundspeed": "A velocidade do som no ar é ~343 m/s (a 20°C). Em microsegundos: distância_cm = duração_µs / 58."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Conectar o Sensor",
+      "description": "Monte o circuito com o HC-SR04 e LEDs",
+      "details": [
+        "Conecte o HC-SR04 conforme o diagrama de fiação",
+        "Verifique se está usando 5V para o sensor",
+        "Conecte os LEDs verde e vermelho",
+        "Teste as conexões antes de energizar"
+      ],
+      "time": "20 minutos"
+    },
+    {
+      "number": 2,
+      "title": "Configurar o Sensor no BIPES",
+      "description": "Crie a função de leitura de distância",
+      "details": [
+        "Use o bloco 'Ultrasonic Sensor HC-SR04'",
+        "Configure TRIG no GPIO 16 e ECHO no GPIO 17",
+        "Adicione um bloco 'Print' para ver a distância",
+        "Configure um loop para leitura contínua"
+      ],
+      "time": "25 minutos"
+    },
+    {
+      "number": 3,
+      "title": "Implementar Sistema de Alerta",
+      "description": "Crie lógica de proximidade com LEDs",
+      "details": [
+        "Se distância < 10cm: LED vermelho aceso, verde apagado",
+        "Se distância >= 10cm: LED verde aceso, vermelho apagado",
+        "Adicione um delay de 100ms entre leituras",
+        "Teste aproximando objetos do sensor"
+      ],
+      "time": "30 minutos"
+    },
+    {
+      "number": 4,
+      "title": "Adicionar Alerta Sonoro (Opcional)",
+      "description": "Configure o buzzer para beeps de proximidade",
+      "details": [
+        "Conecte o buzzer ao GPIO 18",
+        "Se distância < 5cm: buzzer com beep contínuo",
+        "Se distância 5-10cm: beeps intermitentes",
+        "Se distância > 10cm: buzzer desligado"
+      ],
+      "time": "25 minutos"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_hcsr04",
+    "description": "Projeto BIPES com sensor ultrassônico HC-SR04 configurado. Inclui leitura de distância e sistema de alerta visual."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Sensor retorna sempre 0 ou valores inconsistentes",
+      "solutions": [
+        "Verifique se TRIG e ECHO estão nos pinos corretos",
+        "Confirme que o sensor está recebendo 5V",
+        "Certifique-se de que não há objetos muito próximos (<2cm)",
+        "Verifique se o GND está bem conectado"
+      ]
+    },
+    {
+      "problem": "Leituras muito instáveis",
+      "solutions": [
+        "Adicione um delay de pelo menos 60ms entre leituras",
+        "Evite superfícies muito anguladas ou absorventes de som",
+        "Fixe o sensor para evitar vibrações",
+        "Calcule a média de 3-5 leituras para estabilizar"
+      ]
+    },
+    {
+      "problem": "Sensor não detecta objetos distantes",
+      "solutions": [
+        "Verifique se o objeto não é muito pequeno ou absorvente",
+        "Aponte o sensor perpendicularmente à superfície",
+        "Limpe os transdutores do sensor (círculos metálicos)",
+        "Teste com uma superfície grande e plana (parede, livro)"
+      ]
+    },
+    {
+      "problem": "LEDs não respondem à distância",
+      "solutions": [
+        "Verifique a lógica do código (< ou > corretos)",
+        "Teste os LEDs individualmente com Digital Write",
+        "Confirme que os resistores estão presentes",
+        "Verifique se os limiares de distância estão adequados"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Básico",
+      "title": "Medidor de Nível de Líquido",
+      "description": "Use o sensor para medir o nível de água em um recipiente, posicionando-o na parte superior e apontando para baixo."
+    },
+    {
+      "level": "Intermediário",
+      "title": "Sistema de Estacionamento",
+      "description": "Crie um sistema com 3 LEDs (verde, amarelo, vermelho) e buzzer que aumenta a frequência de beeps conforme o carro se aproxima."
+    },
+    {
+      "level": "Avançado",
+      "title": "Mapeamento de Ambiente",
+      "description": "Monte o sensor em um servomotor para varrer 180° e criar um mapa de obstáculos ao redor, enviando dados via serial para visualização em gráfico."
+    }
+  ],
+  "nextSteps": [
+    "Combine com servomotor para criar um radar",
+    "Integre com motores DC para robô autônomo",
+    "Use múltiplos sensores para cobertura 360°",
+    "Implemente filtro de Kalman para leituras mais precisas"
+  ]
+}

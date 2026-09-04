@@ -1,0 +1,271 @@
+{
+  "id": "pid",
+  "title": "PID Control for Robotics",
+  "description": "Master PID (Proportional-Integral-Derivative) control to create precise and stable robotic systems with micro-ROS.",
+  "duration": "5-6 hours",
+  "difficulty": "Advanced",
+  "objectives": [
+    "Understand PID control theory and its components",
+    "Implement discrete PID controller on Pico W",
+    "Tune Kp, Ki, Kd gains experimentally",
+    "Apply PID for motor velocity control",
+    "Integrate PID with micro-ROS for remote control",
+    "Visualize system response in real-time"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "DC Motor with encoder",
+      "quantity": 1,
+      "notes": "Preferably with gearbox"
+    },
+    {
+      "name": "L298N Motor Driver",
+      "quantity": 1
+    },
+    {
+      "name": "Incremental Rotary Encoder",
+      "quantity": 1,
+      "notes": "Coupled to motor"
+    },
+    {
+      "name": "External Power Supply 9-12V",
+      "quantity": 1,
+      "notes": "For DC motor"
+    },
+    {
+      "name": "128x64 OLED Display I2C",
+      "quantity": 1,
+      "notes": "To visualize PID values"
+    },
+    {
+      "name": "10kΩ Potentiometers",
+      "quantity": 3,
+      "notes": "For manual Kp, Ki, Kd adjustment"
+    },
+    {
+      "name": "100nF Capacitors",
+      "quantity": 2,
+      "notes": "For encoder debounce"
+    },
+    {
+      "name": "Large Breadboard",
+      "quantity": 1
+    },
+    {
+      "name": "Jumper Wires",
+      "quantity": 20
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "Motor IN1 → GPIO 10",
+      "Motor IN2 → GPIO 11",
+      "Motor ENA (PWM) → GPIO 12",
+      "Encoder A → GPIO 16 + 100nF Capacitor to GND",
+      "Encoder B → GPIO 17 + 100nF Capacitor to GND",
+      "Encoder GND → Pico GND",
+      "Encoder VCC → 3.3V",
+      "L298N 12V → Supply +",
+      "L298N GND → Supply GND + Pico GND (common)",
+      "Display SDA → GPIO 4",
+      "Display SCL → GPIO 5",
+      "Pot Kp → ADC0 (GPIO 26)",
+      "Pot Ki → ADC1 (GPIO 27)",
+      "Pot Kd → ADC2 (GPIO 28)",
+      "Pots GND/VCC → Pico GND/3.3V"
+    ],
+    "diagram": "assets/diagrams/pid-wiring.png",
+    "warnings": [
+      "CRITICAL: Isolate motor supply from Pico (GND common only)",
+      "Capacitors on encoder reduce electrical noise",
+      "Check motor polarity before powering",
+      "Encoder must be mechanically secure to motor shaft",
+      "Supply must provide adequate current (>1A for most motors)"
+    ]
+  },
+  "theory": {
+    "pid_basic": "PID is closed-loop control algorithm. Calculates control signal based on three components: current error (P), accumulated past errors (I), rate of error change (D).",
+    "proportional": "Proportional term (Kp × error) responds to current error. High Kp = fast response but with overshoot. Alone, causes steady-state error.",
+    "integral": "Integral term (Ki × ∫error·dt) eliminates steady-state error by accumulating past errors. High Ki can cause overshoot and wind-up (integrator saturation).",
+    "derivative": "Derivative term (Kd × Δerror/Δt) predicts future behavior based on rate of change. Reduces overshoot but amplifies noise. Requires filtering.",
+    "discrete_pid": "In digital systems: P = Kp×e[k], I = Ki×Σe[k]×Δt, D = Kd×(e[k]-e[k-1])/Δt. Implement anti-windup (limit I) and low-pass filter on D.",
+    "tuning": "Tuning methods: Ziegler-Nichols (increase Kp until oscillation), manual (Kp→Ki→Kd), or automatic optimization. Start with Ki=Kd=0, adjust Kp, then add I and D."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Assemble Complete System",
+      "description": "Build circuit with motor, encoder and display",
+      "details": [
+        "Connect all components according to detailed diagram",
+        "Verify electrical isolation between motor supply and Pico",
+        "Test encoder standalone (previous practice)",
+        "Test motor with manual PWM (50%, 75%, 100%)",
+        "Validate potentiometer reading (0-65535)",
+        "Configure OLED display to show values"
+      ],
+      "time": "60 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Implement Proportional Control (P)",
+      "description": "Start with proportional term only",
+      "details": [
+        "Set velocity setpoint (e.g. 100 RPM)",
+        "Read current velocity from encoder",
+        "Calculate error = setpoint - current_velocity",
+        "Control signal = Kp × error",
+        "Limit signal between 0-255 (PWM)",
+        "Test with Kp = 1.0 initially",
+        "Increase Kp until observing oscillations",
+        "Find optimal Kp (approximately 60% of critical)"
+      ],
+      "time": "45 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Add Integral Term (PI)",
+      "description": "Eliminate steady-state error",
+      "details": [
+        "Add variable integral_accumulated = 0",
+        "Each iteration: integral_accumulated += error × Δt",
+        "Control signal = Kp×error + Ki×integral_accumulated",
+        "Implement anti-windup: limit integral between -100 and 100",
+        "Start with Ki = Kp / 10",
+        "Adjust Ki observing settling time",
+        "Goal: eliminate residual error without excessive overshoot"
+      ],
+      "time": "50 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Add Derivative Term (PID)",
+      "description": "Reduce overshoot and improve stability",
+      "details": [
+        "Store previous_error",
+        "Calculate derivative = (error - previous_error) / Δt",
+        "Implement low-pass filter: filtered_derivative = α×derivative + (1-α)×previous_derivative (α=0.1)",
+        "Control signal = Kp×error + Ki×integral + Kd×filtered_derivative",
+        "Start with Kd = Kp / 100",
+        "Adjust Kd to reduce overshoot without making system slow",
+        "Document final gains found"
+      ],
+      "time": "60 minutes"
+    },
+    {
+      "number": 5,
+      "title": "Tuning Interface with Potentiometers",
+      "description": "Adjust gains in real-time",
+      "details": [
+        "Read ADC0, ADC1, ADC2 from potentiometers",
+        "Normalize to Kp: 0-10, Ki: 0-5, Kd: 0-2",
+        "Update PID gains dynamically",
+        "Display on OLED: setpoint, current velocity, error, Kp, Ki, Kd",
+        "Create graph on display showing velocity vs time",
+        "Test step response: change setpoint abruptly"
+      ],
+      "time": "50 minutes"
+    },
+    {
+      "number": 6,
+      "title": "Integration with micro-ROS",
+      "description": "Control PID remotely via ROS2",
+      "details": [
+        "Configure micro-ROS on Pico W",
+        "Create subscriber on /pid/setpoint topic (std_msgs/Float32)",
+        "Create publisher on /pid/state with: setpoint, velocity, error, Kp, Ki, Kd",
+        "Create /pid/tune service to adjust gains remotely",
+        "Use rqt_plot to visualize real-time response",
+        "Implement dynamic_reconfigure for interactive tuning",
+        "Record experiments with ros2 bag for analysis"
+      ],
+      "time": "90 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_pid",
+    "description": "BIPES project with complete PID controller for DC motor. Includes anti-windup, derivative filter and OLED interface for real-time visualization."
+  },
+  "troubleshooting": [
+    {
+      "problem": "System oscillates constantly",
+      "solutions": [
+        "Reduce Kp (proportional gain too high)",
+        "Reduce Ki (integrator wind-up)",
+        "Increase Kd if oscillation is high frequency",
+        "Check Δt (sampling time) is correct",
+        "Add dead zone on PWM (motor doesn't respond below ~30)",
+        "Implement rate limiter (limit maximum change per cycle)"
+      ]
+    },
+    {
+      "problem": "Steady-state error persists",
+      "solutions": [
+        "Increase Ki (insufficient integral term)",
+        "Check anti-windup isn't too restrictive",
+        "Confirm no excessive static friction in motor",
+        "Verify PWM reaches correct value",
+        "Test with constant load applied to motor"
+      ]
+    },
+    {
+      "problem": "Very slow response",
+      "solutions": [
+        "Increase Kp (larger proportional response)",
+        "Reduce filter on derivative term (if α too low)",
+        "Check Δt isn't too large (reduce to 10-20ms)",
+        "Confirm motor doesn't have excessive load",
+        "Check adequate motor power supply"
+      ]
+    },
+    {
+      "problem": "Derivative term causes noise",
+      "solutions": [
+        "Implement more aggressive low-pass filter (α = 0.05)",
+        "Use moving average on derivative calculation (3-5 samples)",
+        "Add debounce capacitors on encoder (100nF)",
+        "Calculate derivative based on time-between-pulses, not pulses-per-time",
+        "Consider using PI only if D doesn't bring benefits"
+      ]
+    },
+    {
+      "problem": "Integrator saturates (wind-up)",
+      "solutions": [
+        "Implement clamping: limit integral_accumulated between fixed values",
+        "Use back-calculation: when PWM saturates, stop accumulating error",
+        "Implement conditional integration: only integrate if |error| < threshold",
+        "Reduce Ki if saturation occurs frequently",
+        "Zero integral when setpoint changes abruptly"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Ziegler-Nichols Tuning",
+      "description": "Apply classic method: set Ki=Kd=0, increase Kp until sustained oscillation (Kc), measure period (Pc), calculate gains: Kp=0.6×Kc, Ki=1.2×Kc/Pc, Kd=0.075×Kc×Pc. Compare with manual tuning."
+    },
+    {
+      "level": "Intermediate",
+      "title": "Adaptive PID with Gain Scheduling",
+      "description": "Implement multiple PID gain sets for different velocity ranges. Use aggressive gains at low velocity and conservative at high velocity. Automatic switching based on setpoint."
+    },
+    {
+      "level": "Advanced",
+      "title": "Cascade Control with Dual PID",
+      "description": "Implement cascade control: outer PID controls angular position (slow, Δt=50ms), inner PID controls velocity (fast, Δt=10ms). Inner PID setpoint comes from outer PID output. Publish both loops to ROS2."
+    }
+  ],
+  "nextSteps": [
+    "Implement Model Predictive Control (MPC)",
+    "Use reinforcement learning for automatic tuning",
+    "Add feedforward to improve transient response",
+    "Implement robust H-infinity control",
+    "Create automatic plant identification system",
+    "Develop multi-variable trajectory control (MIMO)"
+  ]
+}

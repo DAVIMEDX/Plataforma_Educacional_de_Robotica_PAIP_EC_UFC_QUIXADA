@@ -1,0 +1,222 @@
+{
+  "id": "microros",
+  "moduleId": "intermediario",
+  "title": "micro-ROS Teleoperação",
+  "description": "Integre seu robô ao ecossistema ROS2 usando micro-ROS para receber comandos de movimentação padrão Twist via tópicos ROS.",
+  "objectives": [
+    "Compreender a arquitetura micro-ROS",
+    "Configurar micro-ROS no Raspberry Pi Pico W",
+    "Subscrever tópicos ROS2 (geometry_msgs/Twist)",
+    "Implementar controle de motores via comandos ROS",
+    "Integrar com ferramentas ROS2 (teleop_twist_keyboard, rqt)"
+  ],
+  "duration": "3-4 horas",
+  "difficulty": "Intermediário",
+  "prerequisites": [
+    "Práticas do Módulo Inicial completas",
+    "ROS2 instalado no computador (Humble ou posterior)",
+    "Conhecimento básico de linha de comando Linux",
+    "Rede WiFi configurada"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1,
+      "notes": "Com firmware micro-ROS"
+    },
+    {
+      "name": "Robô móvel montado",
+      "quantity": 1,
+      "notes": "Da prática de joystick"
+    },
+    {
+      "name": "Computador com ROS2",
+      "quantity": 1,
+      "notes": "Ubuntu 22.04 + ROS2 Humble recomendado"
+    },
+    {
+      "name": "Roteador WiFi",
+      "quantity": 1,
+      "notes": "Rede local 2.4GHz"
+    }
+  ],
+  "theory": {
+    "microros": "micro-ROS é uma versão otimizada do ROS2 para microcontroladores com recursos limitados. Usa o protocolo DDS-XRCE para comunicação leve com o ROS2.",
+    "twist": "geometry_msgs/Twist é a mensagem padrão ROS para comandos de velocidade. Contém linear.x (frente/trás), linear.y (lateral), linear.z (vertical) e angular.z (rotação).",
+    "agent": "O micro-ROS Agent roda no computador e faz a ponte entre o microcontrolador e o sistema ROS2, traduzindo entre DDS-XRCE e DDS padrão."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Instalar micro-ROS Agent",
+      "description": "Configure o agente micro-ROS no seu computador Linux",
+      "details": [
+        "Abra um terminal no Ubuntu",
+        "Execute: sudo apt install ros-humble-micro-ros-agent",
+        "Ou compile do código fonte se necessário",
+        "Verifique instalação: ros2 run micro_ros_agent --help"
+      ],
+      "time": "15-20 minutos",
+      "commands": [
+        "sudo apt update",
+        "sudo apt install ros-humble-micro-ros-agent"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Configurar Projeto no BIPES",
+      "description": "Abra o projeto micro-ROS no BIPES",
+      "details": [
+        "Acesse o link do projeto BIPES específico para micro-ROS",
+        "Configure as credenciais WiFi (SSID e senha)",
+        "Configure o IP do computador rodando o Agent",
+        "Revise os blocos de subscriber e controle de motores",
+        "Faça upload para o Pico W"
+      ],
+      "time": "20 minutos"
+    },
+    {
+      "number": 3,
+      "title": "Iniciar micro-ROS Agent",
+      "description": "Rode o agente para estabelecer comunicação",
+      "details": [
+        "Em um terminal, execute:",
+        "ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888",
+        "Aguarde mensagem de conexão do Pico W",
+        "Verifique tópicos com: ros2 topic list",
+        "Deve aparecer /cmd_vel ou similar"
+      ],
+      "time": "10 minutos",
+      "commands": [
+        "ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888"
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Testar com Teleop",
+      "description": "Controle o robô usando teleop_twist_keyboard",
+      "details": [
+        "Em novo terminal, execute:",
+        "ros2 run teleop_twist_keyboard teleop_twist_keyboard",
+        "Use as teclas W/A/S/D/X para controlar",
+        "Observe o robô respondendo aos comandos",
+        "Ajuste velocidades com Q/Z se necessário"
+      ],
+      "time": "15 minutos",
+      "commands": [
+        "ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/robot/cmd_vel"
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Monitoramento e Debug",
+      "description": "Use ferramentas ROS2 para monitorar",
+      "details": [
+        "Visualize mensagens: ros2 topic echo /cmd_vel",
+        "Veja taxa de publicação: ros2 topic hz /cmd_vel",
+        "Liste nós: ros2 node list",
+        "Inspecione no rqt_graph: rqt_graph"
+      ],
+      "time": "10-15 minutos"
+    }
+  ],
+  "code": {
+    "description": "Lógica MicroPython com micro-ROS",
+    "pseudocode": "# Callback quando recebe mensagem Twist\ndef cmd_vel_callback(msg):\n    linear = msg.linear.x   # -1.0 a +1.0\n    angular = msg.angular.z # -1.0 a +1.0\n    \n    # Converter para velocidades de motor\n    left_speed = (linear + angular) * 100\n    right_speed = (linear - angular) * 100\n    \n    # Aplicar aos motores\n    set_motor_left(left_speed)\n    set_motor_right(right_speed)\n\n# Criar subscriber\nsubscriber = node.create_subscription(\n    Twist,\n    '/cmd_vel',\n    cmd_vel_callback\n)\n\n# Loop principal\nwhile True:\n    rclpy.spin_once(node)\n    time.sleep(0.01)",
+    "notes": "No BIPES, use os blocos micro-ROS específicos para criar subscriber e implementar callback."
+  },
+  "bipesProject": {
+    "url": "https://bipes.net.br/ide/?project=microros_teleop",
+    "description": "Projeto BIPES com blocos micro-ROS configurados",
+    "requiredBlocks": [
+      "micro-ROS: Initialize Node",
+      "micro-ROS: Create Subscriber (Twist)",
+      "micro-ROS: Spin Once",
+      "Motor Control (PWM)"
+    ]
+  },
+  "troubleshooting": [
+    {
+      "problem": "Pico W não conecta ao Agent",
+      "solutions": [
+        "Verifique se Pico e computador estão na mesma rede WiFi",
+        "Confirme o IP do computador com: hostname -I",
+        "Teste ping do Pico para o computador",
+        "Verifique firewall: sudo ufw allow 8888/udp",
+        "Certifique-se que Agent está rodando antes de ligar o Pico"
+      ]
+    },
+    {
+      "problem": "Robô não responde aos comandos",
+      "solutions": [
+        "Verifique se tópico está correto: ros2 topic list",
+        "Confirme que subscriber está ativo: ros2 topic info /cmd_vel",
+        "Teste publicando manualmente: ros2 topic pub /cmd_vel ...",
+        "Adicione prints no callback para debug"
+      ]
+    },
+    {
+      "problem": "Movimentos erráticos ou atrasados",
+      "solutions": [
+        "Reduza a frequência de spin (aumente sleep)",
+        "Verifique qualidade do sinal WiFi",
+        "Adicione filtro para ignorar comandos muito pequenos",
+        "Configure QoS adequado (BEST_EFFORT vs RELIABLE)"
+      ]
+    }
+  ],
+  "rosCommands": {
+    "title": "Comandos ROS2 Úteis",
+    "commands": [
+      {
+        "command": "ros2 topic list",
+        "description": "Lista todos os tópicos ativos"
+      },
+      {
+        "command": "ros2 topic echo /cmd_vel",
+        "description": "Mostra mensagens do tópico em tempo real"
+      },
+      {
+        "command": "ros2 topic hz /cmd_vel",
+        "description": "Mostra frequência de publicação"
+      },
+      {
+        "command": "ros2 node list",
+        "description": "Lista todos os nós ROS2"
+      },
+      {
+        "command": "ros2 topic pub /cmd_vel geometry_msgs/msg/Twist '{linear: {x: 0.5}}' -1",
+        "description": "Publica comando de teste (move para frente)"
+      }
+    ]
+  },
+  "challenges": [
+    {
+      "title": "Desafio 1: Publicar Odometria",
+      "description": "Crie um publisher que envia dados de odometria (nav_msgs/Odometry) do robô para o ROS2.",
+      "difficulty": "Médio"
+    },
+    {
+      "title": "Desafio 2: Modo Autônomo",
+      "description": "Implemente um subscriber para /goal_pose que move o robô até uma posição alvo automaticamente.",
+      "difficulty": "Avançado"
+    },
+    {
+      "title": "Desafio 3: Serviço de Parada",
+      "description": "Crie um serviço ROS2 (std_srvs/Trigger) que para imediatamente o robô quando chamado.",
+      "difficulty": "Médio"
+    }
+  ],
+  "nextSteps": {
+    "nextPractice": {
+      "moduleId": "avancado",
+      "practiceId": "encoder",
+      "title": "Encoder e Odometria"
+    },
+    "relatedTopics": [
+      "Publicar dados de sensores via micro-ROS",
+      "Implementar serviços ROS2 no microcontrolador",
+      "Usar parâmetros ROS2 para configuração dinâmica"
+    ]
+  }
+}

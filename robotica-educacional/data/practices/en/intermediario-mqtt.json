@@ -1,0 +1,205 @@
+{
+  "id": "mqtt",
+  "title": "MQTT Communication for IoT",
+  "description": "Implement bidirectional communication using MQTT protocol to create distributed IoT systems.",
+  "duration": "3-4 hours",
+  "difficulty": "Intermediate",
+  "objectives": [
+    "Understand MQTT protocol and publish-subscribe architecture",
+    "Connect Pico W to MQTT broker",
+    "Publish sensor data to topics",
+    "Subscribe to topics to receive commands",
+    "Implement Quality of Service (QoS)"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "DHT22 Sensor",
+      "quantity": 1,
+      "notes": "Temperature and humidity"
+    },
+    {
+      "name": "RGB LED",
+      "quantity": 1
+    },
+    {
+      "name": "220Ω Resistors",
+      "quantity": 3,
+      "notes": "For RGB LED"
+    },
+    {
+      "name": "10kΩ Resistor",
+      "quantity": 1,
+      "notes": "Pull-up for DHT22"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1
+    },
+    {
+      "name": "Jumper Wires",
+      "quantity": 10
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "DHT22 VCC → Pico 3.3V",
+      "DHT22 GND → Pico GND",
+      "DHT22 DATA → GPIO 22 (with 10kΩ pull-up to 3.3V)",
+      "RGB LED R → GPIO 13 → 220Ω Resistor → GND",
+      "RGB LED G → GPIO 14 → 220Ω Resistor → GND",
+      "RGB LED B → GPIO 15 → 220Ω Resistor → GND",
+      "RGB LED Common → 3.3V (common cathode) or GND (common anode)"
+    ],
+    "diagram": "assets/diagrams/mqtt-wiring.png",
+    "warnings": [
+      "Confirm RGB LED type (common cathode or anode)",
+      "DHT22 requires pull-up on data pin",
+      "Use resistors to protect RGB LED"
+    ]
+  },
+  "theory": {
+    "mqtt": "MQTT (Message Queuing Telemetry Transport) is a lightweight messaging protocol ideal for IoT. Uses publish-subscribe pattern where devices publish messages to topics and others subscribe to receive them.",
+    "broker": "MQTT broker is central server that receives all messages and distributes to subscribers. Examples: Mosquitto, HiveMQ, EMQX. Can be local or cloud-based.",
+    "topics": "Topics are hierarchical strings separated by /. Example: home/living_room/temperature. Supports wildcards: + (single level) and # (multiple levels).",
+    "qos": "QoS (Quality of Service) defines delivery guarantee: 0 (at most once), 1 (at least once), 2 (exactly once)."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Configure MQTT Broker",
+      "description": "Set up access to public or local MQTT broker",
+      "details": [
+        "Option 1: Use public broker (test.mosquitto.org, broker.hivemq.com)",
+        "Option 2: Install Mosquitto locally (docker run -p 1883:1883 eclipse-mosquitto)",
+        "Note IP address and port (default: 1883)",
+        "For testing, don't use authentication initially"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Connect to Broker via BIPES",
+      "description": "Establish MQTT connection in code",
+      "details": [
+        "In BIPES, add 'MQTT Connect' block",
+        "Configure server (IP or hostname)",
+        "Set port 1883",
+        "Configure unique client_id (e.g. pico_w_001)",
+        "Add callback for successful connection"
+      ],
+      "time": "25 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Publish Sensor Data",
+      "description": "Send temperature and humidity to MQTT topics",
+      "details": [
+        "Read DHT22 every 10 seconds",
+        "Publish temperature to 'devices/pico001/temperature'",
+        "Publish humidity to 'devices/pico001/humidity'",
+        "Use QoS 0 for sensor data (real-time)",
+        "Monitor messages with MQTT Explorer or mosquitto_sub"
+      ],
+      "time": "45 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Subscribe to Commands",
+      "description": "Receive commands to control RGB LED",
+      "details": [
+        "Subscribe to topic 'devices/pico001/led/color'",
+        "Implement callback to process messages",
+        "Parse JSON messages: {\"r\":255,\"g\":0,\"b\":0}",
+        "Apply values to RGB LED PWM pins",
+        "Publish confirmation to 'devices/pico001/status'"
+      ],
+      "time": "60 minutes"
+    },
+    {
+      "number": 5,
+      "title": "Implement Dashboard",
+      "description": "Create web interface to visualize and control",
+      "details": [
+        "Use MQTT.js in HTML page",
+        "Connect to same broker via WebSockets (port 9001)",
+        "Display temperature and humidity in real-time",
+        "Add color picker to control RGB LED",
+        "Test complete end-to-end system"
+      ],
+      "time": "60 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_mqtt",
+    "description": "BIPES project with MQTT client configured. Includes sensor data publishing and control command subscription."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Cannot connect to broker",
+      "solutions": [
+        "Check if broker is accessible (ping IP)",
+        "Confirm port 1883 is open (use telnet ip 1883)",
+        "Make sure on same network (if local broker)",
+        "Check credentials if broker requires authentication",
+        "Test with mosquitto_sub in terminal: mosquitto_sub -h IP -t '#'"
+      ]
+    },
+    {
+      "problem": "Messages not received",
+      "solutions": [
+        "Check topic is correct (case-sensitive)",
+        "Confirm subscriber connected before publishing",
+        "Use wildcard # to test all topics",
+        "Check QoS (use 1 to guarantee delivery in tests)",
+        "Monitor with MQTT Explorer to see all messages"
+      ]
+    },
+    {
+      "problem": "DHT22 returns read errors",
+      "solutions": [
+        "Check 10kΩ pull-up resistor",
+        "Wait 2 seconds between DHT22 readings",
+        "Confirm stable 3.3V supply",
+        "Test sensor standalone before MQTT integration"
+      ]
+    },
+    {
+      "problem": "RGB LED doesn't change color",
+      "solutions": [
+        "Check if common cathode or anode",
+        "Confirm using PWM on pins",
+        "Test each color individually (R, G, B)",
+        "Validate JSON format of received messages",
+        "Add debug prints in callback"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Temperature Alarm",
+      "description": "Publish message to alert topic when temperature exceeds 30°C. Subscriber can be another Pico W that triggers buzzer."
+    },
+    {
+      "level": "Intermediate",
+      "title": "Multi-Device System",
+      "description": "Configure 3 Pico W: one with sensors (publisher), one with actuators (subscriber), and one as gateway that translates and routes messages between different topics."
+    },
+    {
+      "level": "Advanced",
+      "title": "Home Automation with Retained Messages",
+      "description": "Implement complete home automation system with retained messages (last state preserved), last will (offline device detection), and Node-RED dashboard for orchestration."
+    }
+  ],
+  "nextSteps": [
+    "Implement TLS/SSL for secure communication",
+    "Use MQTT over WebSockets for mobile apps",
+    "Integrate with IoT platforms (ThingsBoard, AWS IoT)",
+    "Add authentication with username and password",
+    "Explore MQTT 5.0 with advanced features"
+  ]
+}

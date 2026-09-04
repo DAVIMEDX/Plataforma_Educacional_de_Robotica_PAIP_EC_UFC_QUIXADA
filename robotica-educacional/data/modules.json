@@ -1,0 +1,290 @@
+{
+  "pt": {
+    "siteName": "Robótica Educacional",
+    "siteSubtitle": "Aprenda robótica de forma prática com BIPES e micro-ROS",
+    "languageSelector": "Idioma",
+    "home": "Início",
+    "modules": [
+      {
+        "id": "inicial",
+        "category": "BIPES & micro-ROS",
+        "title": "Módulo Inicial",
+        "subtitle": "Fundamentos de Controle e Segurança",
+        "icon": "🟢",
+        "color": "#4CAF50",
+        "duration": "4-7 horas",
+        "level": "Iniciante",
+        "description": "Aprenda os fundamentos de controle de robôs, desde o mapeamento de dados de sensores até a implementação de sistemas de segurança básicos.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "joystick",
+            "title": "Controle com Joystick",
+            "shortDescription": "Mapeamento de dados analógicos para controle de motores",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🎮"
+          },
+          {
+            "id": "webserver",
+            "title": "Servidor Web na Placa",
+            "shortDescription": "Interface HTTP para controle remoto do robô",
+            "duration": "2-3 horas",
+            "difficulty": "Iniciante",
+            "icon": "🌐"
+          },
+          {
+            "id": "ultrassonico",
+            "title": "Segurança com Ultrassônico",
+            "shortDescription": "Detecção de obstáculos e parada automática",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🚨"
+          }
+        ]
+      },
+      {
+        "id": "intermediario",
+        "category": "BIPES & micro-ROS",
+        "title": "Módulo Intermediário",
+        "subtitle": "Comunicação Sem Fio e Integração ROS",
+        "icon": "🟡",
+        "color": "#FF9800",
+        "duration": "6-8 horas",
+        "level": "Intermediário",
+        "description": "Explore conceitos avançados de comunicação sem fio, utilizando MQTT e micro-ROS para integração completa com o ecossistema ROS2.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "mqtt",
+            "title": "MQTT como Middleware",
+            "shortDescription": "Comunicação ROS2 ↔ MQTT ↔ Microcontrolador",
+            "duration": "3-4 horas",
+            "difficulty": "Intermediário",
+            "icon": "📡"
+          },
+          {
+            "id": "microros",
+            "title": "micro-ROS Teleoperação",
+            "shortDescription": "Comandos de movimentação via micro-ROS",
+            "duration": "3-4 horas",
+            "difficulty": "Intermediário",
+            "icon": "🤖"
+          }
+        ]
+      },
+      {
+        "id": "avancado",
+        "category": "BIPES & micro-ROS",
+        "title": "Módulo Avançado",
+        "subtitle": "Controle de Precisão e Feedback",
+        "icon": "🔴",
+        "color": "#F44336",
+        "duration": "7-9 horas",
+        "level": "Avançado",
+        "description": "Implemente controle de precisão utilizando encoders e algoritmos PID para ajuste fino da movimentação, lidando com problemas físicos reais.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "encoder",
+            "title": "Encoder e Odometria",
+            "shortDescription": "Leitura precisa de rotação das rodas",
+            "duration": "3-4 horas",
+            "difficulty": "Avançado",
+            "icon": "📏"
+          },
+          {
+            "id": "pid",
+            "title": "Controle PID",
+            "shortDescription": "Ajuste fino com controle proporcional-integral-derivativo",
+            "duration": "4-5 horas",
+            "difficulty": "Avançado",
+            "icon": "⚙️"
+          }
+        ]
+      },
+      {
+        "id": "robotica_reciclavel",
+        "category": "Robótica Sustentável",
+        "title": "Robótica com Recicláveis",
+        "subtitle": "Construção Sustentável e Prototipagem",
+        "icon": "♻️",
+        "color": "#8BC34A",
+        "duration": "4-7 horas",
+        "level": "Iniciante",
+        "description": "Aprenda a desenvolver estruturas robóticas utilizando materiais recicláveis, explorando conceitos de sustentabilidade, mecânica básica e prototipagem de baixo custo.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "Estrutura_sucata",
+            "title": "Construção de Estruturas com Sucata",
+            "shortDescription": "Montagem de chassis utilizando papelão, garrafas PET e outros materiais reutilizados",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "📦"
+          },
+          {
+            "id": "mecanismo_reciclado",
+            "title": "Mecanismos de Movimento",
+            "shortDescription": "Criação de rodas, eixos e articulações usando materiais recicláveis",
+            "duration": "2-3 horas",
+            "difficulty": "Iniciante",
+            "icon": "⚙️"
+          },
+          {
+            "id": "prototipo_sustentavel",
+            "title": "Protótipo Robótico Sustentável",
+            "shortDescription": "Integração da estrutura construída em um projeto robótico funcional",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🤖"
+          }
+        ]
+      }
+    ]
+  },
+  "en": {
+    "siteName": "Educational Robotics",
+    "siteSubtitle": "Learn robotics hands-on with BIPES and micro-ROS",
+    "languageSelector": "Language",
+    "home": "Home",
+    "modules": [
+      {
+        "id": "inicial",
+        "category": "BIPES & micro-ROS",
+        "title": "Initial Module",
+        "subtitle": "Control Fundamentals and Safety",
+        "icon": "🟢",
+        "color": "#4CAF50",
+        "duration": "4-7 hours",
+        "level": "Beginner",
+        "description": "Learn the fundamentals of robot control, from sensor data mapping to implementing basic safety systems.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "joystick",
+            "title": "Joystick Control",
+            "shortDescription": "Analog data mapping for motor control",
+            "duration": "1-2 hours",
+            "difficulty": "Beginner",
+            "icon": "🎮"
+          },
+          {
+            "id": "webserver",
+            "title": "Web Server on Board",
+            "shortDescription": "HTTP interface for remote robot control",
+            "duration": "2-3 hours",
+            "difficulty": "Beginner",
+            "icon": "🌐"
+          },
+          {
+            "id": "ultrassonico",
+            "title": "Safety with Ultrasonic",
+            "shortDescription": "Obstacle detection and automatic stop",
+            "duration": "1-2 hours",
+            "difficulty": "Beginner",
+            "icon": "🚨"
+          }
+        ]
+      },
+      {
+        "id": "intermediario",
+        "category": "BIPES & micro-ROS",
+        "title": "Intermediate Module",
+        "subtitle": "Wireless Communication and ROS Integration",
+        "icon": "🟡",
+        "color": "#FF9800",
+        "duration": "6-8 hours",
+        "level": "Intermediate",
+        "description": "Explore advanced wireless communication concepts using MQTT and micro-ROS for full integration with the ROS2 ecosystem.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "mqtt",
+            "title": "MQTT as Middleware",
+            "shortDescription": "ROS2 ↔ MQTT ↔ Microcontroller communication",
+            "duration": "3-4 hours",
+            "difficulty": "Intermediate",
+            "icon": "📡"
+          },
+          {
+            "id": "microros",
+            "title": "micro-ROS Teleoperation",
+            "shortDescription": "Movement commands via micro-ROS",
+            "duration": "3-4 hours",
+            "difficulty": "Intermediate",
+            "icon": "🤖"
+          }
+        ]
+      },
+      {
+        "id": "avancado",
+        "category": "BIPES & micro-ROS",
+        "title": "Advanced Module",
+        "subtitle": "Precision Control and Feedback",
+        "icon": "🔴",
+        "color": "#F44336",
+        "duration": "7-9 hours",
+        "level": "Advanced",
+        "description": "Implement precision control using encoders and PID algorithms for fine-tuned movement, dealing with real physical problems.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "encoder",
+            "title": "Encoder and Odometry",
+            "shortDescription": "Precise wheel rotation reading",
+            "duration": "3-4 hours",
+            "difficulty": "Advanced",
+            "icon": "📏"
+          },
+          {
+            "id": "pid",
+            "title": "PID Control",
+            "shortDescription": "Fine-tuning with proportional-integral-derivative control",
+            "duration": "4-5 hours",
+            "difficulty": "Advanced",
+            "icon": "⚙️"
+          }
+        ]
+      },
+      {
+        "id": "robotica_reciclavel",
+        "category": "Sustainable Robotics",
+        "title": "Recycled Robotics",
+        "subtitle": "Sustainable Construction and Prototyping",
+        "icon": "♻️",
+        "color": "#8BC34A",
+        "duration": "4-7 hours",
+        "level": "Beginner",
+        "description": "Learn how to build robotic structures using recyclable materials while exploring sustainability, basic mechanics, and low-cost prototyping concepts.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "scrap_structure",
+            "title": "Building Structures with Recyclables",
+            "shortDescription": "Create robot chassis using cardboard, plastic bottles, and other reusable materials",
+            "duration": "1-2 hours",
+            "difficulty": "Beginner",
+            "icon": "📦"
+          },
+          {
+            "id": "recycled_mechanisms",
+            "title": "Motion Mechanisms",
+            "shortDescription": "Design wheels, axles, and joints using recyclable materials",
+            "duration": "2-3 hours",
+            "difficulty": "Beginner",
+            "icon": "⚙️"
+          },
+          {
+            "id": "sustainable_robot",
+            "title": "Sustainable Robot Prototype",
+            "shortDescription": "Integrate the built structure into a functional robotic project",
+            "duration": "1-2 hours",
+            "difficulty": "Beginner",
+            "icon": "🤖"
+          }
+        ]
+      }
+    ]
+  }
+}

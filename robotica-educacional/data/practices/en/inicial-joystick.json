@@ -1,0 +1,228 @@
+{
+  "id": "joystick",
+  "moduleId": "inicial",
+  "title": "Joystick Control",
+  "description": "Learn to map analog data from a joystick to control the speed and direction of DC motors using PWM and H-bridge.",
+  "objectives": [
+    "Understand how an analog joystick works",
+    "Learn about PWM (Pulse Width Modulation)",
+    "Map analog values (0-1023) to motor speed",
+    "Implement direction control using L298N H-bridge",
+    "Create an intuitive control system for mobile robot"
+  ],
+  "duration": "1-2 hours",
+  "difficulty": "Beginner",
+  "prerequisites": [
+    "Basic electronics knowledge",
+    "Familiarity with BIPES platform",
+    "Configured Raspberry Pi Pico W"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1,
+      "notes": "Main microcontroller"
+    },
+    {
+      "name": "Analog Joystick (2-axis)",
+      "quantity": 1,
+      "notes": "KY-023 model or similar"
+    },
+    {
+      "name": "L298N H-Bridge",
+      "quantity": 1,
+      "notes": "DC motor driver"
+    },
+    {
+      "name": "DC Motors 6-12V",
+      "quantity": 2,
+      "notes": "With gear reduction"
+    },
+    {
+      "name": "Battery or 12V Power Supply",
+      "quantity": 1,
+      "notes": "Minimum 1A current"
+    },
+    {
+      "name": "Jumper Wires",
+      "quantity": 15,
+      "notes": "Male-female and male-male"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1,
+      "notes": "Optional, facilitates connections"
+    }
+  ],
+  "wiring": {
+    "diagram": "/assets/diagrams/joystick-wiring.png",
+    "description": "Connection diagram between Pico W, joystick and H-bridge",
+    "connections": [
+      {
+        "component": "Joystick",
+        "connections": [
+          {"from": "VCC", "to": "Pico 3V3", "color": "red"},
+          {"from": "GND", "to": "Pico GND", "color": "black"},
+          {"from": "VRx", "to": "Pico GP26 (ADC0)", "color": "yellow"},
+          {"from": "VRy", "to": "Pico GP27 (ADC1)", "color": "green"}
+        ]
+      },
+      {
+        "component": "L298N H-Bridge",
+        "connections": [
+          {"from": "IN1", "to": "Pico GP0", "color": "orange", "function": "Motor A - Direction 1"},
+          {"from": "IN2", "to": "Pico GP1", "color": "yellow", "function": "Motor A - Direction 2"},
+          {"from": "ENA", "to": "Pico GP2", "color": "green", "function": "Motor A - PWM"},
+          {"from": "IN3", "to": "Pico GP3", "color": "blue", "function": "Motor B - Direction 1"},
+          {"from": "IN4", "to": "Pico GP4", "color": "purple", "function": "Motor B - Direction 2"},
+          {"from": "ENB", "to": "Pico GP5", "color": "gray", "function": "Motor B - PWM"},
+          {"from": "GND", "to": "Pico GND + Battery GND", "color": "black", "function": "Common ground"},
+          {"from": "+12V", "to": "Battery 12V", "color": "red", "function": "Motor power"}
+        ]
+      }
+    ],
+    "warnings": [
+      "⚠️ NEVER connect 12V directly to Pico! Pico uses 3.3V logic.",
+      "⚠️ Always connect common GND between Pico, H-bridge and battery.",
+      "⚠️ Check all connections before turning on power.",
+      "⚠️ Use a separate battery for motors, not USB power."
+    ]
+  },
+  "theory": {
+    "joystick": "An analog joystick has two potentiometers (X and Y axes) that vary from 0 to 3.3V. The Pico W reads these values through ADC (Analog-to-Digital Converter) which transforms voltage into digital values from 0 to 65535.",
+    "pwm": "PWM (Pulse Width Modulation) controls motor speed by varying the width of electrical pulses. A 50% duty cycle means the motor receives power 50% of the time, resulting in half maximum speed.",
+    "hbridge": "The H-bridge allows controlling motor direction by reversing polarity. With IN1=HIGH and IN2=LOW the motor spins one way; inverting, it spins the opposite way. ENA controls speed via PWM."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Circuit Assembly",
+      "description": "Build the circuit following the connection diagram",
+      "details": [
+        "Connect joystick to Pico ADC pins (GP26 and GP27)",
+        "Connect H-bridge to Pico digital pins",
+        "Connect DC motors to H-bridge OUT terminals",
+        "Connect 12V battery to H-bridge (VCC and GND)",
+        "Make sure all GNDs are connected (common ground)"
+      ],
+      "time": "15-20 minutes"
+    },
+    {
+      "number": 2,
+      "title": "BIPES Configuration",
+      "description": "Open project in BIPES and configure blocks",
+      "details": [
+        "Access BIPES project link (see below)",
+        "Locate pin configuration blocks",
+        "Configure GP26 and GP27 as ADC inputs",
+        "Configure GP0-GP5 as digital/PWM outputs",
+        "Observe mapping logic in main block"
+      ],
+      "time": "10 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Upload and Test",
+      "description": "Upload code and test control",
+      "details": [
+        "Connect Pico W to computer via USB",
+        "In BIPES, click 'Run' to upload",
+        "Wait for code transfer",
+        "Move joystick and observe motor movement",
+        "Joystick forward = robot moves forward",
+        "Joystick backward = robot moves backward",
+        "Joystick left/right = turns"
+      ],
+      "time": "10 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Adjustments and Calibration",
+      "description": "Adjust mapping values as needed",
+      "details": [
+        "If motors are inverted, swap IN1 with IN2",
+        "Adjust maximum duty cycle if motors are too fast",
+        "Add deadzone in joystick center",
+        "Test different response curves (linear, exponential)"
+      ],
+      "time": "15-20 minutes"
+    }
+  ],
+  "code": {
+    "description": "Mapping logic in pseudocode",
+    "pseudocode": "# Read joystick values\nvalue_x = read_adc(GP26)  # 0-65535\nvalue_y = read_adc(GP27)  # 0-65535\n\n# Map to -100 to +100\nspeed = map(value_y, 0, 65535, -100, 100)\ndirection = map(value_x, 0, 65535, -100, 100)\n\n# Calculate individual motor speeds\nleft_motor = speed + direction\nright_motor = speed - direction\n\n# Limit values\nleft_motor = constrain(left_motor, -100, 100)\nright_motor = constrain(right_motor, -100, 100)\n\n# Control motors\ncontrol_motor_a(left_motor)\ncontrol_motor_b(right_motor)",
+    "notes": "In BIPES, this logic is implemented visually using mapping and PWM control blocks."
+  },
+  "bipesProject": {
+    "url": "https://bipes.net.br/ide/?project=joystick_robot_control",
+    "description": "Complete project with configured blocks",
+    "alternativeUrl": "https://bipes.net.br/ide/",
+    "instructions": "Import the .bipes file available in the project's GitHub repository"
+  },
+  "troubleshooting": [
+    {
+      "problem": "Motors don't respond to joystick",
+      "solutions": [
+        "Check if battery is connected and charged",
+        "Confirm ENA and ENB jumpers are enabled on H-bridge",
+        "Test PWM pin output with an LED",
+        "Check ground connections (common GND)"
+      ]
+    },
+    {
+      "problem": "Motor spins in only one direction",
+      "solutions": [
+        "Check IN1 and IN2 (or IN3 and IN4) connections",
+        "Confirm digital pins are configured correctly",
+        "Try swapping motor connections on H-bridge"
+      ]
+    },
+    {
+      "problem": "Joystick doesn't read correct values",
+      "solutions": [
+        "Confirm joystick VCC is at 3.3V (not 5V)",
+        "Check if GP26 and GP27 are configured as ADC",
+        "Test joystick with voltmeter (should vary 0-3.3V)",
+        "Add small delay between ADC readings"
+      ]
+    },
+    {
+      "problem": "Motors shake or make strange noise",
+      "solutions": [
+        "Add capacitors to motor terminals (100nF)",
+        "Check if power supply provides enough current (min. 1A)",
+        "Reduce PWM frequency if too high",
+        "Make sure motors aren't mechanically blocked"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "title": "Challenge 1: Deadzone",
+      "description": "Implement a ±10% deadzone in joystick center to avoid unwanted movements when joystick is at rest.",
+      "difficulty": "Easy"
+    },
+    {
+      "title": "Challenge 2: Smooth Control",
+      "description": "Add gradual acceleration instead of abrupt speed changes. Use a moving average filter on read values.",
+      "difficulty": "Medium"
+    },
+    {
+      "title": "Challenge 3: Turbo Mode",
+      "description": "Implement a joystick button that activates 'turbo mode' doubling maximum motor speed.",
+      "difficulty": "Medium"
+    }
+  ],
+  "nextSteps": {
+    "nextPractice": {
+      "moduleId": "inicial",
+      "practiceId": "webserver",
+      "title": "Web Server on Board"
+    },
+    "relatedTopics": [
+      "PID control for greater precision",
+      "Adding encoder for speed feedback",
+      "Implementing commands via Bluetooth"
+    ]
+  }
+}

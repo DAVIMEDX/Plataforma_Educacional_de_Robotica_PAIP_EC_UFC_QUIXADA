@@ -1,0 +1,220 @@
+{
+  "id": "encoder",
+  "title": "Rotary Encoder Control",
+  "description": "Use rotary encoders for precise position and velocity control in robotic systems, integrating with micro-ROS.",
+  "duration": "4-5 hours",
+  "difficulty": "Advanced",
+  "objectives": [
+    "Understand incremental and quadrature encoder operation",
+    "Implement encoder reading with interrupts",
+    "Calculate angular velocity and position",
+    "Integrate encoder with DC motor control",
+    "Publish odometry data to ROS2"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1
+    },
+    {
+      "name": "Incremental Rotary Encoder",
+      "quantity": 1,
+      "notes": "KY-040 or similar, with quadrature"
+    },
+    {
+      "name": "DC Motor with encoder",
+      "quantity": 1,
+      "notes": "Alternative to manual rotary encoder"
+    },
+    {
+      "name": "L298N Motor Driver",
+      "quantity": 1
+    },
+    {
+      "name": "External Power Supply 6-12V",
+      "quantity": 1,
+      "notes": "To power motor"
+    },
+    {
+      "name": "0.96\" OLED Display I2C",
+      "quantity": 1,
+      "notes": "Optional, for visualization"
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1
+    },
+    {
+      "name": "Jumper Wires",
+      "quantity": 15
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "Encoder CLK (A) → GPIO 16",
+      "Encoder DT (B) → GPIO 17",
+      "Encoder SW → GPIO 18 (internal button)",
+      "Encoder GND → Pico GND",
+      "Encoder VCC → Pico 3.3V",
+      "Motor IN1 → GPIO 10",
+      "Motor IN2 → GPIO 11",
+      "Motor ENA (PWM) → GPIO 12",
+      "L298N 12V → External supply",
+      "L298N GND → Supply GND + Pico GND",
+      "Display SDA → GPIO 4",
+      "Display SCL → GPIO 5"
+    ],
+    "diagram": "assets/diagrams/encoder-wiring.png",
+    "warnings": [
+      "NEVER connect external supply directly to Pico (L298N only)",
+      "Share GND between all components",
+      "Encoder must have pull-up enabled on A and B pins",
+      "Motor requires external supply (minimum 6V for most)"
+    ]
+  },
+  "theory": {
+    "encoder_quadrature": "Quadrature encoders generate two signals phase-shifted by 90° (channels A and B). Reading both allows determining direction and counting pulses with 4x resolution (rising/falling edges on both channels).",
+    "interrupts": "Interrupts (IRQ) allow instant response to encoder pin changes without polling. Pico GPIO IRQ supports edge detection (RISING, FALLING, BOTH).",
+    "odometry": "Odometry calculates position based on measured movement. With wheel encoder: distance = (pulses / pulses_per_revolution) × wheel_circumference.",
+    "velocity": "Angular velocity = Δpulses / Δtime. With moving average filter to smooth readings."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Connect and Test Encoder",
+      "description": "Assemble circuit and validate basic readings",
+      "details": [
+        "Connect encoder according to diagram",
+        "Configure GPIOs 16 and 17 as INPUT with PULL_UP",
+        "Read pin states in loop",
+        "Rotate encoder and observe changes in serial terminal",
+        "Confirm both channels (A and B) are working"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Implement Interrupt Reading",
+      "description": "Configure IRQ for efficient reading",
+      "details": [
+        "Create global variable for pulse counter",
+        "Configure IRQ on GPIO 16 (channel A) with BOTH edges",
+        "In IRQ callback, read A and B states",
+        "Determine direction: if A=HIGH and B=LOW → CW, else CCW",
+        "Increment/decrement counter according to direction",
+        "Test rotating encoder clockwise and counterclockwise"
+      ],
+      "time": "60 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Calculate Angular Velocity",
+      "description": "Implement RPM velocity measurement",
+      "details": [
+        "Store timestamp of last reading",
+        "Calculate Δpulses and Δtime at each update",
+        "RPM = (Δpulses / pulses_per_revolution) × (60 / Δtime)",
+        "Implement moving average filter with 5 samples",
+        "Display velocity on terminal or OLED display"
+      ],
+      "time": "45 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Integrate with Motor and Control",
+      "description": "Control motor speed using encoder feedback",
+      "details": [
+        "Connect DC motor via L298N",
+        "Implement PWM control on ENA (GPIO 12)",
+        "Create control loop: compare desired vs measured velocity",
+        "Adjust PWM proportional to error (simple P controller)",
+        "Test with different velocity setpoints"
+      ],
+      "time": "75 minutes"
+    },
+    {
+      "number": 5,
+      "title": "Publish Odometry to ROS2",
+      "description": "Integrate with micro-ROS to publish data",
+      "details": [
+        "Configure micro-ROS as in previous practice",
+        "Create publisher on /wheel_odometry topic",
+        "Use sensor_msgs/JointState or custom message",
+        "Publish: position (total pulses), velocity (RPM), timestamp",
+        "Visualize in RQT or Rviz2",
+        "Record data with ros2 bag for analysis"
+      ],
+      "time": "60 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_encoder",
+    "description": "BIPES project with rotary encoder configured using interrupts. Includes velocity calculation and motor control with feedback."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Encoder counts wrong pulses or skips",
+      "solutions": [
+        "Add 100nF capacitors between each pin and GND (hardware debounce)",
+        "Implement software debounce (ignore pulses < 1ms)",
+        "Check pull-ups are enabled",
+        "Use 1x resolution initially (channel A only) for testing",
+        "Rotate encoder slower during tests"
+      ]
+    },
+    {
+      "problem": "Direction always same regardless of rotation",
+      "solutions": [
+        "Confirm both channels (A and B) are connected",
+        "Check direction determination logic",
+        "Test reading A and B without IRQ to validate hardware",
+        "Swap A and B if needed (depends on encoder)",
+        "Add prints inside callback for debugging"
+      ]
+    },
+    {
+      "problem": "Calculated velocity very unstable",
+      "solutions": [
+        "Increase moving average buffer size (10-20 samples)",
+        "Use fixed update timer (e.g. 100ms) instead of event-based",
+        "Implement low-pass filter instead of simple average",
+        "Check for timestamp jitter",
+        "At low speed, use time-between-pulses counting"
+      ]
+    },
+    {
+      "problem": "Motor doesn't respond to proportional control",
+      "solutions": [
+        "Confirm PWM is varying (oscilloscope or LED)",
+        "Increase proportional gain (Kp) gradually",
+        "Check encoder is mechanically coupled to motor",
+        "Add dead zone (motor only starts above certain PWM)",
+        "Implement full PID if P alone isn't sufficient"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Navigable Menu with Encoder",
+      "description": "Use rotary encoder to navigate OLED display menu, and integrated button (SW) to select options."
+    },
+    {
+      "level": "Intermediate",
+      "title": "Absolute Position Control",
+      "description": "Implement PID control to move motor to specific angular position (e.g. 360°, 720°) and hold, compensating external disturbances."
+    },
+    {
+      "level": "Advanced",
+      "title": "Robot with Differential Odometry",
+      "description": "Use 2 motors with encoders, implement differential kinematics, calculate robot pose (x, y, θ), publish nav_msgs/Odometry to ROS2, and control with teleop_twist_keyboard."
+    }
+  ],
+  "nextSteps": [
+    "Implement Kalman filter for sensor fusion",
+    "Use absolute encoder for position reference",
+    "Create trajectory controller with multiple waypoints",
+    "Integrate IMU to improve orientation estimate",
+    "Implement SLAM (simultaneous localization and mapping)"
+  ]
+}

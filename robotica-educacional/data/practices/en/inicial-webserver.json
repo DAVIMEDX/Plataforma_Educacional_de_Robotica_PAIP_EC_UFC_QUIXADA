@@ -1,0 +1,170 @@
+{
+  "id": "webserver",
+  "title": "Web Server on Pico W",
+  "description": "Learn to create a web server on Raspberry Pi Pico W to remotely control devices through a browser.",
+  "duration": "2-3 hours",
+  "difficulty": "Beginner",
+  "objectives": [
+    "Configure Pico W as a web server",
+    "Create interactive HTML pages",
+    "Send HTTP commands to control hardware",
+    "Implement REST API endpoints",
+    "Understand basic HTTP protocol"
+  ],
+  "materials": [
+    {
+      "name": "Raspberry Pi Pico W",
+      "quantity": 1,
+      "notes": "With integrated WiFi"
+    },
+    {
+      "name": "LED",
+      "quantity": 1,
+      "notes": "Any color"
+    },
+    {
+      "name": "220Ω Resistor",
+      "quantity": 1,
+      "notes": "For LED"
+    },
+    {
+      "name": "USB Cable",
+      "quantity": 1
+    },
+    {
+      "name": "Breadboard",
+      "quantity": 1
+    }
+  ],
+  "wiring": {
+    "connections": [
+      "LED anode (+) → GPIO 15",
+      "LED cathode (-) → 220Ω Resistor → GND"
+    ],
+    "diagram": "assets/diagrams/webserver-wiring.png",
+    "warnings": [
+      "Always use resistor with LEDs to avoid burning them",
+      "Check LED polarity before connecting"
+    ]
+  },
+  "theory": {
+    "webserver": "A web server is a program that responds to HTTP requests. The Pico W can act as a server, allowing you to control hardware through a web browser.",
+    "http": "HTTP (HyperText Transfer Protocol) is the protocol used for web communication. Main methods: GET (retrieve data) and POST (send data).",
+    "restapi": "REST API uses URLs to represent resources. Example: GET /led/status returns LED state, POST /led/on turns LED on."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Connect Pico W to WiFi",
+      "description": "Configure WiFi credentials in BIPES",
+      "details": [
+        "In BIPES, add 'WiFi Connect' block",
+        "Enter your WiFi network SSID",
+        "Enter network password",
+        "Add 'Print' block to show received IP"
+      ],
+      "time": "15 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Create Web Server",
+      "description": "Configure HTTP server on Pico W",
+      "details": [
+        "Add 'Create Web Server' block",
+        "Set port 80 (HTTP default)",
+        "Create routes for /index.html, /led/on, /led/off",
+        "Configure server to start automatically"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Create HTML Interface",
+      "description": "Develop a web page to control LED",
+      "details": [
+        "Create HTML page with 'On' and 'Off' buttons",
+        "Add CSS to style the interface",
+        "Implement JavaScript to make AJAX requests",
+        "Test interface in browser"
+      ],
+      "time": "45 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Implement LED Control",
+      "description": "Connect routes to hardware",
+      "details": [
+        "In /led/on route, set GPIO 15 to HIGH",
+        "In /led/off route, set GPIO 15 to LOW",
+        "Return JSON response with status",
+        "Test all functionalities"
+      ],
+      "time": "30 minutes"
+    }
+  ],
+  "bipesProject": {
+    "url": "https://bipes.net.br/beta2/ui/#load_example_webserver",
+    "description": "Pre-configured BIPES project with web server and LED control. Open, configure your WiFi and deploy to Pico W."
+  },
+  "troubleshooting": [
+    {
+      "problem": "Pico W doesn't connect to WiFi",
+      "solutions": [
+        "Check if SSID and password are correct",
+        "Make sure network is 2.4GHz (Pico W doesn't support 5GHz)",
+        "Move Pico W closer to router",
+        "Restart Pico W and try again"
+      ]
+    },
+    {
+      "problem": "Cannot access web page",
+      "solutions": [
+        "Check IP assigned to Pico W in serial terminal",
+        "Make sure you're on the same WiFi network",
+        "Try accessing http://[PICO_IP]:80",
+        "Check if firewall isn't blocking"
+      ]
+    },
+    {
+      "problem": "LED doesn't respond to commands",
+      "solutions": [
+        "Check LED connections on breadboard",
+        "Confirm you're using GPIO 15",
+        "Test LED manually with 'Digital Write' block",
+        "Check if resistor is correctly positioned"
+      ]
+    },
+    {
+      "problem": "Server becomes slow or freezes",
+      "solutions": [
+        "Avoid very frequent requests",
+        "Implement timeout on requests",
+        "Restart Pico W periodically",
+        "Simplify HTML page (remove heavy resources)"
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "level": "Basic",
+      "title": "Multiple LED Control",
+      "description": "Add 2 more LEDs and create individual buttons for each on the web interface."
+    },
+    {
+      "level": "Intermediate",
+      "title": "Brightness Control with Slider",
+      "description": "Implement HTML slider that controls LED brightness via PWM, sending values from 0 to 100."
+    },
+    {
+      "level": "Advanced",
+      "title": "Real-Time Status Dashboard",
+      "description": "Create dashboard showing Pico temperature, available memory and all pin states, automatically updating every 2 seconds."
+    }
+  ],
+  "nextSteps": [
+    "Try controlling servomotors via web",
+    "Implement authentication with username and password",
+    "Create mobile app that connects to server",
+    "Add WebSocket support for bidirectional communication"
+  ]
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Robótica Educacional - BIPES & micro-ROS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <meta name="description" content="Plataforma educacional para aprender robótica com BIPES e micro-ROS">
+    <meta name="keywords" content="robótica, educação, BIPES, micro-ROS, ROS2, programação visual">
+</head>
+<body>
+    <!-- Header com navegação -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="navigateHome()">
+                    <span class="logo-icon">🤖</span>
+                    <span class="logo-text" id="siteName">Robótica Educacional</span>
+                </div>
+                <nav class="header-nav">
+                    <button class="nav-button" onclick="navigateHome()" id="homeButton">
+                        🏠 <span id="homeText">Início</span>
+                    </button>
+                    <div class="language-selector">
+                        <button class="lang-btn active" data-lang="pt" onclick="switchLanguage('pt')">🇧🇷 PT</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">🇺🇸 EN</button>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" style="display: none;">
+        <div class="container">
+            <div class="breadcrumb-items" id="breadcrumbItems"></div>
+        </div>
+    </nav>
+
+    <!-- Container principal (conteúdo dinâmico) -->
+    <main class="main-content" id="app">
+        <!-- Conteúdo será injetado dinamicamente via JavaScript -->
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🤖 Robótica Educacional</h3>
+                    <p id="footerDescription">Plataforma educacional para aprender robótica com BIPES e micro-ROS</p>
+                </div>
+                <div class="footer-section">
+                    <h4 id="footerLinksTitle">Links Úteis</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://bipes.net.br" target="_blank">BIPES Platform</a></li>
+                        <li><a href="https://micro.ros.org" target="_blank">micro-ROS</a></li>
+                        <li><a href="https://www.ros.org" target="_blank">ROS 2</a></li>
+                        <li><a href="https://github.com/guiaf04/microros-micropython" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 id="footerAboutTitle">Sobre</h4>
+                    <p id="footerAbout">Projeto desenvolvido para ensino de robótica integrando programação visual (BIPES) com sistemas robóticos profissionais (ROS2).</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Robótica Educacional. <span id="footerRights">Todos os direitos reservados.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
