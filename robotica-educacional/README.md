@@ -1,9 +1,9 @@
-# 🤖 Plataforma Educacional de Robótica
+# 🤖 Plataforma Educacional de Robótica Sustentável
 
-> Aprenda robótica do básico ao avançado com Raspberry Pi Pico W, BIPES e micro-ROS
+> Aprenda robótica do básico ao avançado com foco em sustentabilidade, utilizando Raspberry Pi Pico W, BIPES, micro-ROS e materiais recicláveis (sucata).
 
-[![Status](https://img.shields.io/badge/status-completo-success.svg)]()
-[![Versão](https://img.shields.io/badge/versão-1.0.0-blue.svg)]()
+[![Status](https://shields.io)]()
+[![Versão](https://shields.io)]()
 [![Idiomas](https://img.shields.io/badge/idiomas-PT%20%7C%20EN-orange.svg)]()
 [![Licença](https://img.shields.io/badge/licença-MIT-green.svg)]()
 
@@ -11,9 +11,12 @@
 
 ## ✨ Sobre o Projeto
 
-Plataforma web interativa com **7 práticas completas** de robótica, organizadas em 3 módulos progressivos. Cada prática inclui objetivos, materiais, teoria, passo a passo detalhado, troubleshooting e desafios em múltiplos níveis.
+Esta plataforma web interativa original possui **7 práticas completas** de robótica, organizadas em 3 módulos progressivos. Cada prática inclui objetivos, materiais, teoria, passo a passo detalhado, troubleshooting e desafios em múltiplos níveis.
 
-**🎯 Público-alvo:** Estudantes e educadores interessados em robótica educacional  
+### ♻️ Vertente de Robótica Sustentável (Bolsa PAIP / TCC)
+O projeto está sendo aperfeiçoado e expandido para integrar os conceitos de **robótica sustentável com o uso de sucata**. Essa iniciativa faz parte das atividades da bolsa de iniciação acadêmica **PAIP (Programa de Apoio à Iniciação às Práticas Docentes)** na **UFC Campus Quixadá** e serve como base para o desenvolvimento de um **Trabalho de Conclusão de Curso (TCC)**. O objetivo é demonstrar como o lixo eletrônico e materiais recicláveis do dia a dia podem ser reutilizados na construção de estruturas robóticas de baixo custo e alto impacto pedagógico.
+
+**🎯 Público-alvo:** Estudantes, pesquisadores e educadores interessados em robótica educacional e de baixo custo  
 **⏱️ Duração total:** 17-24 horas de aprendizado prático  
 **🌍 Idiomas:** Português e Inglês (alternância em tempo real)
 
@@ -41,7 +44,7 @@ Abra http://localhost:8080 no navegador.
 ## 📚 Módulos e Práticas
 
 ### 🟢 Módulo Inicial (6-8h)
-1. **Controle de Robô com Joystick** - PWM, ADC, motores DC
+1. **Controle de Robô com Joystick** - PWM, ADC, motores DC e chassi de sucata estrutural
 2. **Servidor Web no Pico W** - HTTP, REST API, controle remoto
 3. **Sensor Ultrassônico HC-SR04** - Medição de distância, anti-colisão
 
@@ -63,10 +66,11 @@ Abra http://localhost:8080 no navegador.
 - ✅ **Conteúdo Rico** - Teoria + prática + troubleshooting + desafios
 - ✅ **Zero Dependências** - Vanilla JavaScript, funciona offline após carregar
 - ✅ **Integração BIPES** - Links diretos para projetos pré-configurados
+- ✅ **Foco em Sustentabilidade** - Abordagem voltada para o uso de materiais recicláveis e hardware acessível
 
 ---
 
-## �� Estrutura
+## 📂 Estrutura
 
 ```
 robotica-educacional/
@@ -85,12 +89,13 @@ robotica-educacional/
 
 ---
 
-## 🛠️ Tecnologias
+## 🛠️ Tecnologias e Materiais
 
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 - **Hardware:** Raspberry Pi Pico W
 - **Software:** MicroPython, BIPES
 - **Integração:** micro-ROS, ROS2 Humble, MQTT
+- **Sustentabilidade:** Sucata estrutural, papelão, garrafas PET, componentes eletrônicos reaproveitados
 
 ---
 
@@ -107,8 +112,9 @@ robotica-educacional/
 1. **Escolha um módulo** na página inicial
 2. **Selecione uma prática** que interesse você
 3. **Siga o passo a passo** com duração estimada
-4. **Abra o projeto BIPES** pré-configurado
-5. **Complete os desafios** em 3 níveis de dificuldade
+4. **Prepare os materiais recicláveis (sucatas)** indicados para a estrutura do experimento
+5. **Abra o projeto BIPES** pré-configurado
+6. **Complete os desafios** em 3 níveis de dificuldade
 
 ---
 
@@ -116,9 +122,9 @@ robotica-educacional/
 
 Contribuições são bem-vindas! Áreas para contribuir:
 
-- 📸 Adicionar diagramas Fritzing
-- 🎥 Criar vídeos tutoriais
-- 🧪 Desenvolver projetos BIPES reais
+- 📸 Adicionar diagramas Fritzing e esquemas de montagem com sucata
+- 🎥 Criar vídeos tutoriais de montagem física dos robôs
+- 🧪 Desenvolver novos projetos BIPES reais
 - 🌐 Traduzir para outros idiomas
 - 🐛 Reportar bugs ou sugerir melhorias
 
@@ -126,16 +132,16 @@ Contribuições são bem-vindas! Áreas para contribuir:
 
 ## 📊 Status do Projeto
 
-**Versão Atual:** 1.0.0 (Completa)  
-**Última Atualização:** 21 de Outubro de 2025
+**Versão Atual:** 1.1.0 (Em aperfeiçoamento para TCC e PAIP)  
+**Última Atualização:** Setembro de 2026
 
 | Componente | Status |
 |------------|--------|
 | Interface Web | ✅ Completo |
-| Práticas PT | ✅ 7/7 |
+| Práticas PT | 🔄 Em atualização (Adaptação para Sucata) |
 | Práticas EN | ✅ 7/7 |
 | Responsividade | ✅ Completo |
-| Testes | ✅ Validado |
+| Testes e Validação PAIP | 🔄 Em andamento |
 
 ---
 
@@ -145,10 +151,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Autores e Créditos
 
-Desenvolvido como projeto educacional de robótica integrando BIPES, micro-ROS e ROS2.
-
----
-
-**⭐ Se este projeto foi útil, considere dar uma estrela no GitHub!**
+* **Desenvolvedor Original:** [Guilherme Floriano](https://github.com/guiaf04) - Idealizador e desenvolvedor da arquitetura base da Plataforma Educacional de Robótica.
+* **Pesquisa, Adaptação e Extensão (PAIP / TCC):** [Davi / DAVIMEDX](https://github.com) - Adaptação metodológica para a robótica sustentável com sucata no contexto da Universidade Federal do Ceará (UFC) - Campus Quixadá.
