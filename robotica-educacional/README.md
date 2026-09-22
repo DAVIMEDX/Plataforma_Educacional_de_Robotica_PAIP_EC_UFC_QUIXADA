@@ -1,4 +1,4 @@
-# 🤖 Plataforma Educacional de Robótica Sustentável
+# 🤖 Plataforma Educacional de Robótica 
 
 > Aprenda robótica do básico ao avançado com foco em sustentabilidade, utilizando Raspberry Pi Pico W, BIPES, micro-ROS e materiais recicláveis (sucata).
 
