@@ -1,0 +1,17 @@
+{
+  "id": "fatiamento_monitoramento",
+  "moduleId": "impressao_3d",
+  "title": "Fatiamento e Monitoramento Remoto",
+  "description": "Guia completo desde a importação de modelos 3D (STL/3MF), preparação no fatiador, geração e exportação do G-code até o acompanhamento e monitoramento remoto da impressão.",
+  "duration": "1-2 horas",
+  "difficulty": "Iniciante",
+  "pdfUrl": "pdfs/impressao_3d/fatiamento_monitoramento.pdf",
+  "resources": [
+    {
+      "title": "Modelo 3D para Prática (STL)",
+      "description": "Arquivo de teste para importação e fatiamento no PrusaSlicer.",
+      "icon": "🧊",
+      "url": "files/"
+    }
+  ]
+}

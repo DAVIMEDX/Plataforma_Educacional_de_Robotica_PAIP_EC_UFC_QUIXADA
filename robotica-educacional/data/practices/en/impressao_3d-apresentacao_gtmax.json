@@ -1,0 +1,79 @@
+{
+  "id": "apresentacao_gtmax",
+  "moduleId": "impressao_3d",
+  "title": "GTMAX Core H5 Setup and Web Interface",
+  "description": "Physical overview of the GTMAX Core H5, obtaining its IP address on the local network, accessing the web control interface, and loading ABS filament.",
+  "objectives": [
+    "Identify physical GTMAX Core H5 components and the integrated webcam",
+    "Access the web control interface using a browser on the local network",
+    "Perform remote preheating (Nozzle ~240°C | Bed ~100°C)",
+    "Load ABS filament while keeping the chamber closed"
+  ],
+  "duration": "1 hour",
+  "difficulty": "Beginner",
+  "materials": [
+    {
+      "name": "GTMAX Core H5 3D Printer",
+      "quantity": 1,
+      "notes": "Connected to local network (Wi-Fi/Ethernet)"
+    },
+    {
+      "name": "Computer on the same local network",
+      "quantity": 1,
+      "notes": "For accessing the web UI via web browser"
+    },
+    {
+      "name": "1.75mm ABS Filament Spool",
+      "quantity": 1,
+      "notes": "Lab standard filament"
+    }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "title": "Hardware and Webcam Overview",
+      "description": "Physical inspection of the machine and monitoring system.",
+      "image": "/assets/images/impressao_3d/gtmax_hardware_webcam.png",
+      "details": [
+        "Identify the enclosed chamber with acrylic doors (crucial for holding heat for ABS)",
+        "Locate the internal webcam mounted inside the printer frame",
+        "Turn on the GTMAX power switch and note the IP address shown on the LCD display"
+      ],
+      "time": "15 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Connecting to the Web Interface",
+      "description": "Remote browser access to the printer panel.",
+      "image": "/assets/images/impressao_3d/interface_web_dashboard.png",
+      "details": [
+        "Open your computer browser (Chrome, Firefox, or Edge)",
+        "Type the printer's IP address into the URL bar (e.g., http://192.168.x.x)",
+        "Explore dashboard tabs: Control, Files, Settings, and Camera"
+      ],
+      "time": "15 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Preheating and Filament Loading",
+      "description": "Extruder preparation for ABS via web interface/panel.",
+      "image": "/assets/images/impressao_3d/preaquecimento_abs_web.png",
+      "details": [
+        "Under the 'Control' tab on the web page, set Nozzle to 240°C and Bed to 100°C",
+        "Feed ABS filament through the rear sensor into the extruder drive gear",
+        "Trigger manual extrusion from the web UI to purge plastic through the nozzle",
+        "Keep the acrylic doors closed to accumulate internal heat"
+      ],
+      "time": "30 minutes"
+    }
+  ],
+  "troubleshooting": [
+    {
+      "problem": "Cannot open printer website using the IP address",
+      "solutions": [
+        "Verify your computer is connected to the exact same local network as the GTMAX printer",
+        "Check the LCD display to confirm the IP address has not changed"
+      ]
+    }
+  ]
+}

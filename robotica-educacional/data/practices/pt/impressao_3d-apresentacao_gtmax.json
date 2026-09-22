@@ -1,0 +1,9 @@
+{
+  "id": "apresentacao_gtmax",
+  "moduleId": "impressao_3d",
+  "title": "Conhecendo a GTMAX Core H5 e a Interface Web",
+  "description": "Reconhecimento físico da GTMAX Core H5, identificação do IP da impressora na rede local, acesso à interface web e carregamento do filamento ABS.",
+  "duration": "1 hora",
+  "difficulty": "Iniciante",
+  "pdfUrl": "pdfs/impressao_3d-apresentacao_gtmax.pdf"
+}

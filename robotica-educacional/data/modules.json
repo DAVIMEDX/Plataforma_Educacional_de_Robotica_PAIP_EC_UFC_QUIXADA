@@ -1,7 +1,7 @@
 {
   "pt": {
-    "siteName": "Robótica Educacional",
-    "siteSubtitle": "Aprenda robótica de forma prática com BIPES e micro-ROS",
+    "siteName": "🤖 Robótica Educacional ♻️",
+    "siteSubtitle": "Práticas de robótica, impressão 3D e sistemas embarcados com BIPES e micro-ROS",
     "languageSelector": "Idioma",
     "home": "Início",
     "modules": [
@@ -138,6 +138,44 @@
             "duration": "1-2 horas",
             "difficulty": "Iniciante",
             "icon": "🤖"
+          }
+        ]
+      },
+      {
+        "id": "impressao_3d",
+        "category": "Impressão 3D & Prototipagem",
+        "title": "Módulo Impressão 3D (ABS)",
+        "subtitle": "Fluxo Completo com GTMAX Core H5 e PrusaSlicer",
+        "icon": "🖨️",
+        "color": "#9C27B0",
+        "duration": "4-6 horas",
+        "level": "Iniciante",
+        "description": "Aprenda a operar a GTMAX Core H5 utilizando filamento ABS. Domine desde a preparação da máquina e fechamento da câmara até o fatiamento sem warping no PrusaSlicer e a resolução de falhas térmicas.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "apresentacao_gtmax",
+            "title": "Conhecendo a GTMAX Core H5",
+            "shortDescription": "Estrutura fechada, painel de controle, aquecimento para ABS e carga de filamento",
+            "duration": "1 hora",
+            "difficulty": "Iniciante",
+            "icon": "🔍"
+          },
+          {
+            "id": "fatiamento_prusaslicer",
+            "title": "Fatiamento de ABS no PrusaSlicer",
+            "shortDescription": "Importação de modelos STL, configurações pré-definidas de perfil ABS (240°C/110°C)",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "💻"
+          },
+          {
+            "id": "impressao_operacao",
+            "title": "Execução, Monitoramento e Resolução de Falhas em ABS",
+            "shortDescription": "Início via G-code, controle da câmara fechada, cancelamento e combate ao warping/delaminação",
+            "duration": "2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🚀"
           }
         ]
       }
@@ -282,6 +320,44 @@
             "duration": "1-2 hours",
             "difficulty": "Beginner",
             "icon": "🤖"
+          }
+        ]
+      },
+      {
+        "id": "impressao_3d",
+        "category": "3D Printing & Prototyping",
+        "title": "3D Printing Module (ABS)",
+        "subtitle": "Complete Workflow with GTMAX Core H5 and PrusaSlicer",
+        "icon": "🖨️",
+        "color": "#9C27B0",
+        "duration": "4-6 hours",
+        "level": "Beginner",
+        "description": "Learn how to operate the GTMAX Core H5 using ABS filament. Master everything from machine setup and chamber closure to warping-free slicing in PrusaSlicer and thermal troubleshooting.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "apresentacao_gtmax",
+            "title": "Getting to Know the GTMAX Core H5",
+            "shortDescription": "Enclosed structure, control panel, ABS preheating, and filament loading",
+            "duration": "1 hour",
+            "difficulty": "Beginner",
+            "icon": "🔍"
+          },
+          {
+            "id": "fatiamento_prusaslicer",
+            "title": "ABS Slicing in PrusaSlicer",
+            "shortDescription": "STL import, ABS profile setup (240°C/100°C), cooling fan control, and Brim",
+            "duration": "1-2 hours",
+            "difficulty": "Beginner",
+            "icon": "💻"
+          },
+          {
+            "id": "impressao_operacao",
+            "title": "Execution, Monitoring, and ABS Troubleshooting",
+            "shortDescription": "Starting via G-code, chamber thermal control, cancellation, and fighting warping/delamination",
+            "duration": "2 hours",
+            "difficulty": "Beginner",
+            "icon": "🚀"
           }
         ]
       }

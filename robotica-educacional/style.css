@@ -122,6 +122,11 @@ body {
     font-size: 1.25rem;
     font-weight: 600;
 }
+.logo-img {
+    height: 55px;        
+    width: auto;        
+    object-fit: contain;
+}
 
 .header-nav {
     display: flex;
@@ -1061,4 +1066,153 @@ body {
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-xs);
     border-bottom: 2px solid var(--gray-200);
+}
+
+.step-image-container {
+    margin: var(--spacing-md) 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--gray-300);
+    box-shadow: var(--shadow-sm);
+}
+
+.step-image {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    display: block;
+}
+/* Miniatura na lista de práticas e no título */
+.practice-thumb-img, .header-thumb-img {
+    width: 48px;         /* Ajuste o tamanho da miniatura conforme preferir */
+    height: 48px;
+    object-fit: cover;   /* Garante que a foto não fique distorcida */
+    border-radius: 8px;  /* Deixa as bordas levemente arredondadas */
+    vertical-align: middle;
+    margin-right: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Se for no título principal, pode ser um pouco maior */
+.header-thumb-img {
+    width: 64px;
+    height: 64px;
+    margin-right: 16px;
+}
+
+/* ================================
+   ESTILOS PARA VISUALIZAÇÃO DE PDF
+   ================================ */
+.pdf-section {
+    padding: var(--spacing-lg);
+}
+
+.pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.pdf-title-label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.pdf-container {
+    width: 100%;
+    height: 75vh; /* Ocupa 75% da altura da tela */
+    min-height: 500px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-300);
+}
+
+.pdf-viewer {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .pdf-container {
+        height: 60vh;
+        min-height: 400px;
+    }
+    .pdf-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .pdf-header .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ================================
+   ESTILOS DE RECURSOS / DOWNLOADS
+   ================================ */
+.resources-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+.resource-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-300);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.resource-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex: 1;
+}
+
+.resource-icon {
+    font-size: 2rem;
+}
+
+.resource-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.resource-desc {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2d9247;
+}
+
+@media (max-width: 600px) {
+    .resource-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .resource-card .btn {
+        width: 100%;
+        text-align: center;
+    }
 }

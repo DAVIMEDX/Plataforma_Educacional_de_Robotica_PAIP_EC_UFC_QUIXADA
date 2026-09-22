@@ -1,0 +1,23 @@
+{
+  "id": "fatiamento_prusaslicer",
+  "moduleId": "impressao_3d",
+  "title": "Aplicação de configurações e funcionalidades do PrusaSlicer",
+  "description": "Configuração de perfil térmico para filamento ABS (°C no bico / °C na mesa), técnicas de ajustes, camadas e demais funcionalidades.",
+  "duration": "1-2 horas",
+  "difficulty": "Iniciante",
+  "pdfUrl": "pdfs/impressao_3d_fatiamento_prusaslicer.pdf",
+  "resources": [
+    {
+      "title": "1º Arquivo: Configuração de Impressora (GTMAX Core H5)",
+      "description": "Importe este arquivo primeiro no PrusaSlicer (Menu: Arquivo → Importar → Importar Configuração Bundle).",
+      "icon": "🖨️",
+      "url": "files/PRUSAGTMAX.ini"
+    },
+    {
+      "title": "2º Arquivo: Perfil do Filamento (ABS 240°C / 100°C)",
+      "description": "Importe este arquivo em seguida para carregar as temperaturas e controle do cooler (Menu: Arquivo → Importar → Importar Configuração).",
+      "icon": "⚙️",
+      "url": "files/config_hookeri.ini"
+    }
+  ]
+}

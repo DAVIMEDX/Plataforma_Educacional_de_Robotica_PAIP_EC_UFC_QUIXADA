@@ -57,7 +57,7 @@ function initializeRouter() {
 async function router() {
     const hash = window.location.hash.slice(1) || '/';
     const parts = hash.split('/').filter(p => p);
-    
+
     if (parts.length === 0) {
         await renderHome();
     } else if (parts[0] === 'module' && parts.length === 2) {
@@ -67,7 +67,7 @@ async function router() {
     } else {
         await renderHome();
     }
-    
+
     window.scrollTo(0, 0);
 }
 
@@ -118,14 +118,14 @@ function updateLanguageButtons() {
 function updateLanguage() {
     const lang = AppState.currentLang;
     const data = AppState.modules?.[lang];
-    
+
     if (!data) return;
-    
+
     document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
-    
+
     const siteName = document.getElementById('siteName');
     if (siteName) siteName.textContent = data.siteName;
-    
+
     const homeText = document.getElementById('homeText');
     if (homeText) homeText.textContent = data.home;
 }
@@ -136,10 +136,10 @@ function updateLanguage() {
 async function renderHome() {
     AppState.currentView = 'home';
     updateBreadcrumb([]);
-    
+
     const lang = AppState.currentLang;
     const data = AppState.modules?.[lang];
-    
+
     if (!data) {
         showError('Dados não carregados');
         return;
@@ -168,7 +168,7 @@ async function renderHome() {
             </div>
         `;
     }
-    
+
     const html = `
         <section class="hero-section">
             <div class="container">
@@ -220,7 +220,7 @@ async function renderHome() {
             </div>
         </section>
     `;
-    
+
     document.getElementById('app').innerHTML = html;
 }
 function createModuleCard(module) {
@@ -262,23 +262,23 @@ function createModuleCard(module) {
 async function renderModule(moduleId) {
     AppState.currentView = 'module';
     AppState.currentModule = moduleId;
-    
+
     const lang = AppState.currentLang;
     const data = AppState.modules?.[lang];
     const module = data?.modules.find(m => m.id === moduleId);
-    
+
     if (!module) {
         renderHome();
         return;
     }
-    
+
     updateBreadcrumb([
         { text: data.home, link: '/' },
         { text: module.title, link: null }
     ]);
-    
+
     const practicesHtml = module.practices.map((practice, index) => createPracticeCard(practice, module, index + 1)).join('');
-    
+
     const html = `
         <div class="container">
             <div class="module-detail-header" style="border-left-color: ${module.color}">
@@ -303,7 +303,7 @@ async function renderModule(moduleId) {
             </div>
         </div>
     `;
-    
+
     document.getElementById('app').innerHTML = html;
 }
 
@@ -334,14 +334,14 @@ function createPracticeCard(practice, module, number) {
 function updateBreadcrumb(items) {
     const breadcrumb = document.getElementById('breadcrumb');
     const breadcrumbItems = document.getElementById('breadcrumbItems');
-    
+
     if (!breadcrumb || !breadcrumbItems) return;
-    
+
     if (items.length === 0) {
         breadcrumb.style.display = 'none';
         return;
     }
-    
+
     breadcrumb.style.display = 'block';
     breadcrumbItems.innerHTML = items.map((item, index) => {
         if (item.link) {
@@ -357,30 +357,30 @@ function updateBreadcrumb(items) {
 // ================================
 async function renderPractice(moduleId, practiceId) {
     document.getElementById('app').innerHTML = '<div class="loading"><div class="spinner"></div><p>Carregando prática...</p></div>';
-    
+
     const lang = AppState.currentLang;
     const data = AppState.modules?.[lang];
     const module = data?.modules.find(m => m.id === moduleId);
     const practiceInfo = module?.practices.find(p => p.id === practiceId);
-    
+
     if (!module || !practiceInfo) {
         renderHome();
         return;
     }
-    
+
     const practiceData = await loadPracticeData(moduleId, practiceId);
-    
+
     if (!practiceData) {
         showError(lang === 'pt' ? 'Prática não encontrada ou em desenvolvimento.' : 'Practice not found or under development.');
         return;
     }
-    
+
     updateBreadcrumb([
         { text: data.home, link: '/' },
         { text: module.title, link: `/module/${moduleId}` },
         { text: practiceData.title, link: null }
     ]);
-    
+
     const html = `
         <div class="container practice-container">
             <div class="practice-header-full">
@@ -400,39 +400,120 @@ async function renderPractice(moduleId, practiceId) {
             ${createNavigationButtons(practiceData, module, lang)}
         </div>
     `;
-    
+
     document.getElementById('app').innerHTML = html;
 }
 
 function createPracticeSections(practice, lang) {
     let html = '';
-    
+
+    // 1. Renderização para práticas no formato PDF
+    if (practice.pdfUrl) {
+        html += `
+            <section class="practice-section pdf-section">
+                <div class="pdf-header">
+                    <span class="pdf-title-label">📄 ${lang === 'pt' ? 'Guia Prático Passo a Passo' : 'Step-by-Step Practical Guide'}</span>
+                    <a href="${practice.pdfUrl}" target="_blank" class="btn btn-primary">
+                        📥 ${lang === 'pt' ? 'Abrir / Baixar PDF' : 'Open / Download PDF'}
+                    </a>
+                </div>
+                <div class="pdf-container">
+                    <iframe src="${practice.pdfUrl}" class="pdf-viewer" frameborder="0"></iframe>
+                </div>
+            </section>
+        `;
+
+        // Se houver arquivos para download abaixo do PDF (ex: perfis .ini do PrusaSlicer)
+        if (practice.resources && practice.resources.length > 0) {
+            html += `
+                <section class="practice-section resources-section">
+                    <h2 class="section-heading">⚙️ ${lang === 'pt' ? 'Arquivos de Configuração para Download' : 'Configuration Files for Download'}</h2>
+                    <div class="resources-grid">
+            `;
+            
+            practice.resources.forEach(res => {
+                html += `
+                    <div class="resource-card">
+                        <div class="resource-info">
+                            <span class="resource-icon">${res.icon || '📁'}</span>
+                            <div class="resource-text">
+                                <h4 class="resource-title">${res.title}</h4>
+                                ${res.description ? `<p class="resource-desc">${res.description}</p>` : ''}
+                            </div>
+                        </div>
+                        <a href="${res.url}" download class="btn btn-secondary">
+                            📥 ${lang === 'pt' ? 'Baixar' : 'Download'}
+                        </a>
+                    </div>
+                `;
+            });
+
+            html += `</div></section>`;
+        }
+
+        return html;
+    }
+
+    // 2. Renderização para práticas no formato JSON Completo
+
     // Objetivos
     if (practice.objectives?.length > 0) {
         html += `<section class="practice-section"><h2 class="section-heading">📌 ${lang === 'pt' ? 'Objetivos de Aprendizagem' : 'Learning Objectives'}</h2><ul class="objectives-list">`;
-        practice.objectives.forEach(obj => {
-            html += `<li>${obj}</li>`;
-        });
+        practice.objectives.forEach(obj => { html += `<li>${obj}</li>`; });
         html += `</ul></section>`;
     }
-    
+
+    // Pré-requisitos
+    if (practice.prerequisites?.length > 0) {
+        html += `<section class="practice-section"><h2 class="section-heading">🔑 ${lang === 'pt' ? 'Pré-requisitos' : 'Prerequisites'}</h2><ul class="objectives-list">`;
+        practice.prerequisites.forEach(pre => { html += `<li>${pre}</li>`; });
+        html += `</ul></section>`;
+    }
+
     // Materiais
     if (practice.materials?.length > 0) {
         html += `<section class="practice-section"><h2 class="section-heading">🔧 ${lang === 'pt' ? 'Materiais Necessários' : 'Required Materials'}</h2><div class="materials-grid">`;
-        practice.materials.forEach(material => {
-            html += `<div class="material-item"><span class="material-qty">${material.quantity}x</span><span class="material-name">${material.name}</span>`;
-            if (material.notes) html += `<span class="material-notes">${material.notes}</span>`;
+        practice.materials.forEach(mat => {
+            html += `<div class="material-item"><span class="material-qty">${mat.quantity}x</span><span class="material-name">${mat.name}</span>`;
+            if (mat.notes) html += `<span class="material-notes">${mat.notes}</span>`;
             html += `</div>`;
         });
         html += `</div></section>`;
     }
-    
-    // Passos
+
+    // Diagrama de Conexões (Wiring)
+    if (practice.wiring) {
+        html += `<section class="practice-section"><h2 class="section-heading">🔌 ${lang === 'pt' ? 'Conexões e Diagrama' : 'Wiring & Diagram'}</h2>`;
+        if (practice.wiring.description) html += `<p>${practice.wiring.description}</p>`;
+        if (practice.wiring.diagram) {
+            html += `<div class="step-image-container"><img src="${practice.wiring.diagram}" alt="Diagrama de conexões" class="step-image"></div>`;
+        }
+        if (practice.wiring.warnings?.length > 0) {
+            html += `<div class="troubleshooting-item" style="background:#fff3cd; border-color:#ffeba2;">`;
+            practice.wiring.warnings.forEach(warn => { html += `<p style="margin:4px 0; color:#856404;">⚠️ ${warn}</p>`; });
+            html += `</div>`;
+        }
+        html += `</section>`;
+    }
+
+    // Teoria
+    if (practice.theory) {
+        html += `<section class="practice-section"><h2 class="section-heading">📚 ${lang === 'pt' ? 'Fundamentos Teóricos' : 'Theoretical Background'}</h2>`;
+        Object.entries(practice.theory).forEach(([key, value]) => {
+            html += `<div style="margin-bottom: 12px;"><strong>${key.toUpperCase()}:</strong> <p>${value}</p></div>`;
+        });
+        html += `</section>`;
+    }
+
+    // Passo a Passo
     if (practice.steps?.length > 0) {
         html += `<section class="practice-section"><h2 class="section-heading">📝 ${lang === 'pt' ? 'Passo a Passo' : 'Step by Step'}</h2><div class="steps-list">`;
         practice.steps.forEach(step => {
             html += `<div class="step-item"><div class="step-number">${step.number}</div><div class="step-content"><h3 class="step-title">${step.title}</h3><p class="step-description">${step.description}</p>`;
-            if (step.details) {
+            if (step.image) {
+                html += `<div class="step-image-container"><img src="${step.image}" alt="${step.title}" class="step-image"></div>`;
+            }
+            if (step.details?.length > 0) {
                 html += `<ul class="step-details">`;
                 step.details.forEach(detail => html += `<li>${detail}</li>`);
                 html += `</ul>`;
@@ -442,13 +523,33 @@ function createPracticeSections(practice, lang) {
         });
         html += `</div></section>`;
     }
-    
-    // BIPES
-    if (practice.bipesProject) {
-        html += `<section class="practice-section bipes-section"><h2 class="section-heading">💻 ${lang === 'pt' ? 'Projeto no BIPES' : 'BIPES Project'}</h2><p>${practice.bipesProject.description || ''}</p><div class="bipes-buttons"><a href="${practice.bipesProject.url}" target="_blank" class="btn btn-primary btn-large">🔗 ${lang === 'pt' ? 'Abrir no BIPES' : 'Open in BIPES'}</a></div></section>`;
+
+    // Código / Pseudocódigo
+    if (practice.code) {
+        html += `<section class="practice-section"><h2 class="section-heading">💻 ${lang === 'pt' ? 'Lógica do Código' : 'Code Logic'}</h2>`;
+        if (practice.code.description) html += `<p>${practice.code.description}</p>`;
+        if (practice.code.pseudocode) {
+            html += `<pre style="background:#2d2d2d; color:#f8f8f2; padding:15px; border-radius:8px; overflow-x:auto;"><code>${practice.code.pseudocode}</code></pre>`;
+        }
+        if (practice.code.notes) html += `<small>${practice.code.notes}</small>`;
+        html += `</section>`;
     }
-    
-    // Troubleshooting
+
+    // Projeto BIPES
+    if (practice.bipesProject) {
+        html += `<section class="practice-section bipes-section"><h2 class="section-heading">🚀 ${lang === 'pt' ? 'Projeto no BIPES' : 'BIPES Project'}</h2><p>${practice.bipesProject.description || ''}</p><div class="bipes-buttons"><a href="${practice.bipesProject.url}" target="_blank" class="btn btn-primary btn-large">🔗 ${lang === 'pt' ? 'Abrir no BIPES' : 'Open in BIPES'}</a></div></section>`;
+    }
+
+    // Desafios
+    if (practice.challenges?.length > 0) {
+        html += `<section class="practice-section"><h2 class="section-heading">🎯 ${lang === 'pt' ? 'Desafios Práticos' : 'Challenges'}</h2><div class="materials-grid">`;
+        practice.challenges.forEach(ch => {
+            html += `<div class="material-item"><strong>${ch.title} (${ch.difficulty})</strong><p>${ch.description}</p></div>`;
+        });
+        html += `</div></section>`;
+    }
+
+    // Solução de Problemas (Troubleshooting)
     if (practice.troubleshooting?.length > 0) {
         html += `<section class="practice-section"><h2 class="section-heading">🆘 ${lang === 'pt' ? 'Solução de Problemas' : 'Troubleshooting'}</h2><div class="troubleshooting-list">`;
         practice.troubleshooting.forEach(item => {
@@ -458,7 +559,33 @@ function createPracticeSections(practice, lang) {
         });
         html += `</div></section>`;
     }
-    
+
+    // Arquivos para download no final de práticas formato JSON Completo
+    if (practice.resources && practice.resources.length > 0) {
+        html += `
+            <section class="practice-section resources-section">
+                <h2 class="section-heading">⚙️ ${lang === 'pt' ? 'Arquivos de Configuração / Recursos' : 'Configuration Files / Resources'}</h2>
+                <div class="resources-grid">
+        `;
+        practice.resources.forEach(res => {
+            html += `
+                <div class="resource-card">
+                    <div class="resource-info">
+                        <span class="resource-icon">${res.icon || '📁'}</span>
+                        <div class="resource-text">
+                            <h4 class="resource-title">${res.title}</h4>
+                            ${res.description ? `<p class="resource-desc">${res.description}</p>` : ''}
+                        </div>
+                    </div>
+                    <a href="${res.url}" download class="btn btn-secondary">
+                        📥 ${lang === 'pt' ? 'Baixar' : 'Download'}
+                    </a>
+                </div>
+            `;
+        });
+        html += `</div></section>`;
+    }
+
     return html;
 }
 
@@ -466,19 +593,19 @@ function createNavigationButtons(practice, module, lang) {
     const currentIndex = module.practices.findIndex(p => p.id === practice.id);
     const nextPractice = module.practices[currentIndex + 1];
     const prevPractice = module.practices[currentIndex - 1];
-    
+
     let html = '<div class="practice-navigation">';
-    
+
     if (prevPractice) {
         html += `<button class="nav-btn nav-btn-prev" onclick="navigateToPractice('${module.id}', '${prevPractice.id}')">← ${lang === 'pt' ? 'Anterior' : 'Previous'}: ${prevPractice.title}</button>`;
     } else {
         html += '<div></div>';
     }
-    
+
     if (nextPractice) {
         html += `<button class="nav-btn nav-btn-next" onclick="navigateToPractice('${module.id}', '${nextPractice.id}')">${lang === 'pt' ? 'Próxima' : 'Next'}: ${nextPractice.title} →</button>`;
     }
-    
+
     html += '</div>';
     return html;
 }

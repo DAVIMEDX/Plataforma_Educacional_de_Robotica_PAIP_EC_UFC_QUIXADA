@@ -1,0 +1,79 @@
+{
+  "id": "impressao_operacao",
+  "moduleId": "impressao_3d",
+  "title": "Remote Operation, Webcam Monitoring, and Troubleshooting",
+  "description": "Launching prints via web interface, live webcam stream monitoring, remote emergency actions, and post-processing ABS parts.",
+  "objectives": [
+    "Start G-code printing remotely via web interface",
+    "Monitor first-layer adhesion through live webcam feed",
+    "Perform emergency pause or cancel operations from your browser",
+    "Diagnose and prevent Warping and Layer Splitting remotely"
+  ],
+  "duration": "2 hours",
+  "difficulty": "Beginner",
+  "steps": [
+    {
+      "number": 1,
+      "title": "Remote Print Start",
+      "description": "Triggering the print from the browser UI.",
+      "image": "/assets/images/impressao_3d/start_print_web.png",
+      "details": [
+        "On the GTMAX web dashboard, select the uploaded G-code file from the list",
+        "Click 'Start Print'",
+        "Monitor temperatures rising (Bed: 100°C | Nozzle: 240°C)"
+      ],
+      "time": "10 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Real-Time Webcam Monitoring",
+      "description": "Stream inspection without opening the machine door.",
+      "image": "/assets/images/impressao_3d/webcam_stream_view.png",
+      "details": [
+        "Open the 'Webcam' tab on your browser dashboard",
+        "Watch the first Brim lines being deposited on the bed",
+        "Ensure plastic adheres firmly without lifting at corners"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Remote Pause and Cancellation",
+      "description": "Emergency control buttons.",
+      "image": "/assets/images/impressao_3d/cancel_pause_buttons_web.png",
+      "details": [
+        "If warping is spotted on the webcam, click 'Cancel Print' on the web UI",
+        "For material swap or quick check, click 'Pause Print'"
+      ],
+      "time": "10 minutes"
+    },
+    {
+      "number": 4,
+      "title": "Cooling and Part Removal",
+      "description": "Safe removal of finished ABS parts.",
+      "image": "/assets/images/impressao_3d/part_removal.png",
+      "details": [
+        "Wait for bed temperature to drop below 50°C on the web temperature chart",
+        "Open the acrylic door on the GTMAX",
+        "Remove part using the spatula and peel off Brim manually"
+      ],
+      "time": "20 minutes"
+    }
+  ],
+  "troubleshooting": [
+    {
+      "problem": "Webcam feed is frozen or lagging",
+      "solutions": [
+        "Refresh webcam tab in your browser",
+        "Check printer Wi-Fi connection strength to local network router"
+      ]
+    },
+    {
+      "problem": "Part warps off the bed during printing",
+      "solutions": [
+        "Cancel print using web UI button",
+        "Increase Brim width in PrusaSlicer and verify bed reached 100°C prior to starting"
+      ]
+    }
+  ]
+}

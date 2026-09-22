@@ -1,0 +1,83 @@
+{
+  "id": "fatiamento_prusaslicer",
+  "moduleId": "impressao_3d",
+  "title": "ABS Slicing in PrusaSlicer and Web Upload",
+  "description": "Setting up the GTMAX Core H5 ABS profile in PrusaSlicer, anti-warping parameters, and direct G-code upload via web browser.",
+  "objectives": [
+    "Import and position .STL models in PrusaSlicer",
+    "Configure thermal settings for ABS (Nozzle: 240°C, Bed: 100°C, Fan: 0%)",
+    "Enable Brim to improve first-layer adhesion",
+    "Slice the model and upload the .gcode file using your browser"
+  ],
+  "duration": "1-2 hours",
+  "difficulty": "Beginner",
+  "materials": [
+    {
+      "name": "Computer with PrusaSlicer installed",
+      "quantity": 1,
+      "notes": "On the same local network as the printer"
+    },
+    {
+      "name": "3D Model (.STL)",
+      "quantity": 1,
+      "notes": "Robotic project part"
+    }
+  ],
+  "slicingConfig": {
+    "software": "PrusaSlicer",
+    "profile": "GTMAX Core H5 - ABS",
+    "nozzleTemp": "240°C",
+    "bedTemp": "100°C",
+    "coolingFan": "0% (Disabled to prevent delamination)",
+    "brim": "Enabled (5mm to 8mm)"
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Importing and ABS Configuration in PrusaSlicer",
+      "description": "Profile selection and fan cooling disabled.",
+      "image": "/assets/images/impressao_3d/prusaslicer_abs_config.png",
+      "details": [
+        "Select the GTMAX Core H5 printer profile and Generic ABS filament",
+        "Import the .STL model and lay its largest flat face onto the bed",
+        "In 'Filament Settings', ensure Print Cooling Fan is set to 0%",
+        "In 'Skirt and Brim', enable Outer Brim with a width of 8mm"
+      ],
+      "time": "30 minutes"
+    },
+    {
+      "number": 2,
+      "title": "Slicing and Layer Preview",
+      "description": "G-code instruction generation.",
+      "image": "/assets/images/impressao_3d/prusaslicer_sliced_brim.png",
+      "details": [
+        "Click 'Slice Now' and inspect print layers in 3D preview",
+        "Verify Brim fusion lines and total estimated print time",
+        "Export and save the .gcode file to your computer"
+      ],
+      "time": "15 minutes"
+    },
+    {
+      "number": 3,
+      "title": "Browser Web Upload",
+      "description": "Sending the file directly via printer website.",
+      "image": "/assets/images/impressao_3d/upload_gcode_web.png",
+      "details": [
+        "Open the GTMAX web page in your browser",
+        "Navigate to 'Files' or 'Jobs' tab",
+        "Click the 'Upload' button and select your saved .gcode file",
+        "Confirm the file appears in the printer library"
+      ],
+      "time": "15 minutes"
+    }
+  ],
+  "troubleshooting": [
+    {
+      "problem": "G-code file fails to upload on printer website",
+      "solutions": [
+        "Check file extension (must be .gcode)",
+        "Refresh browser page and reconnect to the web interface"
+      ]
+    }
+  ]
+}
