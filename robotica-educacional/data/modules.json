@@ -163,7 +163,7 @@
           },
           {
             "id": "fatiamento_prusaslicer",
-            "title": "Fatiamento de ABS no PrusaSlicer",
+            "title": "Pré-Configurações e Funcionalidades do PrusaSlicer",
             "shortDescription": "Importação de modelos STL, configurações pré-definidas de perfil ABS (240°C/110°C)",
             "duration": "1-2 horas",
             "difficulty": "Iniciante",
