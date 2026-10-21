@@ -1,0 +1,9 @@
+{
+  "id": "modelagem_controle_turtlebot_gazebo",
+  "moduleId": "modelagem_controle_robos",
+  "title": "Modelagem e Controle do TurtleBot (no Gazebo)",
+  "description": "Simulação do TurtleBot no Gazebo para estudar sua modelagem cinemática, compreender a relação entre velocidades lineares e angulares e aplicar comandos de controle de movimento utilizando ROS 2.",
+  "duration": "2-3 horas",
+  "difficulty": "Intermediário",
+  "pdfUrl": "pdfs/modelagem_controle_robos-modelagem_controle_turtlebot_gazebo.pdf"
+}

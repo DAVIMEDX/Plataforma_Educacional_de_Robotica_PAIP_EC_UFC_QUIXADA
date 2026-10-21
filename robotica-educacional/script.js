@@ -2,7 +2,7 @@
 // ESTADO DA APLICAÇÃO
 // ================================
 const AppState = {
-    currentLang: localStorage.getItem('language') || 'pt',
+    currentLang: 'pt',
     modules: null,
     currentView: 'home',
     currentModule: null,
@@ -14,7 +14,7 @@ const AppState = {
 // ================================
 document.addEventListener('DOMContentLoaded', async () => {
     await loadModulesData();
-    initializeLanguage();
+    //initializeLanguage();
     initializeRouter();
     updateLanguage();
 });
@@ -89,7 +89,7 @@ function navigateToPractice(moduleId, practiceId) {
 // ================================
 // INTERNACIONALIZAÇÃO (i18n)
 // ================================
-function initializeLanguage() {
+/*function initializeLanguage() {
     const savedLang = localStorage.getItem('language');
     if (savedLang) {
         AppState.currentLang = savedLang;
@@ -113,7 +113,7 @@ function updateLanguageButtons() {
             btn.classList.remove('active');
         }
     });
-}
+}*/
 
 function updateLanguage() {
     const lang = AppState.currentLang;
@@ -407,7 +407,7 @@ async function renderPractice(moduleId, practiceId) {
 function createPracticeSections(practice, lang) {
     let html = '';
 
-    // 1. Renderização para práticas no formato PDF
+    // 0. Renderização para práticas no formato PDF
     if (practice.pdfUrl) {
         html += `
             <section class="practice-section pdf-section">
@@ -422,36 +422,19 @@ function createPracticeSections(practice, lang) {
                 </div>
             </section>
         `;
+    }
 
-        // Se houver arquivos para download abaixo do PDF (ex: perfis .ini do PrusaSlicer)
-        if (practice.resources && practice.resources.length > 0) {
-            html += `
-                <section class="practice-section resources-section">
-                    <h2 class="section-heading">⚙️ ${lang === 'pt' ? 'Arquivos de Configuração para Download' : 'Configuration Files for Download'}</h2>
-                    <div class="resources-grid">
-            `;
-            
-            practice.resources.forEach(res => {
-                html += `
-                    <div class="resource-card">
-                        <div class="resource-info">
-                            <span class="resource-icon">${res.icon || '📁'}</span>
-                            <div class="resource-text">
-                                <h4 class="resource-title">${res.title}</h4>
-                                ${res.description ? `<p class="resource-desc">${res.description}</p>` : ''}
-                            </div>
-                        </div>
-                        <a href="${res.url}" download class="btn btn-secondary">
-                            📥 ${lang === 'pt' ? 'Baixar' : 'Download'}
-                        </a>
-                    </div>
-                `;
-            });
 
-            html += `</div></section>`;
-        }
 
-        return html;
+    // 1. Renderização de práticas escritas em Markdown
+    if (practice.content) {
+        const markdownHtml = marked.parse(practice.content);
+
+        html += `
+        <section class="practice-section markdown-content">
+            ${DOMPurify.sanitize(markdownHtml)}
+        </section>
+    `;
     }
 
     // 2. Renderização para práticas no formato JSON Completo

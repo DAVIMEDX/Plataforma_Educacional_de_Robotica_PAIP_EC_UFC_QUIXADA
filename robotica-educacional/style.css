@@ -1216,3 +1216,40 @@ body {
         text-align: center;
     }
 }
+
+.markdown-content {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.markdown-content pre {
+    background: #282c34;
+    color: #f8f8f2;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+.markdown-content pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+.markdown-content :not(pre) > code {
+    background: #eeeeee;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.markdown-content table {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+}

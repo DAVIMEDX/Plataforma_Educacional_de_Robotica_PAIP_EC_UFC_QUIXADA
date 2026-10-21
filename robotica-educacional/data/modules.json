@@ -104,39 +104,47 @@
         ]
       },
       {
-        "id": "robotica_reciclavel",
-        "category": "Robótica Sustentável",
-        "title": "Robótica com Recicláveis",
-        "subtitle": "Construção Sustentável e Prototipagem",
-        "icon": "♻️",
-        "color": "#8BC34A",
-        "duration": "4-7 horas",
-        "level": "Iniciante",
-        "description": "Aprenda a desenvolver estruturas robóticas utilizando materiais recicláveis, explorando conceitos de sustentabilidade, mecânica básica e prototipagem de baixo custo.",
-        "practiceCount": 3,
+        "id": "modelagem_controle_robos",
+        "category": "Modelagem e Controle de Robôs",
+        "title": "Modelagem e Controle de Robôs",
+        "subtitle": "Modelagem Matemática, Planejamento de Caminhos e Controle de Movimento",
+        "icon": "🎯",
+        "color": "#3F51B5",
+        "duration": "10-16 horas",
+        "level": "Intermediário/Avançado",
+        "description": "Estude os fundamentos da modelagem matemática de robôs, o planejamento de caminhos e o controle de movimento. Explore métodos de planejamento baseados em campos potenciais e PRM, modelagem determinística de sistemas robóticos, controle de atuadores, controle preditivo não linear de trajetória e simulação e controle do TurtleBot no Gazebo.",
+        "practiceCount": 5,
         "practices": [
           {
-            "id": "Estrutura_sucata",
-            "title": "Construção de Estruturas com Sucata",
-            "shortDescription": "Montagem de chassis utilizando papelão, garrafas PET e outros materiais reutilizados",
-            "duration": "1-2 horas",
-            "difficulty": "Iniciante",
-            "icon": "📦"
+            "id": "planejamento_caminhos_campos_potenciais_prm",
+            "title": "Planejamento de Caminhos com Campos Potenciais e PRM",
+            "shortDescription": "Estudo e aplicação de campos potenciais artificiais e do método Probabilistic Roadmap (PRM) para planejamento de caminhos robóticos",
+            "duration": "2-3 horas",
+            "difficulty": "Avançado",
+            "icon": "🗺️"
           },
           {
-            "id": "mecanismo_reciclado",
-            "title": "Mecanismos de Movimento",
-            "shortDescription": "Criação de rodas, eixos e articulações usando materiais recicláveis",
-            "duration": "2-3 horas",
-            "difficulty": "Iniciante",
+            "id": "modelagem_deterministica_robos_moveis_nao_holonomicos",
+            "title": "Modelagem Determinística de Robôs Móveis Não-holonômicos e Controle de Atuadores",
+            "shortDescription": "Modelagem cinemática de robôs móveis não holonômicos e estudo do controle de motores e atuadores",
+            "duration": "2-4 horas",
+            "difficulty": "Avançado",
             "icon": "⚙️"
           },
           {
-            "id": "prototipo_sustentavel",
-            "title": "Protótipo Robótico Sustentável",
-            "shortDescription": "Integração da estrutura construída em um projeto robótico funcional",
-            "duration": "1-2 horas",
-            "difficulty": "Iniciante",
+            "id": "controle_preditivo_nao_linear_trajetoria",
+            "title": "Controle Preditivo Não Linear de Trajetória de Robôs Móveis",
+            "shortDescription": "Aplicação de estratégias de controle preditivo não linear para acompanhamento de trajetórias por robôs móveis",
+            "duration": "2-4 horas",
+            "difficulty": "Avançado",
+            "icon": "📈"
+          },
+          {
+            "id": "modelagem_controle_turtlebot_gazebo",
+            "title": "Modelagem e Controle do TurtleBot (no Gazebo)",
+            "shortDescription": "Simulação do TurtleBot no Gazebo para explorar sua modelagem, configuração e controle de movimento com ROS 2",
+            "duration": "2-3 horas",
+            "difficulty": "Intermediário",
             "icon": "🤖"
           }
         ]
@@ -176,6 +184,136 @@
             "duration": "2 horas",
             "difficulty": "Iniciante",
             "icon": "🚀"
+          }
+        ]
+      },
+      {
+        "id": "ambiente_ros2_docker",
+        "category": "ROS 2 & Docker",
+        "title": "Ambiente de Desenvolvimento ROS 2",
+        "subtitle": "Instalação, Configuração e Simulação Robótica",
+        "icon": "🐳",
+        "color": "#2496ED",
+        "duration": "1-3 horas",
+        "level": "Intermediário/Avançado",
+        "description": "Prepare um ambiente de desenvolvimento para robótica utilizando Docker e ROS 2 Foxy. Aprenda a instalar e gerenciar contêineres, configurar o ambiente ROS 2, criar e compilar workspaces, executar ferramentas gráficas e preparar um ambiente de simulação com Gazebo. Ao final, você terá uma base funcional para desenvolver e testar aplicações robóticas antes da integração com o hardware físico.",
+        "practiceCount": 7,
+        "practices": [
+          {
+            "id": "instalacao_docker",
+            "title": "Instalação e Configuração do Docker",
+            "shortDescription": "Instalação do Docker Engine, configuração do serviço, permissões de usuário e verificação do funcionamento",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🐳"
+          },
+          {
+            "id": "gerenciamento_containers",
+            "title": "Criação e Gerenciamento de Contêineres",
+            "shortDescription": "Uso de imagens Ubuntu, criação e inicialização de contêineres, acesso ao terminal e persistência do ambiente",
+            "duration": "1 hora",
+            "difficulty": "Iniciante",
+            "icon": "📦"
+          },
+          {
+            "id": "instalacao_ros2_foxy",
+            "title": "Instalação e Configuração do ROS 2 Foxy",
+            "shortDescription": "Configuração de localidade, repositórios, instalação dos pacotes ROS 2 e preparação do ambiente de execução",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🤖"
+          },
+          {
+            "id": "workspace_ros2",
+            "title": "Primeiros Nós e Workspace ROS 2",
+            "shortDescription": "Execução dos nós talker e listener, criação de workspace, gerenciamento de dependências e compilação com colcon",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "💻"
+          },
+          {
+            "id": "interfaces_graficas_ros2",
+            "title": "Interfaces Gráficas com RViz2 e Turtlesim",
+            "shortDescription": "Configuração do X11 no Docker, execução do Turtlesim, teleoperação por teclado e visualização no RViz2",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "🖥️"
+          },
+          {
+            "id": "simulacao_gazebo",
+            "title": "Simulação Robótica com Gazebo 11",
+            "shortDescription": "Instalação do Gazebo e dos pacotes ROS 2, configuração gráfica e execução de simulações com comandos de movimento",
+            "duration": "1-2 horas",
+            "difficulty": "Intermediário",
+            "icon": "🌐"
+          },
+          {
+            "id": "teleoperacao_turtlebot3",
+            "title": "Teleoperação com e sem MATLAB no Gazebo",
+            "shortDescription": "Simulação do TurtleBot3 no Gazebo, controle por teclado e teleoperação via MATLAB utilizando ROS 2",
+            "duration": "1-2 horas",
+            "difficulty": "Intermediário",
+            "icon": "🎮"
+          }
+        ]
+      },
+      {
+        "id": "ambiente_desenvolvimento_microros",
+        "category": "Micro-ROS & ESP32",
+        "title": "Ambiente de Desenvolvimento Micro-ROS",
+        "subtitle": "Configuração do Arduino IDE, ESP32 e agente Micro-ROS com ROS 2 Foxy e Docker",
+        "icon": "♾️",
+        "color": "#00A896",
+        "duration": "1-2 horas",
+        "level": "Iniciante",
+        "description": "Configure o ambiente de desenvolvimento Micro-ROS para ESP32, preparando o Arduino IDE, instalando a biblioteca Micro-ROS e configurando o agente de comunicação com ROS 2 Foxy. Ao final, você terá uma base para compilar e enviar programas à ESP32 e testar a comunicação serial entre o hardware e o ROS 2.",
+        "practiceCount": 1,
+        "practices": [
+          {
+            "id": "configuracao_ambiente_microros",
+            "title": "Tutorial de Configuração: Ambiente de Desenvolvimento Micro-ROS (ROS Foxy/Docker)",
+            "description": "Configure o Arduino IDE, instale a biblioteca Micro-ROS para Arduino, prepare o workspace e o agente Micro-ROS e teste a comunicação entre o ESP32 e o ROS 2.",
+            "duration": "1-2 horas",
+            "difficulty": "Iniciante",
+            "icon": "♾️"
+          }
+        ]
+      },
+      {
+        "id": "carrinho_esp32_ros2",
+        "category": "ESP32 & ROS 2",
+        "title": "Implementação do Carrinho Robótico",
+        "subtitle": "Teleoperação, Sensoriamento e Mapeamento",
+        "icon": "🤖",
+        "color": "#16A34A",
+        "duration": "10-20 horas",
+        "level": "Intermediário",
+        "description": "Desenvolvimento de um carrinho robótico móvel baseado em ESP32 e ROS 2, abrangendo teleoperação via Wi-Fi UDP, integração de sensor LiDAR e mapeamento autônomo do ambiente utilizando técnicas de SLAM.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "teleop_esp32_wifi_udp",
+            "title": "Teleoperação do Carrinho com ESP32 via Wi-Fi UDP",
+            "shortDescription": "Implementação do controle remoto do carrinho robótico por Wi-Fi UDP, utilizando ESP32, driver L298N e motores com encoders.",
+            "duration": "3-6 horas",
+            "difficulty": "Intermediário",
+            "icon": "🎮"
+          },
+          {
+            "id": "integracao_lidar",
+            "title": "Implementação e Integração do LiDAR",
+            "shortDescription": "Instalação e integração do sensor LiDAR ao sistema robótico, com configuração da comunicação, publicação dos dados e visualização no ROS 2.",
+            "duration": "3-6 horas",
+            "difficulty": "Intermediário",
+            "icon": "📡"
+          },
+          {
+            "id": "slam_carrinho_ros2",
+            "title": "Mapeamento do Ambiente com SLAM",
+            "shortDescription": "Configuração do SLAM no ROS 2 para construir e salvar mapas de ambientes internos utilizando os dados do LiDAR e a odometria do carrinho.",
+            "duration": "4-8 horas",
+            "difficulty": "Avançado",
+            "icon": "🗺️"
           }
         ]
       }

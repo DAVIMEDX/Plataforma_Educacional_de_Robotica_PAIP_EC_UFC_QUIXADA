@@ -1,0 +1,9 @@
+{
+  "id": "modelagem_deterministica_robos_moveis_nao_holonomicos",
+  "moduleId": "modelagem_controle_robos",
+  "title": "Modelagem Determinística de Robôs Móveis Não-holonômicos e Controle de Atuadores",
+  "description": "Estudo da modelagem cinemática determinística de robôs móveis não holonômicos, abordando as restrições de movimento, as relações entre velocidades lineares e angulares e os fundamentos do controle de motores e atuadores.",
+  "duration": "2-4 horas",
+  "difficulty": "Avançado",
+  "pdfUrl": "pdfs/modelagem_controle_robos-modelagem_deterministica_robos_moveis_nao_holonomicos.pdf"
+}

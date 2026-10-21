@@ -1,0 +1,9 @@
+{
+  "id": "planejamento_caminhos_campos_potenciais_prm",
+  "moduleId": "modelagem_controle_robos",
+  "title": "Planejamento de Caminhos com Campos Potenciais e PRM",
+  "description": "Estudo e aplicação de campos potenciais artificiais e do método Probabilistic Roadmap (PRM) para planejamento de caminhos robóticos, considerando a definição de trajetórias, a representação de obstáculos e a busca por caminhos livres no ambiente.",
+  "duration": "2-3 horas",
+  "difficulty": "Avançado",
+  "pdfUrl": "pdfs/modelagem_controle_robos-planejamento_caminhos_campos_potenciais_prm.pdf"
+}

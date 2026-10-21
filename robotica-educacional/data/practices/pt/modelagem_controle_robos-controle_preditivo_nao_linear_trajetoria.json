@@ -1,0 +1,9 @@
+{
+  "id": "controle_preditivo_nao_linear_trajetoria",
+  "moduleId": "modelagem_controle_robos",
+  "title": "Controle Preditivo Não Linear de Trajetória de Robôs Móveis",
+  "description": "Estudo do controle preditivo não linear aplicado ao acompanhamento de trajetórias por robôs móveis, abordando a modelagem do sistema, a função de custo, as restrições de movimento e a otimização dos comandos de controle.",
+  "duration": "2-4 horas",
+  "difficulty": "Avançado",
+  "pdfUrl": "pdfs/modelagem_controle_robos-controle_preditivo_nao_linear_trajetoria.pdf"
+}
