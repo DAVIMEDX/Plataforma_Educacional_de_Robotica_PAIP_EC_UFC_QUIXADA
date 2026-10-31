@@ -1,91 +1,1500 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
+    <!-- =====================================================
+         ROBÓTICA EDUCACIONAL — UFC CAMPUS QUIXADÁ
+         Página institucional e ambiente de aprendizagem
+
+         Projeto integrador: Loki 200 mm
+
+         Rotas previstas:
+         #/          Página institucional
+         #/aprender  Ambiente de aprendizagem
+         #/theory/   Conteúdos teóricos
+         #/module/   Módulos e práticas
+    ====================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Robótica Educacional - BIPES & micro-ROS</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Robótica Educacional | UFC Campus Quixadá
+    </title>
+
+    <meta
+        name="description"
+        content="Plataforma educacional de apoio à disciplina de Robótica da UFC Campus Quixadá. Aprenda fundamentos teóricos, programação, simulação, sistemas embarcados, controle e fabricação digital por meio de atividades práticas e projetos integradores."
+    >
+
+    <meta
+        name="keywords"
+        content="robótica educacional, UFC Quixadá, ensino de robótica, ESP32, ROS 2, micro-ROS, impressão 3D, BIPES, simulação, controle, Loki 200 mm"
+    >
+
+    <meta name="theme-color" content="#10243a">
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🤖%3C/text%3E%3C/svg%3E"
+    >
+
+    <!-- CSS original preservado -->
     <link rel="stylesheet" href="style.css">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
-    <meta name="description" content="Plataforma educacional para aprender robótica com BIPES e micro-ROS">
-    <meta name="keywords" content="robótica, educação, BIPES, micro-ROS, ROS2, programação visual">
+
+    <!-- =====================================================
+         ESTILOS COMPLEMENTARES
+         Identidade institucional + Projeto Loki
+
+         As classes das páginas de práticas permanecem
+         definidas pelo style.css original.
+    ====================================================== -->
+
+    <style>
+
+        /* =============================================
+           1. VARIÁVEIS DA IDENTIDADE VISUAL
+        ============================================= */
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #16a34a;
+            --accent-color: #f59e0b;
+
+            --bg-color: #f4f7fb;
+            --gray-900: #172338;
+
+            --loki-navy: #10243a;
+            --loki-navy-light: #193a59;
+            --loki-blue: #3b82f6;
+
+            --loki-border: #e3eaf2;
+
+            --loki-shadow:
+                0 12px 32px rgba(16, 36, 58, 0.08);
+        }
+
+        body {
+            background: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1240px;
+        }
+
+        a,
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* =============================================
+           2. CABEÇALHO INSTITUCIONAL
+        ============================================= */
+
+        .site-header {
+            background: var(--loki-navy);
+
+            border-bottom:
+                1px solid rgba(255, 255, 255, 0.12);
+
+            box-shadow:
+                0 4px 18px rgba(16, 36, 58, 0.12);
+
+            padding: 14px 0;
+        }
+
+        .header-content {
+            min-height: 60px;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+
+            max-width: 100%;
+
+            object-fit: contain;
+        }
+
+        .header-nav {
+            gap: 12px;
+        }
+
+        .nav-button,
+        .header-learning-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 44px;
+            padding: 10px 17px;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.17);
+
+            border-radius: 11px;
+
+            background:
+                rgba(255, 255, 255, 0.10);
+
+            color: #ffffff;
+
+            font-size: 0.95rem;
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-button:hover,
+        .header-learning-link:hover {
+            background:
+                rgba(255, 255, 255, 0.20);
+        }
+
+        .header-learning-link {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .header-learning-link:hover {
+            background: #1d4ed8;
+        }
+
+        /* =============================================
+           3. BREADCRUMB
+        ============================================= */
+
+        .breadcrumb {
+            background: #ffffff;
+
+            border-bottom:
+                1px solid var(--loki-border);
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--primary-color);
+        }
+
+        /* =============================================
+           4. APRESENTAÇÃO PRINCIPAL DA DISCIPLINA
+
+           A classe .landing-hero será adicionada
+           pela nova função renderHome() do script.js.
+        ============================================= */
+
+        .hero-section {
+            position: relative;
+            isolation: isolate;
+
+            overflow: hidden;
+
+            min-height: 470px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: flex-start;
+
+            padding: 62px 48% 62px 54px;
+
+            margin-bottom: 36px;
+
+            text-align: left;
+
+            background:
+                linear-gradient(
+                    115deg,
+                    #10243a 0%,
+                    #153550 58%,
+                    #19456a 100%
+                );
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 20px 48px rgba(16, 36, 58, 0.16);
+        }
+
+        /* Foto lateral real do Loki */
+        .hero-section::after {
+            content: "";
+
+            position: absolute;
+            z-index: -1;
+
+            top: 0;
+            right: 0;
+            bottom: 0;
+
+            width: 47%;
+
+            background-image:
+                linear-gradient(
+                    90deg,
+                    #153550 0%,
+                    rgba(21, 53, 80, 0.16) 28%,
+                    rgba(21, 53, 80, 0.02) 100%
+                ),
+                url("data/images/loki-principal.png");
+
+            background-size: cover;
+            background-position: center 56%;
+            background-repeat: no-repeat;
+        }
+
+        .hero-section::before {
+            content: "";
+
+            position: absolute;
+
+            width: 330px;
+            height: 330px;
+
+            left: -150px;
+            bottom: -220px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(59, 130, 246, 0.15);
+
+            pointer-events: none;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+
+            width: 100%;
+        }
+
+        .hero-section .hero-title {
+            max-width: 680px;
+
+            margin-bottom: 20px;
+
+            color: #ffffff;
+
+            font-size:
+                clamp(2rem, 3.5vw, 3.2rem);
+
+            line-height: 1.14;
+            font-weight: 800;
+
+            letter-spacing: -0.035em;
+
+            text-align: left;
+        }
+
+        .hero-section .hero-subtitle {
+            max-width: 600px;
+
+            margin: 0 0 25px;
+
+            color: #d9e7f6;
+
+            font-size: 1.06rem;
+            line-height: 1.8;
+
+            text-align: left;
+        }
+
+        .landing-eyebrow {
+            display: block;
+
+            margin-bottom: 18px;
+
+            color: #bfdbfe;
+
+            font-size: 0.77rem;
+            font-weight: 800;
+
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .landing-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 48px;
+
+            margin-top: 8px;
+            padding: 12px 22px;
+
+            border: 0;
+            border-radius: 11px;
+
+            background: #2563eb;
+            color: #ffffff;
+
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .landing-cta:hover {
+            background: #1d4ed8;
+        }
+
+        /* =============================================
+           5. PROPOSTA PEDAGÓGICA
+        ============================================= */
+
+        .landing-pedagogy {
+            padding-top: 12px;
+            padding-bottom: 42px;
+        }
+
+        .landing-pedagogy .section-title {
+            color: var(--loki-navy);
+        }
+
+        .landing-introduction {
+            max-width: 900px;
+
+            margin: 0 auto 30px;
+
+            color: #526176;
+
+            font-size: 1.05rem;
+            line-height: 1.85;
+
+            text-align: center;
+        }
+
+        .info-card {
+            border:
+                1px solid var(--loki-border);
+
+            border-radius: 18px;
+
+            box-shadow: var(--loki-shadow);
+        }
+
+        .info-card h3 {
+            color: var(--loki-navy);
+        }
+
+        .landing-counts {
+            margin-top: 26px;
+
+            color: #64748b;
+
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* =============================================
+           6. PROJETO INTEGRADOR
+
+           IMPORTANTE:
+           Esta seção aparece somente na rota #/.
+           Nas páginas internas e em #/aprender
+           permanece oculta.
+        ============================================= */
+
+        .loki-showcase {
+            display: none;
+
+            padding: 10px 0 58px;
+        }
+
+        body:has(.landing-hero) .loki-showcase {
+            display: block;
+        }
+
+        .loki-showcase-card {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 0.85fr)
+                minmax(0, 1.15fr);
+
+            align-items: stretch;
+
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border:
+                1px solid var(--loki-border);
+
+            border-radius: 22px;
+
+            box-shadow: var(--loki-shadow);
+        }
+
+        /* Foto frontal real do carrinho */
+        .loki-showcase-photo {
+            min-height: 390px;
+
+            background-image:
+                url("data/images/loki-frontal.png");
+
+            background-size: cover;
+
+            background-position: center 60%;
+
+            background-repeat: no-repeat;
+        }
+
+        .loki-showcase-content {
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: flex-start;
+
+            gap: 18px;
+
+            padding: 45px;
+        }
+
+        .loki-showcase-eyebrow {
+            color: #2563eb;
+
+            font-size: 0.78rem;
+            font-weight: 800;
+
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .loki-showcase-title {
+            color: var(--loki-navy);
+
+            font-size:
+                clamp(1.7rem, 3vw, 2.45rem);
+
+            line-height: 1.2;
+
+            letter-spacing: -0.03em;
+        }
+
+        .loki-showcase-description {
+            color: #526176;
+
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .loki-showcase-tags {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+        .loki-showcase-tag {
+            display: inline-flex;
+
+            padding: 7px 12px;
+
+            background: #edf4fc;
+
+            border-radius: 999px;
+
+            color: #1d4e82;
+
+            font-size: 0.84rem;
+            font-weight: 600;
+        }
+
+        .loki-showcase-actions {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 8px;
+        }
+
+        .loki-showcase-link {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 46px;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            background: #2563eb;
+            color: #ffffff;
+
+            font-weight: 700;
+            text-decoration: none;
+
+            transition: background 0.2s ease;
+        }
+
+        .loki-showcase-link:hover {
+            background: #1d4ed8;
+        }
+
+        .loki-showcase-link-secondary {
+            color: var(--loki-navy);
+            background: #edf4fc;
+        }
+
+        .loki-showcase-link-secondary:hover {
+            background: #dceafa;
+        }
+
+        /* =============================================
+           7. ACESSO AO AMBIENTE DE APRENDIZAGEM
+        ============================================= */
+
+        .learning-access {
+            display: none;
+
+            padding: 0 0 65px;
+        }
+
+        body:has(.landing-hero) .learning-access {
+            display: block;
+        }
+
+        .learning-access-card {
+            padding: 38px 28px;
+
+            border:
+                1px solid #dbe7f5;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef5ff,
+                    #ffffff
+                );
+
+            text-align: center;
+        }
+
+        .learning-access-card h2 {
+            margin-bottom: 12px;
+
+            color: var(--loki-navy);
+
+            font-size:
+                clamp(1.5rem, 3vw, 2.2rem);
+        }
+
+        .learning-access-card p {
+            max-width: 740px;
+
+            margin: 0 auto 22px;
+
+            color: #526176;
+
+            line-height: 1.8;
+        }
+
+        .learning-access-link {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 46px;
+
+            padding: 12px 24px;
+
+            background: #2563eb;
+            color: #ffffff;
+
+            border-radius: 11px;
+
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .learning-access-link:hover {
+            background: #1d4ed8;
+        }
+
+        /* =============================================
+           8. CATÁLOGO E MÓDULOS
+        ============================================= */
+
+        .section-title {
+            color: var(--loki-navy);
+            letter-spacing: -0.025em;
+        }
+
+        .category-title {
+            color: var(--loki-navy);
+
+            padding-bottom: 13px;
+
+            border-bottom:
+                2px solid var(--loki-border);
+        }
+
+        .module-card {
+            background: #ffffff;
+
+            border-top:
+                1px solid var(--loki-border);
+
+            border-right:
+                1px solid var(--loki-border);
+
+            border-bottom:
+                1px solid var(--loki-border);
+
+            border-radius: 18px;
+
+            box-shadow: var(--loki-shadow);
+        }
+
+        .module-card:hover {
+            box-shadow:
+                0 18px 40px rgba(16, 36, 58, 0.14);
+        }
+
+        .module-title {
+            color: var(--loki-navy);
+        }
+
+        .module-description {
+            color: #526176;
+        }
+
+        .module-button {
+            background: #2563eb;
+            border-radius: 10px;
+        }
+
+        .module-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* =============================================
+           9. PÁGINAS INTERNAS
+        ============================================= */
+
+        .module-detail-header,
+        .practice-header-full,
+        .practice-section {
+            border-radius: 18px;
+
+            box-shadow: var(--loki-shadow);
+        }
+
+        .module-detail-title,
+        .practice-title-full {
+            color: var(--loki-navy);
+        }
+
+        .practice-card-compact {
+            border:
+                1px solid var(--loki-border);
+
+            border-radius: 16px;
+
+            box-shadow: var(--loki-shadow);
+        }
+
+        .practice-button-compact,
+        .btn-primary {
+            background: #2563eb;
+
+            border-radius: 10px;
+        }
+
+        .practice-button-compact:hover,
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        /* =============================================
+           10. LEITURA DAS AULAS
+        ============================================= */
+
+        .markdown-content {
+            color: #25344a;
+
+            line-height: 1.8;
+        }
+
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4 {
+            color: var(--loki-navy);
+        }
+
+        .markdown-content h2 {
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid var(--loki-border);
+        }
+
+        .markdown-content pre {
+            background: #111d2e;
+            color: #f1f5f9;
+
+            border:
+                1px solid #29405c;
+
+            border-radius: 12px;
+        }
+
+        .markdown-content blockquote {
+            background: #edf4fc;
+
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* =============================================
+           11. RODAPÉ INSTITUCIONAL
+        ============================================= */
+
+        .site-footer {
+            background: #0e2034;
+            color: #c0d0df;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            color: #ffffff;
+        }
+
+        .footer-links a {
+            color: #c0d0df;
+        }
+
+        .footer-bottom {
+            border-top:
+                1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* =============================================
+           12. RESPONSIVIDADE
+        ============================================= */
+
+        @media (max-width: 1024px) {
+
+            .hero-section {
+                padding:
+                    54px 45% 54px 38px;
+            }
+
+            .hero-section::after {
+                width: 43%;
+            }
+
+            .hero-section .hero-title {
+                font-size: 2.15rem;
+            }
+
+            .loki-showcase-content {
+                padding: 32px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .site-header {
+                padding: 12px 0;
+            }
+
+            .header-content {
+                min-height: 0;
+            }
+
+            .header-nav {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-section {
+                min-height: auto;
+
+                padding:
+                    35px 24px 290px;
+
+                text-align: left;
+
+                border-radius: 18px;
+
+                align-items: stretch;
+            }
+
+            .hero-section::after {
+                top: auto;
+                left: 0;
+                right: 0;
+                bottom: 0;
+
+                width: 100%;
+                height: 265px;
+
+                background-image:
+                    linear-gradient(
+                        180deg,
+                        #153550 0%,
+                        rgba(21, 53, 80, 0.04) 26%,
+                        rgba(21, 53, 80, 0.02) 100%
+                    ),
+                    url("data/images/loki-principal.jpeg");
+
+                background-position:
+                    center,
+                    center 62%;
+            }
+
+            .hero-section .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-section .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .landing-introduction {
+                font-size: 0.98rem;
+
+                text-align: left;
+            }
+
+            .loki-showcase-card {
+                grid-template-columns: 1fr;
+            }
+
+            .loki-showcase-photo {
+                min-height: 320px;
+            }
+
+            .loki-showcase-content {
+                padding: 30px 24px;
+            }
+
+            .loki-showcase {
+                padding-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .hero-section {
+                padding:
+                    30px 20px 255px;
+            }
+
+            .hero-section::after {
+                height: 235px;
+            }
+
+            .hero-section .hero-title {
+                font-size: 1.75rem;
+            }
+
+            .hero-section .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .landing-eyebrow {
+                font-size: 0.69rem;
+            }
+
+            .loki-showcase-photo {
+                min-height: 270px;
+            }
+
+            .loki-showcase-title {
+                font-size: 1.7rem;
+            }
+
+            .loki-showcase-actions,
+            .learning-access-link,
+            .loki-showcase-link {
+                width: 100%;
+            }
+
+            .learning-access-card {
+                padding: 28px 20px;
+            }
+        }
+
+        /* =============================================
+           13. ACESSIBILIDADE
+        ============================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* =============================================
+           14. IMPRESSÃO
+        ============================================= */
+
+        @media print {
+
+            .loki-showcase,
+            .learning-access {
+                display: none !important;
+            }
+
+            .hero-section {
+                box-shadow: none;
+            }
+
+            .hero-section::after {
+                display: none;
+            }
+        }
+
+    </style>
+
+    <!-- =====================================================
+         DEPENDÊNCIAS JAVASCRIPT
+
+         Ordem de carregamento preservada.
+    ====================================================== -->
+
+    <!-- Markdown -->
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+    </script>
+
+    <!-- Sanitização -->
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js">
+    </script>
+
+    <!-- Sistema da plataforma -->
+    <script defer src="script.js"></script>
+
 </head>
 
 <body>
-    <!-- Header com navegação -->
+
+    <!-- =====================================================
+         LINK DE ACESSIBILIDADE
+    ====================================================== -->
+
+    <a class="skip-link" href="#app">
+        Ir para o conteúdo principal
+    </a>
+
+    <!-- =====================================================
+         CABEÇALHO DA PLATAFORMA
+    ====================================================== -->
+
     <header class="site-header">
+
         <div class="container">
+
             <div class="header-content">
-                <div class="logo" onclick="navigateHome()">
-                    <img src="data/images/quixada.png" alt="Logo UFC Quixadá" class="logo-img">
-                </div>
-                <nav class="header-nav">
-                    <button class="nav-button" onclick="navigateHome()" id="homeButton">
-                        🏠 <span id="homeText">Início</span>
+
+                <!-- Identidade institucional -->
+
+                <a
+                    class="logo"
+                    href="#/"
+                    aria-label="Robótica Educacional - Voltar ao início"
+                >
+
+                    <img
+                        src="data/images/quixada.png"
+                        alt="Universidade Federal do Ceará - Campus Quixadá"
+                        class="logo-img"
+                        width="220"
+                        height="55"
+                    >
+
+                </a>
+
+                <!-- Navegação principal -->
+
+                <nav
+                    class="header-nav"
+                    aria-label="Navegação principal"
+                >
+
+                    <button
+                        type="button"
+                        class="nav-button"
+                        onclick="navigateHome()"
+                        id="homeButton"
+                    >
+
+                        <span aria-hidden="true">
+                            🏠
+                        </span>
+
+                        <span id="homeText">
+                            Início
+                        </span>
+
                     </button>
-                    <!--<div class="language-selector">
-                        <button class="lang-btn active" data-lang="pt" onclick="switchLanguage('pt')">🇧🇷 PT</button>
-                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">🇺🇸 EN</button>
-                    </div>-->
+
+                    <a
+                        class="header-learning-link"
+                        href="#/aprender"
+                    >
+
+                        <span aria-hidden="true">
+                            📚
+                        </span>
+
+                        Aulas e Práticas
+
+                    </a>
+
+                    <!-- ===================================
+                         SELETOR DE IDIOMA DESATIVADO
+
+                         Preservado para uso futuro.
+                         NÃO REATIVAR.
+
+                    <div class="language-selector">
+
+                        <button
+                            class="lang-btn active"
+                            data-lang="pt"
+                            onclick="switchLanguage('pt')">
+                            🇧🇷 PT
+                        </button>
+
+                        <button
+                            class="lang-btn"
+                            data-lang="en"
+                            onclick="switchLanguage('en')">
+                            🇺🇸 EN
+                        </button>
+
+                    </div>
+
+                    ==================================== -->
+
                 </nav>
+
             </div>
+
         </div>
+
     </header>
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb" id="breadcrumb" style="display: none;">
+    <!-- =====================================================
+         CAMINHO DE NAVEGAÇÃO — BREADCRUMB
+
+         IDs originais preservados.
+    ====================================================== -->
+
+    <nav
+        class="breadcrumb"
+        id="breadcrumb"
+        aria-label="Caminho de navegação"
+        style="display: none;"
+    >
+
         <div class="container">
-            <div class="breadcrumb-items" id="breadcrumbItems"></div>
+
+            <div
+                class="breadcrumb-items"
+                id="breadcrumbItems"
+            ></div>
+
         </div>
+
     </nav>
 
-    <!-- Container principal (conteúdo dinâmico) -->
-    <main class="main-content" id="app">
-        <!-- Conteúdo será injetado dinamicamente via JavaScript -->
-        <div class="loading">
-            <div class="spinner"></div>
-            <p>Carregando...</p>
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+
+         O script.js é responsável pelo conteúdo
+         renderizado neste elemento.
+
+         IMPORTANTE: MANTER id="app".
+    ====================================================== -->
+
+    <main
+        class="main-content"
+        id="app"
+        tabindex="-1"
+    >
+
+        <!-- Estado inicial -->
+
+        <div
+            class="loading"
+            role="status"
+            aria-live="polite"
+        >
+
+            <div
+                class="spinner"
+                aria-hidden="true"
+            ></div>
+
+            <p>
+                Carregando...
+            </p>
+
         </div>
+
     </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
+    <!-- =====================================================
+         PROJETO INTEGRADOR — LOKI 200 MM
+
+         Esta seção é exibida somente quando a
+         função renderHome() gera .landing-hero.
+
+         Não é exibida no catálogo de aulas
+         nem nas páginas de práticas.
+    ====================================================== -->
+
+    <section
+        class="loki-showcase"
+        aria-labelledby="lokiShowcaseTitle"
+    >
+
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>🤖 Robótica Educacional ♻️</h3>
-                    <p id="footerDescription">Plataforma de ensino focada em robótica, robótica sustentável e soluções de
-                        baixo custo com hardware livre, manufatura aditiva e impressão 3D.</p>
-                </div>
-                <div class="footer-section">
-                    <h4 id="footerLinksTitle">Links Úteis</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://bipes.net.br" target="_blank">BIPES Platform</a></li>
-                        <li><a href="https://micro.ros.org" target="_blank">micro-ROS</a></li>
-                        <li><a href="https://www.ros.org" target="_blank">ROS 2</a></li>
-                        <li><a href="https://github.com/DAVIMEDX/Plataforma_Educacional_de_Robotica_PAIP_EC_UFC_QUIXADA" target="_blank">GitHub</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4 id="footerAboutTitle">Sobre</h4>
-                    <p>
-                        Desenvolvido no âmbito do programa <strong>PAIP</strong> (Incentivo à Permanência Acadêmica) do
-                        curso de <strong>Engenharia de Computação</strong> da <strong>UFC - Campus Quixadá</strong>.
+
+            <div class="loki-showcase-card">
+
+                <!-- Fotografia frontal do Loki -->
+
+                <div
+                    class="loki-showcase-photo"
+                    role="img"
+                    aria-label="Fotografia frontal do carrinho robótico Loki 200 mm produzido no projeto"
+                ></div>
+
+                <!-- Apresentação do projeto -->
+
+                <div class="loki-showcase-content">
+
+                    <span class="loki-showcase-eyebrow">
+                        Projeto integrador
+                    </span>
+
+                    <h2
+                        class="loki-showcase-title"
+                        id="lokiShowcaseTitle"
+                    >
+                        Da aprendizagem à construção
+                        de um robô real.
+                    </h2>
+
+                    <p class="loki-showcase-description">
+
+                        O carrinho robótico Loki 200 mm é
+                        uma das aplicações práticas dos
+                        conhecimentos desenvolvidos ao
+                        longo da disciplina de Robótica.
+
                     </p>
+
+                    <p class="loki-showcase-description">
+
+                        Por meio de sua fabricação, montagem
+                        e programação, os estudantes poderão
+                        explorar conceitos de impressão 3D,
+                        sistemas embarcados, controle,
+                        ROS 2, micro-ROS, sensoriamento
+                        e navegação robótica.
+
+                    </p>
+
+                    <p class="loki-showcase-description">
+
+                        Mais do que construir um carrinho,
+                        o objetivo é compreender e aplicar
+                        os princípios envolvidos no
+                        desenvolvimento de sistemas robóticos.
+
+                    </p>
+
+                    <!-- Tecnologias do projeto -->
+
+                    <div
+                        class="loki-showcase-tags"
+                        aria-label="Tecnologias estudadas"
+                    >
+
+                        <span class="loki-showcase-tag">
+                            Impressão 3D
+                        </span>
+
+                        <span class="loki-showcase-tag">
+                            ESP32
+                        </span>
+
+                        <span class="loki-showcase-tag">
+                            ROS 2 Foxy
+                        </span>
+
+                        <span class="loki-showcase-tag">
+                            micro-ROS
+                        </span>
+
+                        <span class="loki-showcase-tag">
+                            LiDAR
+                        </span>
+
+                        <span class="loki-showcase-tag">
+                            SLAM
+                        </span>
+
+                    </div>
+
+                    <!-- Links para módulos já existentes -->
+
+                    <div class="loki-showcase-actions">
+
+                        <a
+                            href="#/module/impressao_3d"
+                            class="loki-showcase-link"
+                        >
+                            Conhecer a fabricação
+                        </a>
+
+                        <a
+                            href="#/module/carrinho_esp32_ros2"
+                            class="loki-showcase-link loki-showcase-link-secondary"
+                        >
+                            Explorar o projeto
+                        </a>
+
+                    </div>
+
                 </div>
+
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Robótica Educacional e Sustentabilidade. <span id="footerRights">Todos os direitos
-                        reservados.</span></p>
-            </div>
+
         </div>
+
+    </section>
+
+    <!-- =====================================================
+         ACESSO AO AMBIENTE DE APRENDIZAGEM
+
+         Visível apenas na página inicial.
+    ====================================================== -->
+
+    <section
+        class="learning-access"
+        aria-labelledby="learningAccessTitle"
+    >
+
+        <div class="container">
+
+            <div class="learning-access-card">
+
+                <h2 id="learningAccessTitle">
+                    Seu ambiente de aprendizagem em Robótica
+                </h2>
+
+                <p>
+
+                    Acesse os fundamentos teóricos,
+                    os módulos de experimentação e as
+                    atividades práticas organizadas
+                    para apoiar o desenvolvimento
+                    progressivo das competências
+                    trabalhadas na disciplina.
+
+                </p>
+
+                <a
+                    class="learning-access-link"
+                    href="#/aprender"
+                >
+                    Explorar todas as aulas e práticas →
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
+         RODAPÉ INSTITUCIONAL
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <!-- Sobre a plataforma -->
+
+                <div class="footer-section">
+
+                    <h3>
+                        🤖 Robótica Educacional ♻️
+                    </h3>
+
+                    <p id="footerDescription">
+
+                        Plataforma educacional desenvolvida
+                        para apoiar o ensino e a aprendizagem
+                        na disciplina de Robótica, integrando
+                        fundamentos teóricos, atividades
+                        práticas, simulação, programação,
+                        fabricação digital e projetos
+                        integradores.
+
+                    </p>
+
+                </div>
+
+                <!-- Links úteis -->
+
+                <div class="footer-section">
+
+                    <h4 id="footerLinksTitle">
+                        Links Úteis
+                    </h4>
+
+                    <ul class="footer-links">
+
+                        <li>
+                            <a
+                                href="https://bipes.net.br"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                BIPES Platform
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="https://micro.ros.org"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                micro-ROS
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="https://www.ros.org"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                ROS 2
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="https://github.com/makerspet/3d_models/tree/main/loki_200mm/3mf/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Modelos do Loki 200 mm
+                            </a>
+                        </li>
+
+                        <li>
+                            <a
+                                href="https://github.com/DAVIMEDX/Plataforma_Educacional_de_Robotica_PAIP_EC_UFC_QUIXADA"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                GitHub da Plataforma
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Informações institucionais -->
+
+                <div class="footer-section">
+
+                    <h4 id="footerAboutTitle">
+                        Sobre
+                    </h4>
+
+                    <p>
+
+                        Desenvolvido no âmbito do programa
+
+                        <strong>
+                            PAIP
+                        </strong>
+
+                        (Incentivo à Permanência Acadêmica)
+                        do curso de
+
+                        <strong>
+                            Engenharia de Computação
+                        </strong>
+
+                        da
+
+                        <strong>
+                            Universidade Federal do Ceará
+                            — Campus Quixadá
+                        </strong>.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Direitos autorais -->
+
+            <div class="footer-bottom">
+
+                <p>
+
+                    &copy; 2026
+                    Robótica Educacional e Sustentabilidade.
+
+                    <span id="footerRights">
+                        Todos os direitos reservados.
+                    </span>
+
+                </p>
+
+            </div>
+
+        </div>
+
     </footer>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 </body>
 
 </html>

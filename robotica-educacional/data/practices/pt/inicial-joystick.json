@@ -2,46 +2,47 @@
   "id": "joystick",
   "moduleId": "inicial",
   "title": "Controle com Joystick",
-  "description": "Aprenda a mapear dados analógicos de um joystick para controlar a velocidade e direção de motores DC usando PWM e ponte H.",
+  "description": "Aprenda a mapear dados analógicos de um joystick para controlar a velocidade e a direção de motores DC usando PWM e ponte H.",
   "objectives": [
     "Compreender o funcionamento de um joystick analógico",
     "Aprender sobre PWM (Modulação por Largura de Pulso)",
-    "Mapear valores analógicos (0-1023) para velocidade de motores",
-    "Implementar controle de direção usando ponte H L298N",
-    "Criar um sistema de controle intuitivo para robô móvel"
+    "Mapear leituras analógicas para valores de controle dos motores",
+    "Implementar controle de direção usando a ponte H L298N",
+    "Criar um sistema de controle intuitivo para um robô móvel"
   ],
   "duration": "1-2 horas",
   "difficulty": "Iniciante",
   "prerequisites": [
     "Conhecimento básico de eletrônica",
     "Familiaridade com a plataforma BIPES",
-    "Raspberry Pi Pico W configurado"
+    "Raspberry Pi Pico W configurado",
+    "Conhecimento básico sobre alimentação elétrica e polaridade"
   ],
   "materials": [
     {
       "name": "Raspberry Pi Pico W",
       "quantity": 1,
-      "notes": "Microcontrolador principal"
+      "notes": "Microcontrolador principal com lógica de 3,3 V"
     },
     {
       "name": "Joystick Analógico (2 eixos)",
       "quantity": 1,
-      "notes": "Modelo KY-023 ou similar"
+      "notes": "Modelo KY-023 ou similar, alimentado em 3,3 V"
     },
     {
       "name": "Ponte H L298N",
       "quantity": 1,
-      "notes": "Driver para motores DC"
+      "notes": "Driver para acionamento de dois motores DC"
     },
     {
       "name": "Motores DC 6-12V",
       "quantity": 2,
-      "notes": "Com redução de velocidade"
+      "notes": "Motores com redução de velocidade. Verificar a tensão nominal e a corrente de cada motor antes da alimentação."
     },
     {
-      "name": "Bateria ou Fonte 12V",
+      "name": "Bateria ou Fonte para os motores",
       "quantity": 1,
-      "notes": "Mínimo 1A de corrente"
+      "notes": "Tensão compatível com os motores e corrente suficiente para a partida e a carga mecânica. Utilizar 12 V somente com motores e circuito compatíveis."
     },
     {
       "name": "Jumpers",
@@ -51,165 +52,281 @@
     {
       "name": "Protoboard",
       "quantity": 1,
-      "notes": "Opcional, facilita conexões"
+      "notes": "Opcional, facilita as conexões de sinais de baixa corrente. Não utilizar para conduzir a corrente dos motores."
     }
   ],
   "wiring": {
-    "diagram": "/assets/diagrams/joystick-wiring.png",
-    "description": "Diagrama de conexões entre Pico W, joystick e ponte H",
+    "diagram": "",
+    "description": "Conexões entre o Raspberry Pi Pico W, o joystick analógico e a ponte H L298N. Antes da montagem, confira a identificação dos pinos nos próprios componentes. A imagem do diagrama citada na versão original não foi localizada no projeto; utilize as conexões descritas nesta prática.",
     "connections": [
       {
         "component": "Joystick",
         "connections": [
-          {"from": "VCC", "to": "Pico 3V3", "color": "vermelho"},
-          {"from": "GND", "to": "Pico GND", "color": "preto"},
-          {"from": "VRx", "to": "Pico GP26 (ADC0)", "color": "amarelo"},
-          {"from": "VRy", "to": "Pico GP27 (ADC1)", "color": "verde"}
+          {
+            "from": "VCC",
+            "to": "Pico 3V3",
+            "color": "vermelho"
+          },
+          {
+            "from": "GND",
+            "to": "Pico GND",
+            "color": "preto"
+          },
+          {
+            "from": "VRx",
+            "to": "Pico GP26 (ADC0)",
+            "color": "amarelo"
+          },
+          {
+            "from": "VRy",
+            "to": "Pico GP27 (ADC1)",
+            "color": "verde"
+          }
         ]
       },
       {
         "component": "Ponte H L298N",
         "connections": [
-          {"from": "IN1", "to": "Pico GP0", "color": "laranja", "function": "Motor A - Direção 1"},
-          {"from": "IN2", "to": "Pico GP1", "color": "amarelo", "function": "Motor A - Direção 2"},
-          {"from": "ENA", "to": "Pico GP2", "color": "verde", "function": "Motor A - PWM"},
-          {"from": "IN3", "to": "Pico GP3", "color": "azul", "function": "Motor B - Direção 1"},
-          {"from": "IN4", "to": "Pico GP4", "color": "roxo", "function": "Motor B - Direção 2"},
-          {"from": "ENB", "to": "Pico GP5", "color": "cinza", "function": "Motor B - PWM"},
-          {"from": "GND", "to": "Pico GND + Bateria GND", "color": "preto", "function": "Terra comum"},
-          {"from": "+12V", "to": "Bateria 12V", "color": "vermelho", "function": "Alimentação motores"}
+          {
+            "from": "IN1",
+            "to": "Pico GP0",
+            "color": "laranja",
+            "function": "Motor A - Direção 1"
+          },
+          {
+            "from": "IN2",
+            "to": "Pico GP1",
+            "color": "amarelo",
+            "function": "Motor A - Direção 2"
+          },
+          {
+            "from": "ENA",
+            "to": "Pico GP2",
+            "color": "verde",
+            "function": "Motor A - PWM, com jumper ENA removido"
+          },
+          {
+            "from": "IN3",
+            "to": "Pico GP3",
+            "color": "azul",
+            "function": "Motor B - Direção 1"
+          },
+          {
+            "from": "IN4",
+            "to": "Pico GP4",
+            "color": "roxo",
+            "function": "Motor B - Direção 2"
+          },
+          {
+            "from": "ENB",
+            "to": "Pico GP5",
+            "color": "cinza",
+            "function": "Motor B - PWM, com jumper ENB removido"
+          },
+          {
+            "from": "GND",
+            "to": "Pico GND e negativo da alimentação dos motores",
+            "color": "preto",
+            "function": "Terra comum"
+          },
+          {
+            "from": "Entrada de alimentação dos motores",
+            "to": "Positivo da fonte ou bateria compatível",
+            "color": "vermelho",
+            "function": "Alimentação de potência dos motores"
+          }
         ]
       }
     ],
     "warnings": [
-      "⚠️ NUNCA conecte 12V diretamente no Pico! O Pico usa 3.3V lógico.",
-      "⚠️ Sempre conecte GND comum entre Pico, ponte H e bateria.",
-      "⚠️ Verifique todas as conexões antes de ligar a alimentação.",
-      "⚠️ Use uma bateria separada para os motores, não alimentação USB."
+      "Nunca conecte 12 V diretamente aos pinos GPIO, 3V3 ou ADC do Raspberry Pi Pico W. Seus sinais operam em 3,3 V.",
+      "Mantenha um terra comum entre o Pico W, a ponte H e a alimentação dos motores.",
+      "O joystick deve ser alimentado em 3,3 V para que suas saídas analógicas permaneçam dentro da faixa admissível pelo Pico W.",
+      "Para controlar a velocidade por PWM nos pinos ENA e ENB do módulo L298N, remova os respectivos jumpers de habilitação antes de conectar GP2 e GP5.",
+      "Verifique as características do regulador e do jumper de alimentação lógica do módulo L298N utilizado. Esses detalhes variam conforme a placa.",
+      "Não conecte a saída de 5 V do módulo L298N diretamente à entrada 3V3 do Pico W.",
+      "Não aplique 12 V a motores cuja tensão nominal seja inferior ou incompatível com esse valor.",
+      "A corrente fornecida pela fonte deve considerar a partida e a possível condição de bloqueio dos motores. A indicação de 1 A não garante compatibilidade com todos os motores.",
+      "Monte e revise o circuito com a alimentação desligada.",
+      "Durante o primeiro teste, mantenha as rodas suspensas e afastadas de mãos, roupas e cabos.",
+      "O Pico W pode ser alimentado pelo USB durante os testes. A alimentação dos motores deve passar pelo circuito de potência apropriado, não pelos pinos GPIO ou pela linha de 3,3 V."
     ]
   },
   "theory": {
-    "joystick": "Um joystick analógico possui dois potenciômetros (eixos X e Y) que variam de 0 a 3.3V. O Pico W lê esses valores através de conversores ADC (Analog-to-Digital Converter) que transformam a tensão em valores digitais de 0 a 65535.",
-    "pwm": "PWM (Pulse Width Modulation) controla a velocidade do motor variando a largura dos pulsos elétricos. Um duty cycle de 50% significa que o motor recebe energia 50% do tempo, resultando em metade da velocidade máxima.",
-    "ponteH": "A ponte H permite controlar a direção do motor invertendo a polaridade. Com IN1=HIGH e IN2=LOW o motor gira em um sentido; invertendo, gira no sentido oposto. ENA controla a velocidade via PWM."
+    "joystick": "Um joystick analógico possui dois potenciômetros que representam os eixos X e Y. Quando alimentado em 3,3 V, suas saídas variam aproximadamente entre 0 e 3,3 V. No Raspberry Pi Pico W, a função read_u16() do MicroPython representa as leituras ADC em uma escala de 0 a 65535, embora o conversor físico possua resolução nominal de 12 bits. O valor central corresponde aproximadamente à metade da escala e pode apresentar pequenas variações.",
+    "pwm": "PWM (Pulse Width Modulation) é uma técnica de modulação por largura de pulso utilizada para controlar a potência média aplicada aos motores por meio de um driver. O duty cycle representa a fração do período em que o sinal permanece ativo. Um duty cycle de 50% não significa necessariamente que o motor atingirá 50% de sua velocidade máxima, pois a relação depende da carga, da alimentação, das perdas do driver e das características do motor.",
+    "ponteH": "A ponte H L298N permite controlar o sentido de rotação dos motores por meio das entradas IN1, IN2, IN3 e IN4. Para o motor A, uma combinação de IN1 em nível alto e IN2 em nível baixo estabelece um sentido de rotação; a combinação inversa estabelece o outro sentido. O sentido físico depende da conexão dos terminais do motor. As entradas ENA e ENB podem receber sinais PWM para controlar o acionamento de cada canal.",
+    "mapeamento": "As leituras dos eixos do joystick podem ser convertidas em valores normalizados entre -100 e +100. O eixo vertical representa o comando de deslocamento e o eixo horizontal representa o comando de direção. Combinando esses comandos, é possível calcular as velocidades desejadas dos motores esquerdo e direito.",
+    "zonaMorta": "Uma zona morta, também chamada de deadzone, define uma faixa próxima ao centro do joystick na qual o comando é considerado zero. Essa estratégia reduz movimentos indesejados causados por ruídos de leitura, tolerâncias mecânicas e pequenas oscilações dos potenciômetros.",
+    "alimentacao": "O Pico W utiliza níveis lógicos de 3,3 V, enquanto os motores possuem uma alimentação de potência própria. O driver L298N estabelece a interface entre o microcontrolador e os motores. O circuito precisa de referência de terra comum, alimentação compatível e corrente adequada. Também deve ser considerada a queda de tensão interna do L298N, que pode reduzir a tensão efetivamente aplicada aos motores."
   },
   "steps": [
     {
       "number": 1,
       "title": "Montagem do Circuito",
-      "description": "Monte o circuito seguindo o diagrama de conexões",
+      "description": "Monte o circuito seguindo a relação de conexões e as orientações de segurança elétrica.",
       "details": [
-        "Conecte o joystick aos pinos ADC do Pico (GP26 e GP27)",
-        "Conecte a ponte H aos pinos digitais do Pico",
-        "Conecte os motores DC nos terminais OUT da ponte H",
-        "Conecte a bateria 12V na ponte H (VCC e GND)",
-        "Certifique-se que todos os GNDs estão conectados (terra comum)"
+        "Desligue a alimentação antes de iniciar a montagem.",
+        "Conecte VCC do joystick ao pino 3V3 do Pico W.",
+        "Conecte GND do joystick ao GND do Pico W.",
+        "Conecte VRx ao GP26 (ADC0) e VRy ao GP27 (ADC1).",
+        "Conecte as entradas IN1, IN2, IN3 e IN4 do L298N aos pinos GP0, GP1, GP3 e GP4, respectivamente.",
+        "Remova os jumpers ENA e ENB do módulo L298N, quando presentes, para permitir o controle por PWM.",
+        "Conecte ENA ao GP2 e ENB ao GP5.",
+        "Conecte os motores DC às saídas OUT1/OUT2 e OUT3/OUT4 do L298N.",
+        "Conecte a alimentação dos motores à entrada de potência correspondente do módulo L298N, respeitando a polaridade e a tensão nominal.",
+        "Conecte o GND da alimentação dos motores ao GND do módulo L298N e ao GND do Pico W.",
+        "Verifique se a configuração do regulador de alimentação lógica da placa L298N é adequada ao modelo utilizado.",
+        "Confira todas as conexões antes de energizar o circuito."
       ],
       "time": "15-20 minutos"
     },
     {
       "number": 2,
       "title": "Configuração no BIPES",
-      "description": "Abra o projeto no BIPES e configure os blocos",
+      "description": "Abra o ambiente BIPES e prepare os blocos para leitura do joystick e acionamento dos motores.",
       "details": [
-        "Acesse o link do projeto BIPES (veja abaixo)",
-        "Localize os blocos de configuração de pinos",
-        "Configure GP26 e GP27 como entradas ADC",
-        "Configure GP0-GP5 como saídas digitais/PWM",
-        "Observe a lógica de mapeamento no bloco principal"
+        "Acesse o ambiente BIPES utilizando o link indicado nesta prática.",
+        "Selecione a placa e o ambiente de execução compatíveis com o Raspberry Pi Pico W.",
+        "Configure GP26 e GP27 como entradas analógicas.",
+        "Configure GP0, GP1, GP3 e GP4 como saídas digitais de direção.",
+        "Configure GP2 e GP5 como saídas PWM.",
+        "Observe a leitura dos eixos X e Y.",
+        "Confira o mapeamento dos valores para comandos entre -100 e +100.",
+        "Verifique a lógica de cálculo dos comandos dos motores.",
+        "Confirme que os comandos de velocidade são limitados antes de serem aplicados ao PWM."
       ],
       "time": "10 minutos"
     },
     {
       "number": 3,
-      "title": "Upload e Teste",
-      "description": "Faça upload do código e teste o controle",
+      "title": "Execução e Teste Inicial",
+      "description": "Execute o programa e confirme o funcionamento dos motores em condições seguras.",
       "details": [
-        "Conecte o Pico W ao computador via USB",
-        "No BIPES, clique em 'Run' para fazer upload",
-        "Aguarde a transferência do código",
-        "Mova o joystick e observe o movimento dos motores",
-        "Joystick para frente = robô anda para frente",
-        "Joystick para trás = robô anda para trás",
-        "Joystick esquerda/direita = curvas"
+        "Posicione o robô em um suporte estável, mantendo as rodas suspensas.",
+        "Conecte o Pico W ao computador via USB.",
+        "Abra o projeto no BIPES e confira se a placa foi reconhecida.",
+        "Execute ou envie o programa conforme o procedimento disponível no ambiente BIPES configurado.",
+        "Inicialmente, mantenha o joystick na posição central.",
+        "Verifique se os motores permanecem parados quando o comando é zero.",
+        "Mova gradualmente o joystick para frente e observe a rotação das rodas.",
+        "Mova o joystick para trás e confira a inversão do movimento.",
+        "Teste os movimentos para esquerda e direita.",
+        "Se necessário, ajuste o sentido lógico de cada motor.",
+        "Após os testes com rodas suspensas, realize um teste de deslocamento em uma superfície livre de obstáculos."
       ],
       "time": "10 minutos"
     },
     {
       "number": 4,
       "title": "Ajustes e Calibração",
-      "description": "Ajuste os valores de mapeamento conforme necessário",
+      "description": "Ajuste o comportamento do robô para obter controle estável e previsível.",
       "details": [
-        "Se os motores estiverem invertidos, troque IN1 com IN2",
-        "Ajuste o duty cycle máximo se os motores estiverem muito rápidos",
-        "Adicione uma zona morta no centro do joystick (deadzone)",
-        "Teste diferentes curvas de resposta (linear, exponencial)"
+        "Identifique os valores aproximados de cada eixo quando o joystick está em repouso.",
+        "Calibre o ponto central caso as leituras apresentem deslocamento.",
+        "Implemente uma zona morta próxima ao centro do joystick.",
+        "Caso um motor gire no sentido contrário ao esperado, corrija a lógica de direção ou a ligação do motor com a alimentação desligada.",
+        "Ajuste o limite máximo de PWM para evitar movimentos excessivamente rápidos.",
+        "Verifique se os dois motores respondem de maneira semelhante.",
+        "Teste diferentes curvas de resposta, como linear e exponencial.",
+        "Observe eventuais oscilações ou movimentos involuntários.",
+        "Registre os valores finais utilizados na calibração."
       ],
       "time": "15-20 minutos"
     }
   ],
   "code": {
-    "description": "Lógica de mapeamento em pseudocódigo",
-    "pseudocode": "# Ler valores do joystick\nvalor_x = ler_adc(GP26)  # 0-65535\nvalor_y = ler_adc(GP27)  # 0-65535\n\n# Mapear para -100 a +100\nvelocidade = mapear(valor_y, 0, 65535, -100, 100)\ndirecao = mapear(valor_x, 0, 65535, -100, 100)\n\n# Calcular velocidades individuais dos motores\nmotor_esquerdo = velocidade + direcao\nmotor_direito = velocidade - direcao\n\n# Limitar valores\nmotor_esquerdo = limitar(motor_esquerdo, -100, 100)\nmotor_direito = limitar(motor_direito, -100, 100)\n\n# Controlar motores\ncontrolar_motor_a(motor_esquerdo)\ncontrolar_motor_b(motor_direito)",
-    "notes": "No BIPES, essa lógica é implementada visualmente usando blocos de mapeamento e controle PWM."
+    "description": "Pseudocódigo da lógica de leitura, normalização e controle diferencial dos motores. As funções apresentadas representam operações conceituais e devem ser implementadas com os blocos equivalentes no BIPES.",
+    "pseudocode": "# Leitura dos eixos do joystick\nvalor_x = ler_adc(GP26)  # 0 a 65535\nvalor_y = ler_adc(GP27)  # 0 a 65535\n\n# Normalizar as leituras para -100 a +100\ndirecao = mapear(valor_x, 0, 65535, -100, 100)\nvelocidade = mapear(valor_y, 0, 65535, -100, 100)\n\n# Aplicar zona morta\nse abs(direcao) < 10:\n    direcao = 0\n\nse abs(velocidade) < 10:\n    velocidade = 0\n\n# Combinar os comandos para controle diferencial\nmotor_esquerdo = velocidade + direcao\nmotor_direito = velocidade - direcao\n\n# Limitar os comandos à faixa permitida\nmotor_esquerdo = limitar(motor_esquerdo, -100, 100)\nmotor_direito = limitar(motor_direito, -100, 100)\n\n# Aplicar os comandos de direção e PWM\ncontrolar_motor_a(motor_esquerdo)\ncontrolar_motor_b(motor_direito)\n\n# As funções controlar_motor_a e controlar_motor_b\n# devem converter o sinal do comando em direção\n# e seu módulo em duty cycle PWM.\n# Comando zero deve desligar o acionamento.",
+    "notes": "O pseudocódigo não é um programa MicroPython diretamente executável. No BIPES, implemente as operações com os blocos disponíveis. As funções de acionamento devem tratar os comandos negativos, positivos e zero corretamente. A calibração do centro e a orientação dos eixos podem variar conforme o joystick e a montagem."
   },
   "bipesProject": {
     "url": "https://bipes.net.br/ide/?project=joystick_robot_control",
-    "description": "Projeto completo com blocos configurados",
+    "description": "Referência original do projeto de controle com joystick no BIPES. Verifique se o identificador do projeto está disponível no ambiente utilizado.",
     "alternativeUrl": "https://bipes.net.br/ide/",
-    "instructions": "Importe o arquivo .bipes disponível no repositório GitHub do projeto"
+    "instructions": "Se o projeto não abrir diretamente pelo identificador da URL, acesse a IDE do BIPES e importe o arquivo .bipes correspondente, caso esteja disponível no repositório do projeto."
   },
   "troubleshooting": [
     {
       "problem": "Motores não respondem ao joystick",
       "solutions": [
-        "Verifique se a bateria está conectada e carregada",
-        "Confirme que os jumpers ENA e ENB estão habilitados na ponte H",
-        "Teste a saída dos pinos PWM com um LED",
-        "Verifique as conexões de terra (GND comum)"
+        "Verifique se a alimentação dos motores está conectada e possui tensão adequada.",
+        "Confirme a existência do terra comum entre a alimentação dos motores, o L298N e o Pico W.",
+        "Para controle por PWM, confira se os jumpers ENA e ENB foram removidos e se GP2 e GP5 estão corretamente conectados.",
+        "Verifique se a alimentação lógica do módulo L298N está configurada conforme as especificações da placa.",
+        "Confira se o programa está em execução no Pico W.",
+        "Teste individualmente os comandos de direção e PWM.",
+        "Verifique se os motores não estão bloqueados mecanicamente."
       ]
     },
     {
       "problem": "Motor gira apenas em uma direção",
       "solutions": [
-        "Verifique as conexões IN1 e IN2 (ou IN3 e IN4)",
-        "Confira se os pinos digitais estão configurados corretamente",
-        "Teste invertendo as conexões do motor na ponte H"
+        "Confira as conexões IN1 e IN2 para o motor A, e IN3 e IN4 para o motor B.",
+        "Verifique se o programa altera corretamente os níveis lógicos dos pinos de direção.",
+        "Confirme o tratamento de comandos positivos e negativos.",
+        "Teste o sentido de rotação com as rodas suspensas.",
+        "Se necessário, corrija a conexão do motor com toda a alimentação desligada."
       ]
     },
     {
-      "problem": "Joystick não lê valores corretos",
+      "problem": "Joystick apresenta leituras incorretas",
       "solutions": [
-        "Confirme que VCC do joystick está em 3.3V (não 5V)",
-        "Verifique se GP26 e GP27 estão configurados como ADC",
-        "Teste o joystick com um voltímetro (deve variar 0-3.3V)",
-        "Adicione um pequeno delay entre leituras ADC"
+        "Confirme que o VCC do joystick está conectado à alimentação de 3,3 V.",
+        "Verifique as conexões dos eixos VRx e VRy aos pinos GP26 e GP27.",
+        "Confira se os pinos foram configurados para leitura ADC.",
+        "Observe os valores analógicos quando o joystick está no centro e nos extremos.",
+        "Verifique se existe ruído causado pela alimentação ou pelas conexões.",
+        "Implemente filtragem ou média de amostras, caso necessário.",
+        "Calibre o ponto central do joystick antes de aplicar a zona morta."
       ]
     },
     {
-      "problem": "Motores tremem ou fazem barulho estranho",
+      "problem": "Motores tremem ou produzem ruído excessivo",
       "solutions": [
-        "Adicione capacitores nos terminais dos motores (100nF)",
-        "Verifique se a fonte fornece corrente suficiente (mín. 1A)",
-        "Reduza a frequência do PWM se estiver muito alta",
-        "Certifique-se que os motores não estão bloqueados mecanicamente"
+        "Confira se a fonte de alimentação fornece corrente suficiente.",
+        "Verifique se os motores apresentam travamento ou resistência mecânica.",
+        "Observe se o valor de PWM oscila próximo ao limite mínimo de acionamento.",
+        "Ajuste a zona morta do joystick.",
+        "Avalie a frequência PWM utilizada e sua compatibilidade com o conjunto de acionamento.",
+        "Considere técnicas adequadas de supressão de ruído elétrico, conforme as especificações dos motores e do driver.",
+        "Verifique as conexões de potência e de terra."
+      ]
+    },
+    {
+      "problem": "O robô se movimenta mesmo com o joystick no centro",
+      "solutions": [
+        "Observe a leitura de repouso de cada eixo.",
+        "Calibre o centro utilizando os valores realmente medidos.",
+        "Aplique uma zona morta ao redor do ponto central.",
+        "Confirme que o comando zero desabilita o acionamento dos motores.",
+        "Verifique se há ruído elétrico provocando oscilações nas leituras."
+      ]
+    },
+    {
+      "problem": "O link do projeto BIPES não abre a prática esperada",
+      "solutions": [
+        "Abra diretamente a IDE em https://bipes.net.br/ide/.",
+        "Verifique se o identificador informado no link corresponde a um projeto publicado.",
+        "Caso exista um arquivo .bipes no repositório, importe-o manualmente.",
+        "Confira se o navegador e a conexão com a placa são compatíveis com o ambiente BIPES utilizado."
       ]
     }
   ],
   "challenges": [
     {
       "title": "Desafio 1: Zona Morta",
-      "description": "Implemente uma zona morta de ±10% no centro do joystick para evitar movimentos indesejados quando o joystick está em repouso.",
+      "description": "Implemente uma zona morta de aproximadamente ±10% ao redor do centro calibrado do joystick para evitar movimentos indesejados durante o repouso.",
       "difficulty": "Fácil"
     },
     {
       "title": "Desafio 2: Controle Suave",
-      "description": "Adicione aceleração gradual ao invés de mudanças bruscas de velocidade. Use um filtro de média móvel nos valores lidos.",
+      "description": "Adicione aceleração gradual em vez de mudanças bruscas de velocidade. Utilize filtragem das leituras e limitação da variação dos comandos entre ciclos de controle.",
       "difficulty": "Médio"
     },
     {
       "title": "Desafio 3: Modo Turbo",
-      "description": "Implemente um botão no joystick que ativa um 'modo turbo' dobrando a velocidade máxima dos motores.",
+      "description": "Implemente um botão no joystick que permita alternar entre um limite reduzido e um limite maior de PWM, sem ultrapassar 100% do duty cycle nem os limites elétricos e mecânicos dos motores.",
       "difficulty": "Médio"
     }
   ],

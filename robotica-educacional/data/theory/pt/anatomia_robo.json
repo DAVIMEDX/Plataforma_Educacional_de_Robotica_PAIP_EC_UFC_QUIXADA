@@ -1,0 +1,113 @@
+{
+    "id": "anatomia_robo",
+    "moduleId": "fundamentos_robotica",
+    "type": "theory",
+    "title": "Anatomia de um Robô: Componentes e Funções",
+    "subtitle": "Entenda como sensores, controladores, atuadores e energia trabalham juntos",
+    "description": "Estude a estrutura física e eletrônica de um robô móvel e compreenda a função de cada componente antes de realizar as montagens práticas.",
+    "duration": "50-70 minutos",
+    "difficulty": "Iniciante",
+    "objectives": [
+        "Identificar os sistemas mecânico, elétrico e computacional de um robô",
+        "Diferenciar sensores, atuadores, controladores e drivers",
+        "Compreender as funções do Raspberry Pi Pico W e do ESP32",
+        "Explicar a utilização de motores DC, encoders e pontes H",
+        "Reconhecer a importância da tensão, corrente, potência e terra comum",
+        "Compreender como os componentes trabalham em conjunto",
+        "Identificar condições básicas de segurança elétrica e mecânica"
+    ],
+    "prerequisites": [
+        "Aula 0.1 — Introdução à Robótica"
+    ],
+    "content": "# Aula 0.2 — Anatomia de um Robô\n\n## 1. O que significa anatomia de um robô?\n\nA anatomia de um robô corresponde à organização de seus componentes e sistemas. Assim como um organismo possui estruturas com funções diferentes, um robô integra partes mecânicas, elétricas, eletrônicas e computacionais.\n\nUm robô móvel pode ser estudado por meio de seis conjuntos:\n\n1. Estrutura mecânica.\n2. Alimentação elétrica.\n3. Sensores.\n4. Unidade de processamento e controle.\n5. Drivers e atuadores.\n6. Sistemas de comunicação.\n\nEsses conjuntos não precisam estar presentes exatamente da mesma forma em todos os robôs.\n\n## 2. Estrutura mecânica\n\nA estrutura mecânica sustenta os dispositivos, transmite forças e permite que o robô interaja com o ambiente.\n\n### Chassi\n\nÉ a base física utilizada para montar sensores, motores, circuitos e baterias. Deve oferecer rigidez adequada e facilitar a manutenção.\n\n### Rodas\n\nTransformam o movimento rotacional dos motores em deslocamento sobre o solo. Seu diâmetro influencia a distância percorrida por revolução.\n\n### Eixos e suportes\n\nTransmitem ou sustentam movimentos. O alinhamento inadequado pode gerar atrito, vibração e erros de deslocamento.\n\n### Caixa de redução\n\nUm redutor mecânico modifica a relação entre velocidade e torque. Em geral, reduz a velocidade de saída e aumenta o torque disponível, considerando as perdas do mecanismo.\n\n**Exemplo:** um carrinho com rodas grandes pode percorrer mais distância por revolução, mas a escolha do motor e da redução também deve considerar o torque necessário.\n\n## 3. Alimentação elétrica\n\nSem uma fonte de energia adequada, o robô não consegue executar suas funções.\n\n### Tensão elétrica\n\nA tensão, medida em volts (V), representa a diferença de potencial elétrico entre dois pontos.\n\n### Corrente elétrica\n\nA corrente, medida em ampères (A), corresponde ao fluxo de carga elétrica.\n\n### Potência elétrica\n\nEm um circuito de corrente contínua, a potência elétrica pode ser calculada por:\n\n**P = V × I**\n\nEssa expressão representa potência elétrica instantânea quando a tensão e a corrente correspondem ao mesmo instante.\n\n### Alimentação lógica e de potência\n\nMicrocontroladores como Pico W e ESP32 utilizam sinais lógicos de 3,3 V. Motores podem exigir tensões e correntes superiores, conforme suas características.\n\nPor isso, frequentemente utilizamos:\n\n- Uma alimentação apropriada para o microcontrolador.\n- Uma alimentação compatível com os motores.\n- Um circuito de acionamento que conecte o comando lógico à carga de potência.\n\n**Atenção:** não conecte motores diretamente aos GPIOs. As saídas dos microcontroladores não são projetadas para fornecer as correntes exigidas por motores DC.\n\n### Terra comum\n\nQuando dois circuitos de sinal compartilham comandos elétricos, normalmente precisam de uma referência elétrica comum, denominada GND ou terra comum.\n\nEssa conexão permite interpretar corretamente os níveis dos sinais. Ela não significa unir indiscriminadamente quaisquer terminais de alimentação.\n\n## 4. Sensores: como o robô percebe o mundo?\n\nUm sensor converte uma grandeza física em um sinal ou conjunto de dados que pode ser interpretado pelo sistema.\n\n### Sensor ultrassônico\n\nEmite ondas sonoras de alta frequência e utiliza o tempo de retorno do eco para estimar distância.\n\n**Aplicação:** identificar obstáculos próximos.\n\n### Encoder\n\nProduz sinais relacionados ao movimento ou à posição de um eixo. Dependendo do modelo, permite estimar deslocamento, direção e velocidade.\n\n**Aplicação:** medir a rotação das rodas do carrinho.\n\n### IMU\n\nUma unidade de medida inercial pode combinar acelerômetros e giroscópios. Alguns modelos também incluem magnetômetros.\n\n**Aplicação:** estimar aspectos do movimento e da orientação.\n\n### LiDAR\n\nUtiliza emissão e recepção de luz para realizar medições espaciais. Muitos modelos robóticos fornecem conjuntos de distâncias em diferentes direções.\n\n**Aplicação:** percepção do ambiente e apoio ao mapeamento.\n\n### Sensor de temperatura e umidade\n\nMede variáveis ambientais e pode ser utilizado em sistemas de monitoramento.\n\n**Exemplo na plataforma:** DHT22 com comunicação MQTT.\n\n## 5. Controlador: onde o programa é executado?\n\nO controlador é responsável por executar instruções, interpretar dados e produzir comandos.\n\n### Raspberry Pi Pico W\n\nO Pico W utiliza o microcontrolador RP2040 e possui conectividade sem fio. Nesta plataforma, ele será utilizado em práticas de leitura analógica, controle por GPIO, PWM, sensores e comunicação.\n\n### ESP32\n\nESP32 identifica uma família de microcontroladores com diferentes recursos e variantes. Os modelos utilizados em robótica educacional podem oferecer Wi-Fi, entradas e saídas digitais, conversores analógicos e periféricos de comunicação.\n\n**Importante:** Pico W e ESP32 são microcontroladores. Não devem ser confundidos com computadores Raspberry Pi que executam sistemas operacionais completos.\n\n### O que é um GPIO?\n\nGPIO significa General Purpose Input/Output. É um pino configurável para funções de entrada ou saída, respeitando as características do microcontrolador.\n\nExemplos:\n\n- Ler o estado de um botão.\n- Acionar o sinal de um LED com resistor.\n- Enviar comandos de direção a um driver.\n- Produzir PWM em pinos compatíveis.\n\n## 6. Drivers: a ligação entre controle e potência\n\nUm driver recebe comandos do controlador e aciona um componente que exige características elétricas diferentes das fornecidas por um GPIO.\n\n### Ponte H L298N\n\nO L298N é um circuito de acionamento que pode controlar a direção de motores DC e utilizar sinais de habilitação para controle de acionamento.\n\nNa plataforma, ele aparece em diversas práticas de motores.\n\nA ponte H permite estabelecer diferentes caminhos para a corrente no motor, possibilitando inverter seu sentido de rotação.\n\n**Atenção:** o L298N apresenta perdas elétricas relevantes. A tensão efetivamente aplicada ao motor pode ser inferior à tensão da fonte.\n\n## 7. Atuadores: como o robô executa ações?\n\nOs atuadores transformam comandos em ações físicas.\n\n### Motor DC\n\nProduz rotação quando recebe alimentação adequada. É comum em robôs móveis.\n\n### Servomotor\n\nCombina um sistema de acionamento e uma forma de controle, frequentemente utilizado para posicionar mecanismos dentro de uma faixa de movimento.\n\n### Motor de passo\n\nRealiza deslocamentos angulares discretos sob comando de um circuito apropriado.\n\n### Buzzer\n\nProduz sinalização sonora e pode ser utilizado como indicador de estado ou alerta, desde que respeitadas suas características de acionamento.\n\n## 8. Como tudo trabalha junto?\n\nConsidere um carrinho que precisa reduzir a velocidade ao encontrar um obstáculo.\n\n1. O sensor ultrassônico mede uma distância.\n2. O microcontrolador verifica se a leitura é válida.\n3. O programa compara a distância com um limite.\n4. O controlador calcula o comando necessário.\n5. O driver recebe sinais de direção e PWM.\n6. O motor modifica o movimento das rodas.\n7. O sistema realiza novas leituras para avaliar a situação.\n\nEsse exemplo mostra a integração entre percepção, processamento e atuação.\n\n## 9. Sensores não são atuadores\n\n| Componente | Classificação | Função |\n|---|---|---|\n| HC-SR04 | Sensor | Estimar distância |\n| Encoder | Sensor | Medir movimento |\n| LiDAR | Sensor | Produzir medições espaciais |\n| Pico W | Controlador | Executar o programa |\n| ESP32 | Controlador | Processar informações e comandar dispositivos |\n| L298N | Driver | Acionar motores |\n| Motor DC | Atuador | Produzir rotação |\n| Bateria | Fonte de energia | Fornecer energia elétrica |\n\n## 10. Segurança básica de montagem\n\n- Confira a tensão e a corrente admissíveis de cada componente.\n- Desligue a alimentação antes de alterar conexões.\n- Não aplique 5 V a GPIOs de 3,3 V.\n- Utilize proteção adequada quando sensores produzirem sinais acima da tensão admissível.\n- Separe a alimentação lógica da alimentação dos motores quando o circuito exigir.\n- Mantenha o terra comum nos sistemas que compartilham sinais.\n- Utilize resistores limitadores para LEDs.\n- Realize os primeiros testes de motores com as rodas suspensas.\n- Não deixe mecanismos móveis acessíveis durante movimentos não supervisionados.\n\n## 11. Atividade de identificação\n\nObserve uma imagem ou montagem real do carrinho e identifique:\n\n- Chassi e rodas.\n- Motor e redutor.\n- Driver de potência.\n- Microcontrolador.\n- Sensores presentes.\n- Fonte de alimentação.\n- Cabos de comunicação e de potência.\n\nEm seguida, desenhe um diagrama de blocos mostrando o fluxo de informações e os caminhos de alimentação.\n\n## 12. Síntese\n\nUm robô funciona porque componentes com responsabilidades diferentes são integrados de maneira coordenada.\n\nSensores fornecem medições. Controladores executam programas. Drivers permitem acionar cargas. Atuadores realizam ações físicas. A estrutura sustenta o sistema, e a alimentação fornece a energia necessária.\n\nCompreender essas funções é indispensável para montar, programar e diagnosticar sistemas robóticos."
+,
+"theory": {
+    "estrutura": "Conjunto mecânico que sustenta os componentes e transmite os esforços do robô.",
+    "sensor": "Dispositivo que produz uma medição relacionada a uma grandeza física.",
+    "controlador": "Dispositivo que executa instruções e processa dados de controle.",
+    "driver": "Circuito que permite acionar uma carga de acordo com sinais de comando.",
+    "atuador": "Componente que converte energia e comandos em uma ação física.",
+    "alimentacao": "Sistema que fornece a energia elétrica necessária aos componentes.",
+    "terra_comum": "Referência elétrica compartilhada por circuitos que precisam interpretar sinais entre si."
+},
+"steps": [
+    {
+        "number": 1,
+        "title": "Reconhecer os componentes",
+        "description": "Identifique os elementos do carrinho robótico utilizado na plataforma.",
+        "details": [
+            "Localize o microcontrolador.",
+            "Identifique motores e driver.",
+            "Reconheça os sensores disponíveis.",
+            "Observe a estrutura mecânica.",
+            "Identifique os circuitos de alimentação."
+        ],
+        "time": "10 minutos"
+    },
+    {
+        "number": 2,
+        "title": "Classificar os componentes",
+        "description": "Organize os componentes conforme sua função.",
+        "details": [
+            "Separe sensores e atuadores.",
+            "Identifique controladores e drivers.",
+            "Diferencie alimentação lógica e de potência.",
+            "Explique a função de cada grupo."
+        ],
+        "time": "15 minutos"
+    },
+    {
+        "number": 3,
+        "title": "Desenhar a arquitetura do carrinho",
+        "description": "Produza um diagrama simplificado da integração dos componentes.",
+        "details": [
+            "Desenhe os sensores conectados ao controlador.",
+            "Represente o driver entre o microcontrolador e os motores.",
+            "Adicione os caminhos de alimentação.",
+            "Indique o sentido do fluxo de informação."
+        ],
+        "time": "20 minutos"
+    }
+],
+"challenges": [
+    {
+        "title": "Desafio 1 — Quem faz o quê?",
+        "difficulty": "Básico",
+        "description": "Classifique ESP32, encoder, motor DC, L298N, LiDAR e bateria como controlador, sensor, atuador, driver ou alimentação."
+    },
+    {
+        "title": "Desafio 2 — Diagnóstico de montagem",
+        "difficulty": "Intermediário",
+        "description": "Explique por que não é adequado alimentar um motor DC diretamente pelo GPIO de um microcontrolador."
+    },
+    {
+        "title": "Desafio 3 — Arquitetura de segurança",
+        "difficulty": "Intermediário",
+        "description": "Desenhe o caminho percorrido por uma informação de distância, desde um sensor ultrassônico até o comando que interrompe um motor."
+    }
+],
+"nextSteps": [
+    "Aula 0.3 — Como os Componentes se Comunicam",
+    "Aula 0.4 — Do Controle Manual à Autonomia",
+    "Prática de controle com joystick",
+    "Prática de segurança com sensor ultrassônico"
+],
+"references": [
+    {
+        "title": "Raspberry Pi — RP2040 e Pico W",
+        "url": "https://www.raspberrypi.com/documentation/microcontrollers/"
+    },
+    {
+        "title": "Espressif — Documentação ESP32",
+        "url": "https://docs.espressif.com/projects/esp-idf/en/stable/esp32/"
+    },
+    {
+        "title": "Arduino — Introdução aos componentes eletrônicos",
+        "url": "https://docs.arduino.cc/learn/"
+    },
+    {
+        "title": "Modern Robotics — Northwestern University",
+        "url": "https://modernrobotics.northwestern.edu/"
+    }
+]
+}

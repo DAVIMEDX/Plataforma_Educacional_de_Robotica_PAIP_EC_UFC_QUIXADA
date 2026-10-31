@@ -5,5 +5,65 @@
   "description": "Reconhecimento físico da GTMAX Core H5, identificação do IP da impressora na rede local, acesso à interface web e carregamento do filamento ABS.",
   "duration": "1 hora",
   "difficulty": "Iniciante",
+  "objectives": [
+    "Identificar os principais componentes da impressora GTMAX Core H5",
+    "Compreender a importância da câmara fechada para a impressão com ABS",
+    "Reconhecer os comandos disponíveis no painel touchscreen",
+    "Localizar o endereço IP da impressora",
+    "Acessar a interface web pela rede local",
+    "Compreender os procedimentos de pré-aquecimento e carregamento do filamento",
+    "Reconhecer os cuidados de segurança necessários durante a operação"
+  ],
+  "prerequisites": [
+    "Conhecimentos básicos de segurança em laboratório",
+    "Autorização e supervisão do responsável pelo equipamento",
+    "Familiaridade básica com o uso de um navegador web",
+    "Acesso à rede local do laboratório"
+  ],
+  "materials": [
+    {
+      "name": "Impressora 3D GTMAX Core H5",
+      "quantity": 1,
+      "notes": "Equipamento instalado, configurado e autorizado para uso"
+    },
+    {
+      "name": "Filamento ABS 1,75 mm",
+      "quantity": 1,
+      "notes": "Utilizar o material aprovado para a impressora"
+    },
+    {
+      "name": "Computador com navegador web",
+      "quantity": 1,
+      "notes": "Conectado à rede local do laboratório"
+    },
+    {
+      "name": "Rede local",
+      "quantity": 1,
+      "notes": "Conectividade necessária para acessar a interface da impressora"
+    }
+  ],
+  "theory": {
+    "corexy": "A cinemática CoreXY utiliza um sistema de correias e motores para controlar o deslocamento do cabeçote de impressão nos eixos X e Y.",
+    "camara_fechada": "A câmara fechada ajuda a reduzir variações térmicas durante a impressão de materiais como ABS, diminuindo o risco de deformações. Não substitui as exigências de ventilação e controle de emissões.",
+    "extrusor": "O conjunto de extrusão conduz e aquece o filamento para depositar o material nas camadas definidas pelo arquivo G-code.",
+    "mesa_aquecida": "A mesa aquecida contribui para a aderência da primeira camada e para o controle térmico durante a impressão.",
+    "interface_web": "A interface web permite acompanhar informações e executar operações autorizadas na impressora por meio da rede local.",
+    "filamento_abs": "O ABS é um polímero termoplástico utilizado na fabricação de peças por impressão 3D. Sua impressão exige controle térmico adequado e atenção à ventilação do ambiente."
+  },
+  "wiring": {
+    "diagram": "",
+    "description": "Esta prática não exige montagem de circuito eletrônico. O estudante deverá reconhecer os componentes da impressora e utilizar as conexões elétricas e de rede já instaladas no laboratório.",
+    "warnings": [
+      "Não abra painéis elétricos nem modifique a fiação interna da impressora.",
+      "Não toque no bico extrusor, na mesa aquecida ou nas partes móveis durante a operação.",
+      "O pré-aquecimento e o carregamento do filamento devem ser realizados conforme o procedimento validado no laboratório.",
+      "As temperaturas indicadas no PDF devem ser confirmadas com o perfil e o material efetivamente utilizados.",
+      "A impressão de ABS exige ventilação e medidas de controle de emissões adequadas.",
+      "Mantenha a câmara fechada durante a impressão, conforme as recomendações do equipamento.",
+      "Não compartilhe publicamente endereços internos, senhas ou credenciais da impressora.",
+      "A interface web deve ser acessada apenas pela rede autorizada.",
+      "Em caso de falha, ruído anormal ou condição insegura, comunique imediatamente o responsável."
+    ]
+  },
   "pdfUrl": "pdfs/impressao_3d-apresentacao_gtmax.pdf"
 }

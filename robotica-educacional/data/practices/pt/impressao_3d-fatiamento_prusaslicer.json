@@ -1,21 +1,87 @@
 {
   "id": "fatiamento_prusaslicer",
   "moduleId": "impressao_3d",
-  "title": "Aplicação de configurações e funcionalidades do PrusaSlicer",
-  "description": "Configuração de perfil térmico para filamento ABS (°C no bico / °C na mesa), técnicas de ajustes, camadas e demais funcionalidades.",
+  "title": "Aplicação de Configurações e Funcionalidades do PrusaSlicer",
+  "description": "Aprenda a importar os perfis da GTMAX Core H5 e do filamento ABS no PrusaSlicer, preparar modelos 3D, verificar parâmetros de fatiamento e exportar arquivos para revisão antes da impressão.",
   "duration": "1-2 horas",
   "difficulty": "Iniciante",
+  "objectives": [
+    "Compreender a função do software PrusaSlicer",
+    "Identificar os arquivos de configuração utilizados pela GTMAX Core H5",
+    "Importar os perfis disponibilizados pelo laboratório",
+    "Identificar as configurações de impressora, filamento e impressão",
+    "Compreender o significado das principais configurações de fatiamento",
+    "Importar e posicionar um modelo 3D na mesa virtual",
+    "Visualizar as camadas geradas pelo fatiador",
+    "Salvar o projeto e exportar o G-code para revisão"
+  ],
+  "prerequisites": [
+    "Ter realizado a prática de apresentação da GTMAX Core H5",
+    "Possuir o PrusaSlicer instalado em versão compatível com o sistema operacional",
+    "Ter acesso aos arquivos de configuração fornecidos pelo laboratório",
+    "Conhecer o filamento ABS utilizado na impressora",
+    "Possuir autorização para utilizar os perfis disponibilizados"
+  ],
+  "materials": [
+    {
+      "name": "Computador",
+      "quantity": 1,
+      "notes": "Com sistema operacional compatível com o PrusaSlicer"
+    },
+    {
+      "name": "PrusaSlicer",
+      "quantity": 1,
+      "notes": "Software de fatiamento instalado e funcional"
+    },
+    {
+      "name": "PRUSAGTMAX.ini",
+      "quantity": 1,
+      "notes": "Arquivo de configurações disponibilizado pelo laboratório"
+    },
+    {
+      "name": "config_hookeri.ini",
+      "quantity": 1,
+      "notes": "Arquivo existente no repositório. No PDF, é referido como config_hooker.ini."
+    },
+    {
+      "name": "Modelo 3D para testes",
+      "quantity": 1,
+      "notes": "Arquivo STL, 3MF ou OBJ compatível"
+    }
+  ],
+  "theory": {
+    "prusaslicer": "O PrusaSlicer é um software que transforma modelos tridimensionais em instruções de fabricação por camadas. Essas instruções podem ser exportadas em G-code.",
+    "perfil_impressora": "O perfil de impressora reúne informações sobre o equipamento, suas dimensões, características mecânicas e parâmetros necessários para gerar instruções compatíveis.",
+    "perfil_filamento": "O perfil de filamento contém parâmetros relacionados ao material, como temperaturas, refrigeração e comportamento de extrusão.",
+    "perfil_impressao": "O perfil de impressão define características como altura de camada, perímetros, preenchimento e suportes.",
+    "gcode": "G-code é um formato de comandos que pode ser utilizado para orientar o funcionamento da impressora 3D. Sua compatibilidade depende da configuração do equipamento e do firmware.",
+    "stl": "STL é um formato utilizado para representar a geometria superficial de objetos tridimensionais.",
+    "3mf": "3MF é um formato que pode armazenar informações do modelo e, conforme o projeto exportado pelo PrusaSlicer, configurações utilizadas na preparação da impressão.",
+    "temperaturas": "As temperaturas de impressão dependem do filamento, do perfil aprovado e do equipamento. Valores como 240 °C no bico e 100 °C na mesa são referências do material utilizado no laboratório e não devem ser aplicados indiscriminadamente a outros filamentos."
+  },
+  "wiring": {
+    "diagram": "",
+    "description": "Esta prática é realizada no computador e não exige conexões elétricas adicionais nem aquecimento da impressora.",
+    "warnings": [
+      "Não altere parâmetros críticos dos perfis sem autorização do responsável.",
+      "Confira o diâmetro do bico configurado no perfil da GTMAX Core H5.",
+      "Não utilize configurações de outra impressora sem verificar sua compatibilidade.",
+      "Não execute arquivos G-code sem a revisão prevista no laboratório.",
+      "O conteúdo desta prática termina com a preparação e revisão dos arquivos, sem necessidade de iniciar uma impressão.",
+      "As temperaturas apresentadas devem ser compatíveis com o material e com o equipamento."
+    ]
+  },
   "pdfUrl": "pdfs/impressao_3d_fatiamento_prusaslicer.pdf",
   "resources": [
     {
       "title": "1º Arquivo: Configuração de Impressora (GTMAX Core H5)",
-      "description": "Importe este arquivo primeiro no PrusaSlicer (Menu: Arquivo → Importar → Importar Configuração Bundle).",
+      "description": "Importe este arquivo primeiro no PrusaSlicer, utilizando o procedimento de importação de configurações apresentado no guia PDF.",
       "icon": "🖨️",
       "url": "files/PRUSAGTMAX.ini"
     },
     {
-      "title": "2º Arquivo: Perfil do Filamento (ABS 240°C / 100°C)",
-      "description": "Importe este arquivo em seguida para carregar as temperaturas e controle do cooler (Menu: Arquivo → Importar → Importar Configuração).",
+      "title": "2º Arquivo: Perfil de Configuração do ABS",
+      "description": "Importe este arquivo em seguida, conforme o procedimento do guia PDF. O arquivo no repositório chama-se config_hookeri.ini; no PDF, ele aparece como config_hooker.ini.",
       "icon": "⚙️",
       "url": "files/config_hookeri.ini"
     }

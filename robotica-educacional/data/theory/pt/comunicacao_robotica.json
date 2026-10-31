@@ -1,0 +1,125 @@
+{
+    "id": "comunicacao_robotica",
+    "moduleId": "fundamentos_robotica",
+    "type": "theory",
+    "title": "Como os Componentes de um Robô se Comunicam",
+    "subtitle": "Do sinal elétrico às mensagens ROS 2",
+    "description": "Compreenda como sensores, microcontroladores, computadores e sistemas robóticos trocam informações por sinais digitais, analógicos e protocolos de comunicação.",
+    "duration": "50-70 minutos",
+    "difficulty": "Iniciante",
+    "objectives": [
+        "Explicar a importância da comunicação em sistemas robóticos",
+        "Diferenciar sinais analógicos e digitais",
+        "Reconhecer as funções de UART, I2C, SPI e PWM",
+        "Compreender o papel de Wi-Fi e UDP",
+        "Diferenciar HTTP de MQTT",
+        "Entender a finalidade de ROS 2 e micro-ROS",
+        "Identificar a função do micro-ROS Agent",
+        "Relacionar cada tecnologia às práticas da plataforma"
+    ],
+    "prerequisites": [
+        "Aula 0.1 — Introdução à Robótica",
+        "Aula 0.2 — Anatomia de um Robô"
+    ],
+    "content": "# Aula 0.3 — Como os Componentes se Comunicam\n\n## 1. Por que a comunicação é importante?\n\nUm robô integra dispositivos que precisam compartilhar informações. Sensores produzem medições, controladores recebem dados e atuadores recebem comandos.\n\nEm aplicações simples, a comunicação pode ocorrer por um fio conectado a um GPIO. Em aplicações maiores, pode envolver redes sem fio, computadores e sistemas distribuídos.\n\n**Exemplo:** um carrinho pode receber comandos pelo Wi-Fi enquanto envia medições de distância para outro computador.\n\n## 2. Dados, sinais e protocolos\n\n**Dado:** informação representada digitalmente, como o número 25 que indica uma temperatura medida em graus Celsius.\n\n**Sinal elétrico:** variação de tensão ou corrente utilizada para representar informações ou comandos.\n\n**Protocolo:** conjunto de regras que define como informações são organizadas e trocadas entre dispositivos.\n\nEsses conceitos pertencem a níveis diferentes. Um protocolo pode utilizar sinais elétricos ou uma infraestrutura de rede para transmitir dados.\n\n## 3. Sinais analógicos e digitais\n\n### Sinal analógico\n\nPode variar continuamente dentro de uma faixa física.\n\nUm joystick analógico utiliza potenciômetros que produzem tensões relacionadas à posição dos eixos.\n\nO conversor ADC de um microcontrolador transforma essa tensão em uma representação digital.\n\n**Exemplo:** o ADC do Raspberry Pi Pico W pode representar leituras analógicas por números utilizados no programa.\n\n### Sinal digital\n\nRepresenta estados discretos, frequentemente interpretados como níveis lógicos baixo e alto.\n\n**Exemplo:** um botão pode ser lido como pressionado ou não pressionado.\n\n### ADC\n\nADC significa Conversor Analógico-Digital. Sua função é transformar uma grandeza elétrica analógica em uma representação numérica digital.\n\n### PWM\n\nPWM significa Modulação por Largura de Pulso. É uma técnica que altera a fração de tempo em que um sinal digital permanece ativo durante um período.\n\nO PWM pode ser usado para controlar o brilho de LEDs e o acionamento de motores através de drivers.\n\n**Atenção:** PWM não é um protocolo de comunicação equivalente a HTTP, MQTT ou ROS 2. Sua função principal, nas práticas desta plataforma, é modular o acionamento.\n\n## 4. Comunicação serial UART\n\nUART é uma interface de comunicação serial assíncrona.\n\nOs dispositivos utilizam sinais de transmissão e recepção, normalmente denominados TX e RX, além de referência elétrica apropriada.\n\nUma configuração UART inclui parâmetros como velocidade de transmissão, quantidade de bits e paridade.\n\n**Exemplo:** a comunicação entre uma ESP32 e um computador pode utilizar uma interface serial USB, dependendo da placa e do circuito conversor.\n\nOs níveis elétricos devem ser compatíveis com os dispositivos. UART TTL de 3,3 V não deve ser confundida com interfaces RS-232.\n\n## 5. Comunicação I2C\n\nI2C utiliza normalmente duas linhas de sinal:\n\n- SDA: dados.\n- SCL: relógio.\n\nVários dispositivos podem compartilhar o mesmo barramento, desde que sua configuração e endereços permitam.\n\n**Exemplo:** um display OLED conectado ao microcontrolador.\n\nSão necessários níveis elétricos corretos e resistores de pull-up adequados à topologia utilizada.\n\n## 6. Comunicação SPI\n\nSPI é uma interface serial síncrona frequentemente utilizada com sensores, displays e memórias.\n\nOs sinais incluem relógio, dados e seleção de dispositivo, com nomenclatura que varia conforme a documentação.\n\nO SPI pode apresentar velocidades elevadas, mas sua ligação depende da configuração dos periféricos e das características elétricas do circuito.\n\n## 7. Wi-Fi e redes locais\n\nWi-Fi permite conectar equipamentos por rádio a uma rede local.\n\nNo carrinho, essa conectividade pode permitir a troca de comandos e informações entre o microcontrolador e o computador.\n\nA conexão Wi-Fi não determina, por si só, o formato das mensagens. Sobre a infraestrutura de rede podem funcionar diferentes protocolos.\n\n## 8. O que é UDP?\n\nUDP é um protocolo de transporte que permite enviar datagramas entre equipamentos identificados por endereço IP e porta.\n\nEle não garante, por si só, entrega, ordem ou ausência de duplicação das mensagens.\n\nIsso significa que aplicações de controle precisam considerar perda de pacotes, atrasos, mensagens antigas e limites de tempo sem comunicação.\n\n**Exemplo:** o carrinho ESP32 utiliza Wi-Fi UDP em uma das práticas de teleoperação.\n\n## 9. HTTP: comunicação por requisições\n\nHTTP é um protocolo de aplicação baseado em requisições e respostas.\n\nUm cliente, como o navegador, solicita um recurso ou envia um comando a um servidor.\n\n**Exemplo:** o navegador acessa um servidor web executado no Pico W para controlar um LED.\n\nO servidor precisa interpretar a requisição e produzir uma resposta adequada.\n\n## 10. MQTT: publicação e assinatura\n\nMQTT é um protocolo de aplicação que normalmente utiliza um broker para intermediar mensagens entre clientes.\n\nEm vez de enviar mensagens diretamente a um destinatário específico, um cliente pode publicar em um tópico.\n\nOutros clientes inscritos nesse tópico recebem a mensagem conforme as condições da conexão e da qualidade de serviço.\n\n**Exemplo:** uma ESP32 publica temperatura em `robo/temperatura`, enquanto um painel inscrito nesse tópico recebe os dados.\n\n## 11. HTTP ou MQTT?\n\n| Aspecto | HTTP | MQTT |\n|---|---|---|\n| Modelo comum | Requisição e resposta | Publicação e assinatura |\n| Elemento central | Servidor HTTP | Broker MQTT |\n| Exemplo na plataforma | Servidor web no Pico W | Monitoramento e comandos IoT |\n| Uso típico | Consultar recursos e enviar operações | Distribuir mensagens entre clientes |\n\nEssas características não significam que um protocolo seja universalmente melhor que o outro. A escolha depende dos requisitos do projeto.\n\n## 12. O que é ROS 2?\n\nROS 2 é um conjunto de bibliotecas, ferramentas e convenções que facilita o desenvolvimento de aplicações robóticas distribuídas.\n\nUma aplicação pode ser dividida em nós responsáveis por tarefas diferentes.\n\n**Exemplo:**\n\n- Um nó recebe medições de sensores.\n- Outro nó calcula comandos.\n- Outro nó publica informações para visualização.\n\nOs nós podem trocar mensagens por tópicos e utilizar outros mecanismos de comunicação.\n\nNesta plataforma, a distribuição validada é ROS 2 Foxy.\n\n## 13. O que é micro-ROS?\n\nmicro-ROS permite integrar microcontroladores compatíveis ao ecossistema ROS 2.\n\nUm cliente micro-ROS executado no dispositivo embarcado troca informações através de um transporte configurado, como serial ou UDP, com um micro-ROS Agent.\n\nO Agent intermedeia a comunicação entre o cliente embarcado e o ambiente ROS 2.\n\n**Importante:** o micro-ROS Agent não substitui o microcontrolador, não executa fisicamente os motores e não é um simples tradutor universal de qualquer protocolo.\n\n## 14. Como os sistemas trabalham juntos?\n\nConsidere uma arquitetura possível:\n\n```text\nLiDAR / Encoder / Sensores\n          |\n          v\n        ESP32\n          |\n          | Transporte compatível\n          v\n    micro-ROS Agent\n          |\n          v\n       ROS 2 Foxy\n          |\n          +--> Visualização no RViz2\n          |\n          +--> Processamento e controle\n          |\n          +--> Mapeamento e navegação\n```\n\nEssa arquitetura é um exemplo de integração e depende dos dispositivos, do firmware e dos programas realmente utilizados.\n\n## 15. Onde entra o Docker?\n\nDocker permite executar aplicações em contêineres, organizando seus arquivos, dependências e processos.\n\nNo projeto, ele é usado para manter o ambiente ROS 2 Foxy em um contêiner Ubuntu 20.04.\n\n**Docker não é um protocolo de comunicação robótica.** Seu papel principal aqui é organizar e executar o ambiente de software.\n\n## 16. Onde entram Gazebo e RViz2?\n\n**Gazebo:** simula ambientes, modelos robóticos, movimento e sensores conforme a configuração da simulação.\n\n**RViz2:** visualiza dados do ecossistema ROS 2, como referenciais, mapas e leituras de sensores.\n\nEssas ferramentas têm funções complementares, mas diferentes.\n\n## 17. Como escolher uma tecnologia?\n\nAntes de escolher um protocolo ou uma interface, investigue:\n\n1. Quais dispositivos precisam se comunicar?\n2. Qual é o volume e a frequência dos dados?\n3. Qual é a distância entre os dispositivos?\n4. A comunicação precisa funcionar sem fio?\n5. O atraso é relevante para a segurança?\n6. Como o sistema reage quando uma mensagem não chega?\n7. Quais mecanismos de autenticação e proteção são necessários?\n\n## 18. Exercício de associação\n\nAssocie cada necessidade à tecnologia mais apropriada dentre as estudadas:\n\n- Ler a posição de um joystick analógico.\n- Controlar a velocidade de um motor por um driver.\n- Conectar um display OLED ao microcontrolador.\n- Enviar informações para vários clientes inscritos.\n- Criar uma interface de controle acessada por navegador.\n- Integrar aplicações robóticas distribuídas.\n- Executar ROS 2 em um ambiente de software organizado.\n\nExplique brevemente sua escolha.\n\n## 19. Síntese\n\nA comunicação robótica ocorre em diferentes níveis. Os sinais elétricos conectam dispositivos físicos, as interfaces digitais transportam dados entre componentes e os protocolos de rede permitem conectar equipamentos e aplicações.\n\nHTTP, MQTT, UDP, ROS 2 e micro-ROS cumprem funções distintas. Compreender essas diferenças ajuda a escolher soluções corretas e diagnosticar problemas."
+,
+"theory": {
+    "analogico": "Sinal físico que pode assumir valores contínuos dentro de uma faixa.",
+    "digital": "Representação baseada em estados discretos.",
+    "adc": "Conversor que transforma uma grandeza analógica em uma representação digital.",
+    "uart": "Interface de comunicação serial assíncrona.",
+    "i2c": "Barramento serial síncrono que utiliza linhas de dados e relógio.",
+    "spi": "Interface serial síncrona utilizada para troca de dados com periféricos.",
+    "udp": "Protocolo de transporte de datagramas sem garantias próprias de entrega e ordem.",
+    "http": "Protocolo de aplicação baseado em requisições e respostas.",
+    "mqtt": "Protocolo de aplicação frequentemente utilizado com broker e tópicos.",
+    "ros2": "Ecossistema de ferramentas e bibliotecas para aplicações robóticas.",
+    "microros": "Integração de microcontroladores compatíveis ao ecossistema ROS 2.",
+    "docker": "Plataforma de execução e gerenciamento de aplicações em contêineres."
+},
+"steps": [
+    {
+        "number": 1,
+        "title": "Identificar a comunicação",
+        "description": "Observe as necessidades de comunicação de um carrinho robótico.",
+        "details": [
+            "Identifique a comunicação entre sensor e controlador.",
+            "Identifique como o controlador envia comandos ao driver.",
+            "Reconheça os enlaces com fio e sem fio.",
+            "Identifique quais elementos trocam mensagens pela rede."
+        ],
+        "time": "10 minutos"
+    },
+    {
+        "number": 2,
+        "title": "Escolher a tecnologia",
+        "description": "Associe as tecnologias às suas aplicações.",
+        "details": [
+            "Relacione o joystick analógico ao ADC.",
+            "Relacione o controle de motores ao PWM.",
+            "Relacione o servidor web ao HTTP.",
+            "Relacione o monitoramento por tópicos ao MQTT.",
+            "Relacione os nós robóticos ao ROS 2."
+        ],
+        "time": "15 minutos"
+    },
+    {
+        "number": 3,
+        "title": "Desenhar a arquitetura",
+        "description": "Represente a comunicação de um robô com ESP32, micro-ROS Agent e ROS 2.",
+        "details": [
+            "Desenhe a ESP32 e os sensores.",
+            "Adicione o micro-ROS Agent.",
+            "Adicione o computador com ROS 2 Foxy.",
+            "Identifique o transporte de comunicação.",
+            "Explique a função de cada elemento."
+        ],
+        "time": "20 minutos"
+    }
+],
+"challenges": [
+    {
+        "title": "Desafio 1 — Protocolos e interfaces",
+        "difficulty": "Básico",
+        "description": "Explique a diferença entre ADC, PWM, UART, HTTP, MQTT e ROS 2, identificando quais são interfaces, técnicas de sinalização, protocolos ou ecossistemas de software."
+    },
+    {
+        "title": "Desafio 2 — Comunicação com falhas",
+        "difficulty": "Intermediário",
+        "description": "Um carrinho recebe comandos de movimento via UDP. Explique o que pode ocorrer se mensagens se perderem e proponha um mecanismo de parada por ausência de comandos válidos."
+    },
+    {
+        "title": "Desafio 3 — Arquitetura distribuída",
+        "difficulty": "Intermediário",
+        "description": "Proponha uma arquitetura em que a ESP32 envie medições a um computador com ROS 2 Foxy e este apresente dados em uma ferramenta de visualização."
+    }
+],
+"nextSteps": [
+    "Aula 0.4 — Do Controle Manual à Autonomia",
+    "Prática de servidor web no Pico W",
+    "Prática MQTT como middleware",
+    "Prática de teleoperação por micro-ROS"
+],
+"references": [
+    {
+        "title": "Raspberry Pi — Documentação de microcontroladores",
+        "url": "https://www.raspberrypi.com/documentation/microcontrollers/"
+    },
+    {
+        "title": "MQTT — OASIS",
+        "url": "https://mqtt.org/"
+    },
+    {
+        "title": "ROS 2 Foxy — Documentação oficial",
+        "url": "https://docs.ros.org/en/foxy/"
+    },
+    {
+        "title": "micro-ROS — Documentação oficial",
+        "url": "https://micro.ros.org/docs/"
+    },
+    {
+        "title": "Docker — Documentação oficial",
+        "url": "https://docs.docker.com/"
+    }
+]
+}

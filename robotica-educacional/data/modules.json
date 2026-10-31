@@ -41,125 +41,20 @@
             "difficulty": "Iniciante",
             "icon": "🚨"
           }
-        ]
-      },
-      {
-        "id": "intermediario",
-        "category": "BIPES & micro-ROS",
-        "title": "Módulo Intermediário",
-        "subtitle": "Comunicação Sem Fio e Integração ROS",
-        "icon": "🟡",
-        "color": "#FF9800",
-        "duration": "6-8 horas",
-        "level": "Intermediário",
-        "description": "Explore conceitos avançados de comunicação sem fio, utilizando MQTT e micro-ROS para integração completa com o ecossistema ROS2.",
-        "practiceCount": 2,
-        "practices": [
-          {
-            "id": "mqtt",
-            "title": "MQTT como Middleware",
-            "shortDescription": "Comunicação ROS2 ↔ MQTT ↔ Microcontrolador",
-            "duration": "3-4 horas",
-            "difficulty": "Intermediário",
-            "icon": "📡"
-          },
-          {
-            "id": "microros",
-            "title": "micro-ROS Teleoperação",
-            "shortDescription": "Comandos de movimentação via micro-ROS",
-            "duration": "3-4 horas",
-            "difficulty": "Intermediário",
-            "icon": "🤖"
-          }
-        ]
-      },
-      {
-        "id": "avancado",
-        "category": "BIPES & micro-ROS",
-        "title": "Módulo Avançado",
-        "subtitle": "Controle de Precisão e Feedback",
-        "icon": "🔴",
-        "color": "#F44336",
-        "duration": "7-9 horas",
-        "level": "Avançado",
-        "description": "Implemente controle de precisão utilizando encoders e algoritmos PID para ajuste fino da movimentação, lidando com problemas físicos reais.",
-        "practiceCount": 2,
-        "practices": [
-          {
-            "id": "encoder",
-            "title": "Encoder e Odometria",
-            "shortDescription": "Leitura precisa de rotação das rodas",
-            "duration": "3-4 horas",
-            "difficulty": "Avançado",
-            "icon": "📏"
-          },
-          {
-            "id": "pid",
-            "title": "Controle PID",
-            "shortDescription": "Ajuste fino com controle proporcional-integral-derivativo",
-            "duration": "4-5 horas",
-            "difficulty": "Avançado",
-            "icon": "⚙️"
-          }
-        ]
-      },
-      {
-        "id": "modelagem_controle_robos",
-        "category": "Modelagem e Controle de Robôs",
-        "title": "Modelagem e Controle de Robôs",
-        "subtitle": "Modelagem Matemática, Planejamento de Caminhos e Controle de Movimento",
-        "icon": "🎯",
-        "color": "#3F51B5",
-        "duration": "10-16 horas",
-        "level": "Intermediário/Avançado",
-        "description": "Estude os fundamentos da modelagem matemática de robôs, o planejamento de caminhos e o controle de movimento. Explore métodos de planejamento baseados em campos potenciais e PRM, modelagem determinística de sistemas robóticos, controle de atuadores, controle preditivo não linear de trajetória e simulação e controle do TurtleBot no Gazebo.",
-        "practiceCount": 5,
-        "practices": [
-          {
-            "id": "planejamento_caminhos_campos_potenciais_prm",
-            "title": "Planejamento de Caminhos com Campos Potenciais e PRM",
-            "shortDescription": "Estudo e aplicação de campos potenciais artificiais e do método Probabilistic Roadmap (PRM) para planejamento de caminhos robóticos",
-            "duration": "2-3 horas",
-            "difficulty": "Avançado",
-            "icon": "🗺️"
-          },
-          {
-            "id": "modelagem_deterministica_robos_moveis_nao_holonomicos",
-            "title": "Modelagem Determinística de Robôs Móveis Não-holonômicos e Controle de Atuadores",
-            "shortDescription": "Modelagem cinemática de robôs móveis não holonômicos e estudo do controle de motores e atuadores",
-            "duration": "2-4 horas",
-            "difficulty": "Avançado",
-            "icon": "⚙️"
-          },
-          {
-            "id": "controle_preditivo_nao_linear_trajetoria",
-            "title": "Controle Preditivo Não Linear de Trajetória de Robôs Móveis",
-            "shortDescription": "Aplicação de estratégias de controle preditivo não linear para acompanhamento de trajetórias por robôs móveis",
-            "duration": "2-4 horas",
-            "difficulty": "Avançado",
-            "icon": "📈"
-          },
-          {
-            "id": "modelagem_controle_turtlebot_gazebo",
-            "title": "Modelagem e Controle do TurtleBot (no Gazebo)",
-            "shortDescription": "Simulação do TurtleBot no Gazebo para explorar sua modelagem, configuração e controle de movimento com ROS 2",
-            "duration": "2-3 horas",
-            "difficulty": "Intermediário",
-            "icon": "🤖"
-          }
-        ]
+        ],
+        "order": 1
       },
       {
         "id": "impressao_3d",
         "category": "Impressão 3D & Prototipagem",
         "title": "Módulo Impressão 3D (ABS)",
-        "subtitle": "Fluxo Completo com GTMAX Core H5 e PrusaSlicer",
+        "subtitle": "Da operação da GTMAX à fabricação do Carrinho Loki 200 mm",
         "icon": "🖨️",
         "color": "#9C27B0",
-        "duration": "4-6 horas",
-        "level": "Iniciante",
-        "description": "Aprenda a operar a GTMAX Core H5 utilizando filamento ABS. Domine desde a preparação da máquina e fechamento da câmara até o fatiamento sem warping no PrusaSlicer e a resolução de falhas térmicas.",
-        "practiceCount": 3,
+        "duration": "Variável — inclui fabricação e montagem do carrinho",
+        "level": "Iniciante/Avançado",
+        "description": "Aprenda a operar a GTMAX Core H5 com filamento ABS, preparar modelos no PrusaSlicer, monitorar impressões e resolver falhas. Aplique esses conhecimentos na fabricação e montagem do carrinho robótico Loki 200 mm, que será utilizado nas práticas de ESP32, micro-ROS, ROS 2, LiDAR e SLAM.",
+        "practiceCount": 4,
         "practices": [
           {
             "id": "apresentacao_gtmax",
@@ -184,8 +79,17 @@
             "duration": "2 horas",
             "difficulty": "Iniciante",
             "icon": "🚀"
+          },
+          {
+            "id": "fabricacao_montagem_carrinho_loki",
+            "title": "Fabricação e Montagem do Carrinho Robótico Loki 200 mm",
+            "shortDescription": "Impressão das peças STL do Loki 200 mm, inspeção dimensional, montagem mecânica e preparação do chassi para ESP32, micro-ROS, LiDAR e ROS 2.",
+            "duration": "Variável conforme impressão e montagem",
+            "difficulty": "Avançado",
+            "icon": "🤖"
           }
-        ]
+        ],
+        "order": 2
       },
       {
         "id": "ambiente_ros2_docker",
@@ -194,7 +98,7 @@
         "subtitle": "Instalação, Configuração e Simulação Robótica",
         "icon": "🐳",
         "color": "#2496ED",
-        "duration": "1-3 horas",
+        "duration": "7-14 horas",
         "level": "Intermediário/Avançado",
         "description": "Prepare um ambiente de desenvolvimento para robótica utilizando Docker e ROS 2 Foxy. Aprenda a instalar e gerenciar contêineres, configurar o ambiente ROS 2, criar e compilar workspaces, executar ferramentas gráficas e preparar um ambiente de simulação com Gazebo. Ao final, você terá uma base funcional para desenvolver e testar aplicações robóticas antes da integração com o hardware físico.",
         "practiceCount": 7,
@@ -255,7 +159,8 @@
             "difficulty": "Intermediário",
             "icon": "🎮"
           }
-        ]
+        ],
+        "order": 3
       },
       {
         "id": "ambiente_desenvolvimento_microros",
@@ -272,12 +177,76 @@
           {
             "id": "configuracao_ambiente_microros",
             "title": "Tutorial de Configuração: Ambiente de Desenvolvimento Micro-ROS (ROS Foxy/Docker)",
+            "shortDescription": "Configure o Arduino IDE, instale a biblioteca Micro-ROS para Arduino, prepare o workspace e o agente Micro-ROS e teste a comunicação entre o ESP32 e o ROS 2.",
             "description": "Configure o Arduino IDE, instale a biblioteca Micro-ROS para Arduino, prepare o workspace e o agente Micro-ROS e teste a comunicação entre o ESP32 e o ROS 2.",
             "duration": "1-2 horas",
             "difficulty": "Iniciante",
             "icon": "♾️"
           }
-        ]
+        ],
+        "order": 4
+      },
+      {
+        "id": "intermediario",
+        "category": "Comunicação & micro-ROS",
+        "title": "Módulo Intermediário",
+        "subtitle": "Comunicação Sem Fio e Integração ROS",
+        "icon": "🟡",
+        "color": "#FF9800",
+        "duration": "6-8 horas",
+        "level": "Intermediário",
+        "description": "Explore conceitos avançados de comunicação sem fio, utilizando MQTT e micro-ROS para integração completa com o ecossistema ROS2.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "mqtt",
+            "title": "MQTT como Middleware",
+            "shortDescription": "Comunicação ROS2 ↔ MQTT ↔ Microcontrolador",
+            "duration": "3-4 horas",
+            "difficulty": "Intermediário",
+            "icon": "📡"
+          },
+          {
+            "id": "microros",
+            "title": "micro-ROS Teleoperação",
+            "shortDescription": "Comandos de movimentação via micro-ROS",
+            "duration": "3-4 horas",
+            "difficulty": "Intermediário",
+            "icon": "🤖"
+          }
+        ],
+        "order": 5
+      },
+      {
+        "id": "avancado",
+        "category": "Controle e Odometria",
+        "title": "Módulo Avançado",
+        "subtitle": "Controle de Precisão e Feedback",
+        "icon": "🔴",
+        "color": "#F44336",
+        "duration": "7-9 horas",
+        "level": "Avançado",
+        "description": "Implemente controle de precisão utilizando encoders e algoritmos PID para ajuste fino da movimentação, lidando com problemas físicos reais.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "encoder",
+            "title": "Encoder e Odometria",
+            "shortDescription": "Leitura precisa de rotação das rodas",
+            "duration": "3-4 horas",
+            "difficulty": "Avançado",
+            "icon": "📏"
+          },
+          {
+            "id": "pid",
+            "title": "Controle PID",
+            "shortDescription": "Ajuste fino com controle proporcional-integral-derivativo",
+            "duration": "4-5 horas",
+            "difficulty": "Avançado",
+            "icon": "⚙️"
+          }
+        ],
+        "order": 6
       },
       {
         "id": "carrinho_esp32_ros2",
@@ -314,6 +283,116 @@
             "duration": "4-8 horas",
             "difficulty": "Avançado",
             "icon": "🗺️"
+          }
+        ],
+        "order": 7
+      },
+      {
+        "id": "modelagem_controle_robos",
+        "category": "Modelagem e Controle de Robôs",
+        "title": "Modelagem e Controle de Robôs",
+        "subtitle": "Modelagem Matemática, Planejamento de Caminhos e Controle de Movimento",
+        "icon": "🎯",
+        "color": "#3F51B5",
+        "duration": "8-14 horas",
+        "level": "Intermediário/Avançado",
+        "description": "Estude os fundamentos da modelagem matemática de robôs, o planejamento de caminhos e o controle de movimento. Explore métodos de planejamento baseados em campos potenciais e PRM, modelagem determinística de sistemas robóticos, controle de atuadores, controle preditivo não linear de trajetória e simulação e controle do TurtleBot no Gazebo.",
+        "practiceCount": 4,
+        "practices": [
+          {
+            "id": "planejamento_caminhos_campos_potenciais_prm",
+            "title": "Planejamento de Caminhos com Campos Potenciais e PRM",
+            "shortDescription": "Estudo e aplicação de campos potenciais artificiais e do método Probabilistic Roadmap (PRM) para planejamento de caminhos robóticos",
+            "duration": "2-3 horas",
+            "difficulty": "Avançado",
+            "icon": "🗺️"
+          },
+          {
+            "id": "modelagem_deterministica_robos_moveis_nao_holonomicos",
+            "title": "Modelagem Determinística de Robôs Móveis Não-holonômicos e Controle de Atuadores",
+            "shortDescription": "Modelagem cinemática de robôs móveis não holonômicos e estudo do controle de motores e atuadores",
+            "duration": "2-4 horas",
+            "difficulty": "Avançado",
+            "icon": "⚙️"
+          },
+          {
+            "id": "controle_preditivo_nao_linear_trajetoria",
+            "title": "Controle Preditivo Não Linear de Trajetória de Robôs Móveis",
+            "shortDescription": "Aplicação de estratégias de controle preditivo não linear para acompanhamento de trajetórias por robôs móveis",
+            "duration": "2-4 horas",
+            "difficulty": "Avançado",
+            "icon": "📈"
+          },
+          {
+            "id": "modelagem_controle_turtlebot_gazebo",
+            "title": "Modelagem e Controle do TurtleBot (no Gazebo)",
+            "shortDescription": "Simulação do TurtleBot no Gazebo para explorar sua modelagem, configuração e controle de movimento com ROS 2",
+            "duration": "2-3 horas",
+            "difficulty": "Intermediário",
+            "icon": "🤖"
+          }
+        ],
+        "order": 8
+      }
+    ],
+    "theoryModules": [
+      {
+        "id": "fundamentos_robotica",
+        "type": "theory",
+        "order": 0,
+        "category": "Fundamentos da Robótica",
+        "title": "Fundamentos da Robótica",
+        "subtitle": "Primeiros passos para compreender os sistemas robóticos",
+        "icon": "📖",
+        "color": "#2563EB",
+        "duration": "3-5 horas",
+        "level": "Iniciante",
+        "description": "Aprenda o que é robótica, conheça os componentes de um robô, entenda como os sistemas se comunicam e descubra a diferença entre controle manual, automação e autonomia.",
+        "lessonCount": 4,
+        "lessons": [
+          {
+            "id": "introducao_robotica",
+            "type": "theory",
+            "order": 1,
+            "title": "O que é Robótica?",
+            "shortDescription": "Conceitos fundamentais, aplicações e funcionamento básico de um robô.",
+            "duration": "35-50 minutos",
+            "difficulty": "Iniciante",
+            "icon": "🤖",
+            "file": "data/theory/pt/introducao_robotica.json"
+          },
+          {
+            "id": "anatomia_robo",
+            "type": "theory",
+            "order": 2,
+            "title": "Anatomia de um Robô",
+            "shortDescription": "Sensores, controladores, drivers, atuadores, estrutura mecânica e alimentação.",
+            "duration": "50-70 minutos",
+            "difficulty": "Iniciante",
+            "icon": "⚙️",
+            "file": "data/theory/pt/anatomia_robo.json"
+          },
+          {
+            "id": "comunicacao_robotica",
+            "type": "theory",
+            "order": 3,
+            "title": "Como os Componentes se Comunicam",
+            "shortDescription": "Sinais, interfaces, protocolos e integração entre equipamentos robóticos.",
+            "duration": "50-70 minutos",
+            "difficulty": "Iniciante",
+            "icon": "📡",
+            "file": "data/theory/pt/comunicacao_robotica.json"
+          },
+          {
+            "id": "controle_autonomia",
+            "type": "theory",
+            "order": 4,
+            "title": "Do Controle Manual à Autonomia",
+            "shortDescription": "Teleoperação, realimentação, controle, planejamento e navegação.",
+            "duration": "50-70 minutos",
+            "difficulty": "Iniciante",
+            "icon": "🎯",
+            "file": "data/theory/pt/controle_autonomia.json"
           }
         ]
       }

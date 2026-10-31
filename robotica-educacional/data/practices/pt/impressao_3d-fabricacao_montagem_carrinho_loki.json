@@ -1,0 +1,304 @@
+{
+    "id": "fabricacao_montagem_carrinho_loki",
+    "moduleId": "impressao_3d",
+    "title": "Fabricação e Montagem do Carrinho Robótico Loki 200 mm",
+    "subtitle": "Projeto avançado de impressão 3D aplicado à construção do robô da plataforma",
+    "description": "Prepare, imprima, inspecione e monte a estrutura do carrinho robótico Loki 200 mm utilizando os modelos STL fornecidos no projeto. A atividade conecta a fabricação mecânica às futuras práticas de ESP32, micro-ROS, ROS 2, controle, LiDAR e SLAM.",
+    "duration": "Variável conforme o fatiamento, a impressão e a montagem",
+    "difficulty": "Avançado",
+    "icon": "🤖",
+    "objectives": [
+        "Reconhecer as peças do modelo Loki 200 mm disponibilizadas no projeto",
+        "Identificar a função mecânica de cada peça antes da impressão",
+        "Importar modelos STL no PrusaSlicer",
+        "Analisar orientação, estabilidade, suportes e resistência das peças",
+        "Preparar o fatiamento com o perfil ABS validado para a GTMAX Core H5",
+        "Verificar o espaço ocupado pelos modelos na mesa de impressão",
+        "Executar e acompanhar as impressões de maneira segura",
+        "Inspecionar as peças impressas e realizar o pós-processamento necessário",
+        "Planejar a montagem das plataformas, suportes de motores e rodízio",
+        "Verificar a compatibilidade das peças com os componentes reais do carrinho",
+        "Preparar o chassi para receber eletrônica, alimentação e sensores",
+        "Documentar as etapas de fabricação para as práticas posteriores"
+    ],
+    "prerequisites": [
+        "Conhecendo a GTMAX Core H5",
+        "Pré-Configurações e Funcionalidades do PrusaSlicer",
+        "Execução, Monitoramento e Resolução de Falhas em ABS",
+        "Conhecimentos básicos de componentes mecânicos e eletrônicos",
+        "Acesso aos modelos STL do carrinho Loki fornecidos no ZIP",
+        "Orientação para operação segura da impressora 3D"
+    ],
+    "materials": [
+        {
+            "name": "Impressora GTMAX Core H5",
+            "quantity": 1,
+            "notes": "Utilizar o equipamento e as configurações de operação já validadas nas práticas introdutórias."
+        },
+        {
+            "name": "Filamento ABS",
+            "quantity": 1,
+            "notes": "Quantidade necessária a determinar no PrusaSlicer após fatiar todas as peças."
+        },
+        {
+            "name": "Computador com PrusaSlicer",
+            "quantity": 1,
+            "notes": "Utilizar o perfil de impressão já validado para o equipamento."
+        },
+        {
+            "name": "Conjunto de arquivos STL do Loki 200 mm",
+            "quantity": 1,
+            "notes": "O ZIP contém oito modelos STL utilizados nesta atividade."
+        },
+        {
+            "name": "Ferramentas de remoção de suportes e acabamento",
+            "quantity": 1,
+            "notes": "Utilizar ferramentas compatíveis com o material, com supervisão e proteção adequadas."
+        },
+        {
+            "name": "Paquímetro ou instrumento de medição dimensional",
+            "quantity": 1,
+            "notes": "Recomendado para conferir encaixes e dimensões após a impressão."
+        },
+        {
+            "name": "Motores, rodas e elementos de fixação do carrinho",
+            "quantity": 1,
+            "notes": "Verificar a compatibilidade com os componentes reais antes de definir medidas e quantidades."
+        },
+        {
+            "name": "Componentes eletrônicos do projeto",
+            "quantity": 1,
+            "notes": "ESP32, driver de motores, alimentação e sensores conforme as práticas existentes. Não realizar ligações energizadas durante a montagem mecânica."
+        },
+        {
+            "name": "Equipamentos de proteção e ventilação adequada",
+            "quantity": 1,
+            "notes": "Necessários conforme os procedimentos de segurança do laboratório e as recomendações do fabricante."
+        }
+    ],
+    "content": "# Fabricação e Montagem do Carrinho Robótico Loki 200 mm\n\n## 1. Apresentação do projeto\n\nO objetivo desta prática é produzir e montar a estrutura mecânica do carrinho que será utilizado nas atividades de programação, comunicação, controle e navegação da plataforma Robótica Educacional.\n\nO projeto utiliza como referência o **Loki 200 mm**, disponibilizado pela MakersPet, com um conjunto de modelos STL fornecido especificamente para esta plataforma.\n\nO carrinho será desenvolvido de maneira progressiva. Nesta etapa, o foco é a fabricação da estrutura, o reconhecimento dos componentes e a preparação para a integração eletrônica.\n\nA comunicação com micro-ROS, a integração com ROS 2 Foxy, o uso de LiDAR e o mapeamento com SLAM serão trabalhados nas práticas correspondentes.\n\n**Referência:** https://github.com/makerspet/3d_models/tree/main/loki_200mm/3mf/\n\n## 2. O que é um modelo STL?\n\nSTL é um formato utilizado para representar a superfície de modelos tridimensionais por meio de uma malha de triângulos.\n\nO arquivo STL descreve a geometria, mas normalmente não contém todas as informações necessárias para uma impressão, como material, temperatura, preenchimento e estratégia de suportes.\n\nEssas configurações são definidas no fatiador.\n\n## 3. O que é um arquivo 3MF?\n\nO formato 3MF pode armazenar informações de modelos tridimensionais e outros dados relacionados ao processo de fabricação.\n\nA referência pública do Loki disponibiliza modelos nesse formato, enquanto o pacote enviado para esta atividade utiliza STL.\n\nAssim, o estudante deve importar os arquivos STL da plataforma no PrusaSlicer e aplicar o perfil de fabricação utilizado no laboratório.\n\nAs configurações de impressão eventualmente presentes nos arquivos 3MF da referência não devem ser adotadas automaticamente na GTMAX Core H5.\n\n## 4. Identificação das peças fornecidas\n\nO conjunto contém os seguintes modelos:\n\n| Arquivo STL | Identificação |\n|---|---|\n| Bottom plate.stl | Plataforma inferior |\n| Middle plate.stl | Plataforma intermediária |\n| Upper plate.stl | Plataforma superior |\n| Motor bracket x2.stl | Suporte de motor, com indicação de duas unidades |\n| Caster wheel with break-off pedestal.stl | Rodízio com pedestal removível |\n| Bumper front.stl | Para-choque dianteiro |\n| Bumper back.stl | Para-choque traseiro |\n| Suporte Adptado Lidar.stl | Suporte de LiDAR adaptado |\n\n**Atenção:** a quantidade de arquivos não equivale à quantidade final de objetos impressos. O nome `Motor bracket x2.stl` indica a necessidade prevista de duas unidades de suporte de motor. As demais quantidades devem ser confirmadas no projeto e durante a pré-montagem.\n\n## 5. Análise das dimensões dos modelos\n\nA inspeção geométrica dos STLs fornecidos identificou as seguintes dimensões aproximadas de suas caixas delimitadoras, em unidades interpretadas como milímetros:\n\n| Modelo | X | Y | Z |\n|---|---:|---:|---:|\n| Bottom plate | 189,1 | 200,0 | 31,0 |\n| Middle plate | 200,0 | 200,0 | 56,6 |\n| Upper plate | 200,0 | 200,0 | 11,0 |\n| Motor bracket x2 | 86,5 | 46,1 | 15,5 |\n| Caster wheel with break-off pedestal | 40,0 | 40,0 | 54,0 |\n| Bumper front | 204,2 | 102,1 | 122,7 |\n| Bumper back | 204,2 | 102,1 | 122,7 |\n| Suporte Adptado Lidar | 129,5 | 106,5 | 12,9 |\n\nEsses valores representam a extensão geométrica dos arquivos em sua orientação original, e não necessariamente o tamanho ocupado na mesa após girar os modelos.\n\nA unidade deve ser conferida no PrusaSlicer. O arquivo STL não define obrigatoriamente a unidade física de medida.\n\n**Atividade:** importe a plataforma inferior e verifique as dimensões exibidas pelo programa. Compare com as medidas apresentadas nesta seção.\n\n## 6. Conhecendo o sistema de plataformas\n\nA estrutura utiliza plataformas identificadas como inferior, intermediária e superior.\n\nEssa organização permite estudar como diferentes componentes mecânicos e eletrônicos podem ser distribuídos em níveis de montagem.\n\nAntes da impressão definitiva, observe no fatiador as superfícies de apoio, aberturas, pontos de passagem de cabos e regiões que podem receber componentes.\n\nA finalidade exata de cada furação e a ordem de fixação devem ser confirmadas pela geometria das peças e pelos componentes realmente utilizados.\n\n## 7. Suportes dos motores\n\nO modelo `Motor bracket x2.stl` corresponde aos suportes utilizados na fixação dos motores.\n\nAntes de imprimir as duas unidades, verifique a compatibilidade do suporte com os motores disponíveis no laboratório.\n\nObserve:\n\n- Dimensões externas dos motores.\n- Posição dos eixos.\n- Regiões de encaixe.\n- Espaço para fios e conectores.\n- Possibilidade de montagem e manutenção.\n\nNão force o encaixe de um motor em uma peça incompatível. A pressão excessiva pode provocar trincas ou deformações na estrutura impressa.\n\n## 8. Rodízio e estabilidade\n\nO arquivo `Caster wheel with break-off pedestal.stl` representa um rodízio com pedestal removível.\n\nSua função no projeto deve ser avaliada em conjunto com as rodas motrizes, a posição dos motores e a distribuição de massa do carrinho.\n\nApós a impressão, identifique a parte removível prevista na geometria e analise as instruções de pós-processamento antes de destacá-la.\n\nO destacamento deve ocorrer somente depois de identificar corretamente a parte destinada à remoção.\n\n## 9. Para-choques\n\nOs arquivos `Bumper front.stl` e `Bumper back.stl` correspondem aos para-choques dianteiro e traseiro.\n\nEssas peças fazem parte da estrutura mecânica do modelo. Sua presença não transforma automaticamente o carrinho em um sistema seguro contra colisões.\n\nA prevenção de impactos depende também de sensores, algoritmos de controle, limitações de velocidade e procedimentos de operação.\n\n## 10. Suporte de LiDAR adaptado\n\nO pacote inclui o arquivo `Suporte Adptado Lidar.stl`, que não deve ser confundido automaticamente com o suporte de LiDAR apresentado na referência original.\n\nAntes de imprimir, verifique o modelo do LiDAR utilizado no laboratório e compare as dimensões de sua base com as aberturas, apoios e pontos de fixação do suporte.\n\nO posicionamento do LiDAR deverá permitir a obtenção de medições do ambiente com o mínimo de obstruções possível, dentro das limitações do sensor e da estrutura do carrinho.\n\n**Importante:** não invente ou modifique as posições de fixação sem verificar a compatibilidade com o equipamento real.\n\n## 11. Preparação dos arquivos para impressão\n\n1. Abra o PrusaSlicer.\n2. Carregue o perfil de impressora GTMAX Core H5 utilizado nas aulas anteriores.\n3. Confirme que o material configurado corresponde ao ABS disponível no laboratório.\n4. Importe uma peça STL por vez para análise inicial.\n5. Verifique as dimensões interpretadas pelo programa.\n6. Observe a orientação original do modelo.\n7. Examine as superfícies que podem ficar apoiadas na mesa.\n8. Identifique regiões que podem necessitar de suporte.\n9. Verifique a presença de alertas de geometria ou posicionamento.\n10. Salve a preparação conforme o procedimento utilizado no laboratório.\n\n## 12. Como decidir a orientação de impressão?\n\nA orientação da peça influencia o uso de suportes, a qualidade de algumas superfícies, a resistência mecânica e o tempo de fabricação.\n\nPara cada modelo, avalie:\n\n- Área de contato com a mesa.\n- Existência de balanços ou regiões suspensas.\n- Direção dos esforços mecânicos esperados.\n- Localização das superfícies de encaixe.\n- Facilidade de remoção dos suportes.\n- Espaço necessário no volume de impressão.\n\nUma orientação que economiza material nem sempre oferece a melhor resistência mecânica.\n\n**Atividade:** compare duas orientações de um suporte de motor no PrusaSlicer e registre as diferenças de suporte, tempo e consumo estimados.\n\n## 13. Configurações de impressão\n\nUtilize como ponto de partida o perfil ABS já validado nas práticas introdutórias da GTMAX Core H5.\n\nAntes de gerar o G-code, confira:\n\n- Temperatura do bico.\n- Temperatura da mesa.\n- Espessura das camadas.\n- Número de perímetros.\n- Densidade e padrão de preenchimento.\n- Velocidade de impressão.\n- Estratégia de suportes.\n- Recursos de adesão à mesa.\n- Configuração de ventilação.\n- Dimensões e posição da peça.\n\nAs temperaturas e os demais parâmetros devem corresponder ao filamento, ao equipamento e ao perfil efetivamente testado.\n\nNão existe uma configuração universal que garanta a impressão adequada de todas as peças do carrinho.\n\n## 14. Impressão das peças\n\nRecomenda-se iniciar por uma peça apropriada para conferir o funcionamento do equipamento e a compatibilidade dimensional antes de produzir todas as partes do chassi.\n\nPara cada impressão:\n\n1. Confirme a identificação do modelo.\n2. Verifique se a geometria está dentro do volume de impressão disponível.\n3. Revise a pré-visualização das camadas.\n4. Confira a estabilidade dos suportes planejados.\n5. Verifique o consumo estimado de material.\n6. Gere o G-code utilizando o perfil validado.\n7. Siga o procedimento seguro de preparação da GTMAX.\n8. Inicie a fabricação conforme as orientações do laboratório.\n9. Acompanhe principalmente as primeiras camadas.\n10. Ao concluir, aguarde condições seguras para a retirada da peça.\n11. Registre eventuais defeitos antes de alterar os parâmetros.\n\n## 15. Pós-processamento\n\nApós a retirada da impressora, examine cada peça.\n\nVerifique:\n\n- Adesão adequada entre camadas.\n- Ausência de trincas relevantes.\n- Deformações por contração térmica.\n- Qualidade de furos e encaixes.\n- Integridade de suportes estruturais.\n- Planicidade das superfícies de montagem.\n\nRemova suportes e rebarbas somente quando necessário e com ferramentas apropriadas.\n\nNão remova saliências, nervuras ou elementos cujo papel estrutural ainda não tenha sido identificado.\n\n## 16. Pré-montagem mecânica\n\nAntes de instalar componentes eletrônicos, realize uma montagem preliminar sem alimentação elétrica.\n\nOrganize as plataformas, os suportes de motores, o rodízio e os para-choques.\n\nProcure identificar as superfícies correspondentes e os pontos de fixação visíveis nas geometrias.\n\nA pré-montagem deve confirmar:\n\n- Compatibilidade dos encaixes.\n- Alinhamento das plataformas.\n- Compatibilidade dos motores com seus suportes.\n- Ausência de interferências entre peças.\n- Espaço para a passagem de cabos.\n- Acesso às regiões que precisarão de manutenção.\n\nCaso alguma peça não encaixe corretamente, determine se a causa é deformação de impressão, orientação inadequada ou incompatibilidade dimensional antes de modificar o modelo.\n\n## 17. Montagem dos motores e rodas\n\nCom os suportes impressos e inspecionados, avalie a instalação dos motores utilizados no projeto.\n\nA montagem deve manter os eixos corretamente posicionados e evitar esforço mecânico indevido sobre os motores.\n\nConfirme que as rodas instaladas não interferem no chassi e que conseguem girar livremente quando o sistema está desenergizado.\n\n**Observação:** o ZIP contém os suportes de motores, mas não fornece modelos STL separados das rodas motrizes. As rodas e os demais componentes de locomoção devem corresponder ao conjunto físico disponível no projeto.\n\n## 18. Integração do suporte LiDAR\n\nPosicione provisoriamente o suporte adaptado e o sensor real para verificar compatibilidade.\n\nAntes da fixação definitiva, confirme:\n\n- Correspondência entre os furos e apoios.\n- Estabilidade mecânica.\n- Espaço para conectores.\n- Passagem dos cabos.\n- Ausência de obstruções relevantes ao campo de medição.\n- Acesso ao sensor para inspeção e manutenção.\n\nA instalação e a configuração eletrônica do LiDAR serão aprofundadas na prática específica de integração do sensor.\n\n## 19. Preparação para os circuitos eletrônicos\n\nA estrutura precisa permitir a montagem e a manutenção dos componentes usados nas etapas seguintes.\n\nPlaneje os espaços para:\n\n- ESP32.\n- Driver L298N ou dispositivo de acionamento utilizado no projeto.\n- Fonte e sistema de alimentação.\n- Cabos dos motores.\n- Conectores dos encoders.\n- Sensores necessários às práticas.\n- Comunicação e acesso aos dispositivos.\n\nNão fixe permanentemente os componentes antes de verificar sua compatibilidade dimensional e as condições elétricas de instalação.\n\nAs conexões de potência deverão ser realizadas conforme o esquema elétrico validado do carrinho, em uma etapa apropriada.\n\n## 20. Testes mecânicos antes da energização\n\nCom a estrutura montada:\n\n1. Verifique a estabilidade do carrinho sobre uma superfície plana.\n2. Observe se existem partes soltas.\n3. Verifique a rotação livre das rodas, quando aplicável.\n4. Inspecione os suportes dos motores.\n5. Confira a posição do rodízio.\n6. Verifique a fixação dos para-choques.\n7. Inspecione o suporte LiDAR.\n8. Confirme que não há componentes pressionando cabos ou conectores.\n9. Registre ajustes necessários.\n10. Solicite a conferência da montagem antes da primeira energização.\n\n## 21. Como o carrinho será utilizado nos próximos módulos?\n\nDepois da fabricação mecânica, o projeto avançará para a preparação do ambiente ROS 2 Foxy e do micro-ROS.\n\nO carrinho receberá os sistemas necessários para executar as práticas de teleoperação, medição de movimento, controle dos motores, percepção do ambiente e mapeamento.\n\nA estrutura impressa constitui a base física do projeto integrador, mas não representa, isoladamente, a conclusão do robô.\n\n## 22. Critérios de conclusão\n\nA atividade será concluída quando:\n\n- Os arquivos utilizados estiverem identificados e documentados.\n- As peças impressas apresentarem integridade adequada.\n- As dimensões importantes tiverem sido conferidas.\n- Os suportes de motor forem compatíveis com os motores utilizados.\n- As plataformas puderem ser montadas corretamente.\n- O rodízio e os para-choques estiverem avaliados e montados conforme o projeto.\n- O suporte LiDAR adaptado tiver sua compatibilidade verificada.\n- A estrutura permitir a instalação segura dos componentes eletrônicos.\n- A inspeção mecânica tiver sido registrada.\n\n## 23. Síntese\n\nNesta prática, a impressão 3D é utilizada como ferramenta de fabricação de um sistema robótico real.\n\nO estudante aprende que fabricar um robô exige mais do que imprimir modelos: é necessário verificar geometria, orientação, resistência, tolerâncias, compatibilidade de componentes, montagem e segurança.\n\nO resultado será a base mecânica para o desenvolvimento progressivo do carrinho com ESP32, micro-ROS, ROS 2 Foxy, LiDAR e SLAM.",
+    "steps": [
+        {
+            "number": 1,
+            "title": "Identificar os arquivos do Loki",
+            "description": "Reconhecer os oito modelos STL fornecidos no pacote.",
+            "details": [
+                "Localize os modelos das três plataformas.",
+                "Identifique os arquivos dos para-choques.",
+                "Identifique o suporte de motor e a indicação x2.",
+                "Identifique o modelo do rodízio.",
+                "Identifique o suporte LiDAR adaptado.",
+                "Organize uma lista de peças para fabricação."
+            ],
+            "time": "30 minutos"
+        },
+        {
+            "number": 2,
+            "title": "Inspecionar os modelos no PrusaSlicer",
+            "description": "Avaliar as dimensões e a geometria antes da impressão.",
+            "details": [
+                "Importe os STLs sem modificar a escala inicialmente.",
+                "Confira as dimensões dos modelos.",
+                "Observe as regiões de encaixe.",
+                "Identifique áreas que podem precisar de suportes.",
+                "Verifique o volume de impressão disponível."
+            ],
+            "time": "30-60 minutos"
+        },
+        {
+            "number": 3,
+            "title": "Planejar o fatiamento",
+            "description": "Definir a preparação de cada peça com o perfil ABS validado.",
+            "details": [
+                "Carregue o perfil da GTMAX Core H5.",
+                "Analise a orientação de fabricação.",
+                "Verifique a necessidade de suportes.",
+                "Revise os perímetros e o preenchimento.",
+                "Confira adesão à mesa e retração térmica.",
+                "Registre tempo e material estimados.",
+                "Gere o G-code após revisar a pré-visualização."
+            ],
+            "time": "Variável"
+        },
+        {
+            "number": 4,
+            "title": "Imprimir e monitorar",
+            "description": "Produzir os modelos seguindo os procedimentos de segurança do laboratório.",
+            "details": [
+                "Confira o equipamento antes de iniciar.",
+                "Siga o procedimento já validado para ABS.",
+                "Acompanhe a primeira camada.",
+                "Observe defeitos de adesão e deformação.",
+                "Registre falhas e respectivas correções.",
+                "Retire a peça somente em condições seguras."
+            ],
+            "time": "Conforme o tempo estimado no fatiador"
+        },
+        {
+            "number": 5,
+            "title": "Realizar pós-processamento",
+            "description": "Inspecionar as peças e preparar as regiões de montagem.",
+            "details": [
+                "Examine possíveis trincas ou deformações.",
+                "Remova os suportes de impressão necessários.",
+                "Verifique furos e encaixes.",
+                "Compare medidas críticas com os componentes reais.",
+                "Separe peças aprovadas e peças que precisam de correção."
+            ],
+            "time": "Variável"
+        },
+        {
+            "number": 6,
+            "title": "Realizar a pré-montagem mecânica",
+            "description": "Verificar encaixes e compatibilidade do chassi antes de instalar a eletrônica.",
+            "details": [
+                "Organize as plataformas inferior, intermediária e superior.",
+                "Posicione os suportes dos motores.",
+                "Avalie a posição dos para-choques.",
+                "Verifique o rodízio.",
+                "Confira os pontos de fixação e as possíveis interferências.",
+                "Não force encaixes incompatíveis."
+            ],
+            "time": "1-2 horas"
+        },
+        {
+            "number": 7,
+            "title": "Preparar a integração do carrinho",
+            "description": "Conferir os espaços necessários para alimentação, controle e sensores.",
+            "details": [
+                "Verifique as posições previstas para os motores.",
+                "Avalie o espaço para a ESP32 e o driver.",
+                "Planeje a passagem dos cabos.",
+                "Confira a compatibilidade do suporte LiDAR.",
+                "Avalie acesso para manutenção.",
+                "Registre o resultado da inspeção mecânica."
+            ],
+            "time": "1 hora"
+        }
+    ],
+    "theory": {
+        "stl": "Formato de representação de superfícies tridimensionais por malhas triangulares.",
+        "3mf": "Formato de fabricação 3D capaz de representar geometrias e informações adicionais do projeto.",
+        "fatiamento": "Processo de transformar um modelo tridimensional em instruções para fabricação em camadas.",
+        "orientacao_impressao": "Posicionamento do modelo no volume de impressão para equilibrar fabricação, acabamento e resistência.",
+        "suportes": "Estruturas temporárias destinadas a sustentar determinadas regiões durante a impressão.",
+        "preenchimento": "Estrutura interna gerada durante o fatiamento, cuja configuração influencia consumo, tempo e desempenho mecânico.",
+        "perimetros": "Regiões impressas que formam as paredes externas e internas de cada camada.",
+        "warping": "Deformação causada por contração térmica desigual, podendo provocar levantamento de regiões da peça.",
+        "tolerancia": "Variação dimensional admissível para que uma peça apresente o ajuste previsto.",
+        "premontagem": "Verificação preliminar de encaixes, posições e interferências antes da fixação definitiva.",
+        "chassi": "Estrutura mecânica responsável por sustentar e organizar os componentes do robô.",
+        "projeto_integrador": "Atividade que reúne conhecimentos desenvolvidos em diferentes módulos para atingir um objetivo comum."
+    },
+    "challenges": [
+        {
+            "title": "Desafio 1 — Identificação das peças",
+            "difficulty": "Básico",
+            "description": "Crie uma tabela com os oito modelos STL, a função provável de cada um e a quantidade de unidades prevista para a montagem. Separe os dados confirmados das informações que precisam de verificação."
+        },
+        {
+            "title": "Desafio 2 — Comparar orientações",
+            "difficulty": "Intermediário",
+            "description": "Escolha um suporte de motor e compare duas orientações de impressão no PrusaSlicer. Registre as diferenças de tempo, material e suportes, discutindo as possíveis implicações mecânicas."
+        },
+        {
+            "title": "Desafio 3 — Inspeção dimensional",
+            "difficulty": "Intermediário",
+            "description": "Selecione uma região de encaixe e compare a dimensão prevista no modelo com a dimensão observada na peça impressa. Explique possíveis causas de diferença."
+        },
+        {
+            "title": "Desafio 4 — Integração do LiDAR",
+            "difficulty": "Avançado",
+            "description": "Verifique se o suporte LiDAR adaptado é compatível com o sensor utilizado. Analise fixação, passagem dos cabos, obstruções e estabilidade durante o movimento do carrinho."
+        },
+        {
+            "title": "Desafio 5 — Preparação do robô",
+            "difficulty": "Avançado",
+            "description": "Desenhe um esquema de distribuição dos componentes eletrônicos no chassi e identifique os pontos que precisam ser confirmados antes da energização."
+        }
+    ],
+    "troubleshooting": [
+        {
+            "problem": "O STL aparece com dimensões incorretas no fatiador.",
+            "solutions": [
+                "Verifique se o programa interpretou corretamente a unidade de medida.",
+                "Compare as dimensões apresentadas com as medidas de referência da atividade.",
+                "Não aplique escalas arbitrárias antes de identificar a causa."
+            ]
+        },
+        {
+            "problem": "A peça apresenta deformação nas extremidades.",
+            "solutions": [
+                "Verifique o perfil ABS validado e a adesão à mesa.",
+                "Analise a orientação da peça e a distribuição de material.",
+                "Confira as condições térmicas e as recomendações do equipamento.",
+                "Registre a falha antes de alterar parâmetros."
+            ]
+        },
+        {
+            "problem": "Os suportes de impressão são difíceis de remover.",
+            "solutions": [
+                "Identifique se o material removido é suporte ou parte da peça.",
+                "Utilize ferramentas adequadas e proteção apropriada.",
+                "Na próxima preparação, reavalie orientação e estratégia de suportes."
+            ]
+        },
+        {
+            "problem": "O motor não encaixa no suporte impresso.",
+            "solutions": [
+                "Confira o modelo de motor efetivamente utilizado.",
+                "Compare suas dimensões com a geometria do suporte.",
+                "Verifique possíveis deformações da impressão.",
+                "Evite forçar o motor ou ampliar furos sem avaliar o projeto."
+            ]
+        },
+        {
+            "problem": "As plataformas não se alinham.",
+            "solutions": [
+                "Inspecione os pontos de contato e de fixação.",
+                "Verifique deformações e rebarbas.",
+                "Confira a orientação correta de cada peça.",
+                "Identifique se existe incompatibilidade entre versões dos modelos."
+            ]
+        },
+        {
+            "problem": "O LiDAR não encaixa no suporte adaptado.",
+            "solutions": [
+                "Confirme o modelo exato do sensor.",
+                "Verifique os furos e as superfícies de apoio.",
+                "Compare o suporte adaptado com a configuração física utilizada no laboratório.",
+                "Não realize alterações permanentes antes de confirmar as dimensões."
+            ]
+        }
+    ],
+    "nextSteps": {
+        "nextPractice": {
+            "moduleId": "ambiente_ros2_docker",
+            "practiceId": "instalacao_docker",
+            "title": "Instalação e Configuração do Docker"
+        },
+        "relatedTopics": [
+            "Preparação do ambiente ROS 2 Foxy",
+            "Configuração do micro-ROS para ESP32",
+            "Teleoperação do carrinho",
+            "Encoder e odometria",
+            "Controle PID dos motores",
+            "Integração do LiDAR",
+            "Mapeamento do ambiente com SLAM"
+        ]
+    },
+    "resources": [
+        {
+            "title": "Modelos originais Loki 200 mm — MakersPet",
+            "description": "Referência pública do projeto, com arquivos 3MF e outras variações de modelos.",
+            "url": "https://github.com/makerspet/3d_models/tree/main/loki_200mm/3mf/",
+            "icon": "🔗"
+        },
+        {
+            "title": "Peças Utilizadas nesta prática",
+            "description": "Baixe apenas o necessário para montar o Loki",
+            "url": "files/Robô_Loki.zip",
+            "icon": "📚"
+        }
+    ]
+}

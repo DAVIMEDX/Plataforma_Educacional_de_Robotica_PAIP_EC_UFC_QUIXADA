@@ -1,170 +1,300 @@
 {
   "id": "webserver",
+  "moduleId": "inicial",
   "title": "Servidor Web no Pico W",
-  "description": "Aprenda a criar um servidor web no Raspberry Pi Pico W para controlar dispositivos remotamente através de um navegador.",
+  "description": "Aprenda a criar um servidor web no Raspberry Pi Pico W para controlar dispositivos remotamente por meio de um navegador, utilizando Wi-Fi, requisições HTTP e uma interface HTML.",
   "duration": "2-3 horas",
   "difficulty": "Iniciante",
   "objectives": [
-    "Configurar o Pico W como servidor web",
-    "Criar páginas HTML interativas",
-    "Enviar comandos HTTP para controlar o hardware",
-    "Implementar endpoints de API REST",
-    "Entender o protocolo HTTP básico"
+    "Configurar o Raspberry Pi Pico W para conexão a uma rede Wi-Fi",
+    "Compreender o funcionamento de um servidor web embarcado",
+    "Criar uma interface HTML para controle remoto",
+    "Enviar requisições HTTP para controlar um LED",
+    "Compreender os conceitos básicos de endpoints e APIs REST",
+    "Interpretar respostas HTTP e estados de dispositivos",
+    "Identificar problemas de conexão e comunicação em rede"
+  ],
+  "prerequisites": [
+    "Conhecimento básico de eletrônica e montagem de circuitos",
+    "Familiaridade com a plataforma BIPES",
+    "Raspberry Pi Pico W configurado e funcionando",
+    "Conhecimento básico sobre pinos GPIO",
+    "Noções iniciais de redes Wi-Fi e endereços IP",
+    "Computador ou dispositivo com navegador web"
   ],
   "materials": [
     {
       "name": "Raspberry Pi Pico W",
       "quantity": 1,
-      "notes": "Com WiFi integrado"
+      "notes": "Microcontrolador com conectividade Wi-Fi integrada e lógica de 3,3 V"
     },
     {
       "name": "LED",
       "quantity": 1,
-      "notes": "Qualquer cor"
+      "notes": "LED convencional de qualquer cor, respeitando suas características elétricas"
     },
     {
-      "name": "Resistor 220Ω",
+      "name": "Resistor de 220 Ω",
       "quantity": 1,
-      "notes": "Para o LED"
+      "notes": "Resistor limitador de corrente em série com o LED. Confirmar compatibilidade com o LED utilizado."
     },
     {
       "name": "Cabo USB",
-      "quantity": 1
+      "quantity": 1,
+      "notes": "Para alimentação, programação e comunicação com o Pico W"
     },
     {
       "name": "Protoboard",
-      "quantity": 1
+      "quantity": 1,
+      "notes": "Para montagem do circuito"
+    },
+    {
+      "name": "Jumpers",
+      "quantity": 3,
+      "notes": "Cabos para as conexões entre o Pico W e a protoboard"
+    },
+    {
+      "name": "Rede Wi-Fi",
+      "quantity": 1,
+      "notes": "Rede local de 2,4 GHz, preferencialmente privada e com comunicação entre dispositivos habilitada"
+    },
+    {
+      "name": "Computador ou smartphone",
+      "quantity": 1,
+      "notes": "Dispositivo com navegador web conectado à rede local utilizada nos testes"
     }
   ],
   "wiring": {
+    "diagram": "",
+    "description": "Monte o circuito utilizando o GPIO 15 do Raspberry Pi Pico W como saída digital para controlar o LED. O resistor deve ficar em série com o LED para limitar a corrente elétrica. A imagem de ligação referenciada originalmente não foi localizada no projeto.",
     "connections": [
-      "LED anodo (+) → GPIO 15",
-      "LED catodo (-) → Resistor 220Ω → GND"
+      "GPIO 15 do Pico W → Resistor de 220 Ω",
+      "Resistor de 220 Ω → Ânodo (+) do LED",
+      "Cátodo (-) do LED → GND do Pico W"
     ],
-    "diagram": "assets/diagrams/webserver-wiring.png",
     "warnings": [
-      "Sempre use resistor com LEDs para evitar queimá-los",
-      "Verifique a polaridade do LED antes de conectar"
+      "Desligue a alimentação antes de montar ou modificar as conexões.",
+      "Utilize um resistor limitador de corrente em série com o LED.",
+      "Verifique a polaridade do LED: o ânodo é o terminal positivo e o cátodo é o terminal negativo.",
+      "Não conecte LEDs diretamente aos pinos GPIO sem considerar os limites elétricos do circuito.",
+      "Os GPIOs do Raspberry Pi Pico W operam com lógica de 3,3 V.",
+      "Não aplique 5 V diretamente ao GPIO 15.",
+      "Confira a numeração física e a identificação GPIO do Pico W antes de realizar as conexões.",
+      "Não compartilhe credenciais de Wi-Fi em arquivos públicos ou capturas de tela.",
+      "Utilize uma rede local confiável para testar o servidor HTTP.",
+      "O exemplo não implementa autenticação e não deve ser exposto diretamente à internet."
     ]
   },
   "theory": {
-    "webserver": "Um servidor web é um programa que responde a requisições HTTP. O Pico W pode atuar como servidor, permitindo que você controle o hardware através de um navegador web.",
-    "http": "HTTP (HyperText Transfer Protocol) é o protocolo usado para comunicação na web. Métodos principais: GET (obter dados) e POST (enviar dados).",
-    "restapi": "API REST usa URLs para representar recursos. Exemplo: GET /led/status retorna o estado do LED, POST /led/on liga o LED."
+    "webserver": "Um servidor web é um programa que recebe requisições de clientes e envia respostas utilizando o protocolo HTTP. Nesta prática, o Raspberry Pi Pico W executa um servidor que recebe comandos de um navegador e os utiliza para controlar um LED conectado ao GPIO 15.",
+    "wifi": "Wi-Fi é uma tecnologia de comunicação sem fio utilizada para conectar dispositivos em uma rede local. O Raspberry Pi Pico W utiliza Wi-Fi na faixa de 2,4 GHz. Após se conectar à rede, recebe um endereço IP que permite sua identificação e comunicação com outros dispositivos.",
+    "ip": "O endereço IP identifica um dispositivo em uma rede. Em uma rede doméstica, um endereço pode ter o formato 192.168.1.100. Esse endereço é apenas um exemplo: o valor real atribuído ao Pico W deve ser consultado após a conexão.",
+    "http": "HTTP significa HyperText Transfer Protocol. É um protocolo de comunicação baseado em requisições e respostas. O método GET é normalmente utilizado para consultar recursos, enquanto POST pode ser utilizado para enviar comandos ou dados que modificam o estado de um dispositivo.",
+    "restapi": "Uma API REST organiza a comunicação em torno de recursos identificados por URLs e métodos HTTP. Para fins didáticos, esta prática utiliza rotas simples como /led/on e /led/off. Em um projeto com semântica HTTP mais rigorosa, a consulta ao estado pode utilizar GET /led/status, enquanto a alteração do estado pode utilizar POST.",
+    "html": "HTML é a linguagem utilizada para estruturar páginas web. Nesta prática, uma página contém botões para ligar e desligar o LED. O navegador envia requisições ao servidor embarcado, que interpreta os comandos e atualiza a saída digital.",
+    "javascript": "JavaScript permite adicionar comportamento interativo à interface HTML. Requisições podem ser enviadas sem recarregar toda a página utilizando a API fetch, desde que o servidor e o navegador sejam compatíveis com a forma de comunicação escolhida.",
+    "gpio": "GPIO significa General Purpose Input/Output. São pinos de entrada e saída de uso geral. O GPIO 15 será configurado como saída digital. Em nível lógico alto, fornece aproximadamente 3,3 V; em nível baixo, aproxima-se de 0 V.",
+    "seguranca": "Um servidor HTTP sem autenticação permite que dispositivos capazes de acessá-lo enviem comandos. Por isso, o experimento deve ser realizado em uma rede local confiável, sem encaminhamento de portas para a internet e sem exposição pública do endereço do dispositivo."
   },
   "steps": [
     {
       "number": 1,
-      "title": "Conectar o Pico W ao WiFi",
-      "description": "Configure as credenciais WiFi no BIPES",
+      "title": "Conectar o Pico W ao Wi-Fi",
+      "description": "Configure o Raspberry Pi Pico W para se conectar a uma rede Wi-Fi local e identificar seu endereço IP.",
       "details": [
-        "No BIPES, adicione o bloco 'WiFi Connect'",
-        "Digite o SSID da sua rede WiFi",
-        "Digite a senha da rede",
-        "Adicione um bloco 'Print' para mostrar o IP recebido"
+        "Conecte o Raspberry Pi Pico W ao computador utilizando o cabo USB.",
+        "Abra a plataforma BIPES e selecione o ambiente compatível com o Raspberry Pi Pico W.",
+        "Localize os recursos de configuração de rede Wi-Fi disponíveis na versão do BIPES utilizada.",
+        "Configure o nome da rede (SSID) e sua senha.",
+        "Utilize uma rede Wi-Fi de 2,4 GHz compatível com o Pico W.",
+        "Configure a rotina de conexão para aguardar a obtenção de um endereço IP.",
+        "Adicione uma instrução para apresentar o endereço IP no terminal após a conexão.",
+        "Execute o programa e observe o resultado.",
+        "Anote o endereço IP atribuído ao Pico W.",
+        "Verifique se o computador ou smartphone de teste está conectado à mesma rede local.",
+        "Confirme que a rede permite comunicação entre os dispositivos, sem isolamento de clientes."
       ],
       "time": "15 minutos"
     },
     {
       "number": 2,
       "title": "Criar o Servidor Web",
-      "description": "Configure o servidor HTTP no Pico W",
+      "description": "Configure o servidor HTTP para receber requisições e identificar comandos enviados pelo navegador.",
       "details": [
-        "Adicione o bloco 'Create Web Server'",
-        "Defina a porta 80 (padrão HTTP)",
-        "Crie rotas para /index.html, /led/on, /led/off",
-        "Configure o servidor para iniciar automaticamente"
+        "No BIPES, identifique os blocos ou recursos disponíveis para criar um servidor HTTP.",
+        "Configure o servidor para utilizar a porta 80, caso essa porta esteja disponível.",
+        "Crie uma rota principal para apresentar a interface de controle.",
+        "Utilize /index.html como rota para disponibilizar a página, conforme a implementação do projeto.",
+        "Configure as rotas /led/on e /led/off para o exemplo didático de acionamento.",
+        "Defina o tratamento de requisições recebidas pelo servidor.",
+        "Implemente respostas HTTP válidas, incluindo o código de status e o tipo de conteúdo.",
+        "Configure uma resposta de erro apropriada para rotas desconhecidas.",
+        "Garanta que o servidor permaneça disponível para receber novas requisições.",
+        "Inicie o servidor e confirme, pelo terminal, que ele está pronto para receber conexões."
       ],
       "time": "30 minutos"
     },
     {
       "number": 3,
-      "title": "Criar Interface HTML",
-      "description": "Desenvolva uma página web para controlar o LED",
+      "title": "Criar a Interface HTML",
+      "description": "Desenvolva uma página simples com botões para enviar comandos ao servidor embarcado.",
       "details": [
-        "Crie uma página HTML com botões 'Ligar' e 'Desligar'",
-        "Adicione CSS para estilizar a interface",
-        "Implemente JavaScript para fazer requisições AJAX",
-        "Teste a interface no navegador"
+        "Crie uma página HTML contendo um título e uma identificação do dispositivo.",
+        "Adicione um botão denominado Ligar LED.",
+        "Adicione um segundo botão denominado Desligar LED.",
+        "Utilize CSS para melhorar a organização visual dos botões.",
+        "Configure cada botão para acionar a rota correspondente no servidor.",
+        "Se o ambiente permitir, utilize JavaScript e fetch para enviar requisições sem recarregar a página.",
+        "Se os recursos disponíveis no BIPES não oferecerem essa implementação, utilize links ou formulários HTML compatíveis com o servidor criado.",
+        "Apresente uma mensagem indicando o resultado recebido do servidor.",
+        "Acesse a página pelo navegador utilizando o endereço IP do Pico W.",
+        "Confirme que a interface foi carregada corretamente."
       ],
       "time": "45 minutos"
     },
     {
       "number": 4,
-      "title": "Implementar Controle do LED",
-      "description": "Conecte as rotas ao hardware",
+      "title": "Implementar o Controle do LED",
+      "description": "Associe os comandos HTTP recebidos às operações de ligar e desligar o LED conectado ao GPIO 15.",
       "details": [
-        "Na rota /led/on, configure GPIO 15 como HIGH",
-        "Na rota /led/off, configure GPIO 15 como LOW",
-        "Retorne uma resposta JSON com o status",
-        "Teste todas as funcionalidades"
+        "Configure o GPIO 15 como saída digital.",
+        "Defina o estado inicial do LED como desligado.",
+        "Associe a rota /led/on à operação de colocar o GPIO 15 em nível alto.",
+        "Associe a rota /led/off à operação de colocar o GPIO 15 em nível baixo.",
+        "Configure uma resposta HTTP que informe o estado atualizado do LED.",
+        "Caso utilize JSON, defina o cabeçalho Content-Type como application/json.",
+        "Teste o comando para ligar o LED e confirme visualmente seu acionamento.",
+        "Teste o comando para desligar o LED e confirme visualmente o resultado.",
+        "Realize pelo menos cinco ciclos de acionamento.",
+        "Verifique se cada requisição recebe uma resposta.",
+        "Teste uma rota inexistente e observe o tratamento do erro.",
+        "Desconecte temporariamente o dispositivo cliente e verifique como a interface reage a uma falha de comunicação."
       ],
       "time": "30 minutos"
     }
   ],
   "bipesProject": {
     "url": "https://bipes.net.br/beta2/ui/#load_example_webserver",
-    "description": "Projeto BIPES pré-configurado com servidor web e controle de LED. Abra, configure seu WiFi e faça o deploy no Pico W."
+    "description": "Referência original do projeto BIPES com servidor web e controle de LED. A disponibilidade do exemplo depende da versão do ambiente. Caso o projeto não carregue diretamente, utilize a interface do BIPES e os recursos compatíveis com a instalação utilizada."
   },
   "troubleshooting": [
     {
-      "problem": "Pico W não conecta ao WiFi",
+      "problem": "O Pico W não conecta à rede Wi-Fi",
       "solutions": [
-        "Verifique se SSID e senha estão corretos",
-        "Certifique-se de que a rede é 2.4GHz (Pico W não suporta 5GHz)",
-        "Aproxime o Pico W do roteador",
-        "Reinicie o Pico W e tente novamente"
+        "Confira o nome da rede e a senha configurados.",
+        "Verifique se a rede utiliza a faixa de 2,4 GHz.",
+        "Confirme que o tipo de autenticação da rede é compatível com o Pico W e o firmware utilizado.",
+        "Aproxime o Pico W do roteador.",
+        "Verifique se o roteador está permitindo novas conexões.",
+        "Observe mensagens de erro no terminal.",
+        "Implemente um tempo limite para a tentativa de conexão.",
+        "Teste novamente após reiniciar a interface de rede ou o Pico W."
       ]
     },
     {
       "problem": "Não consigo acessar a página web",
       "solutions": [
-        "Verifique o IP atribuído ao Pico W no terminal serial",
-        "Certifique-se de estar na mesma rede WiFi",
-        "Tente acessar http://[IP_DO_PICO]:80",
-        "Verifique se o firewall não está bloqueando"
+        "Confirme que o Pico W obteve um endereço IP válido.",
+        "Verifique se o servidor foi iniciado corretamente.",
+        "Confira se o navegador está utilizando o endereço IP correto.",
+        "Acesse o dispositivo utilizando http://ENDERECO_IP_DO_PICO/ substituindo o texto pelo endereço real.",
+        "Se o servidor estiver configurado em uma porta diferente de 80, informe a porta na URL.",
+        "Verifique se o computador e o Pico W estão na mesma rede ou possuem comunicação entre suas redes.",
+        "Confira se o roteador possui isolamento de clientes Wi-Fi habilitado.",
+        "Observe se existem restrições de firewall.",
+        "Verifique o terminal do Pico W para identificar erros no servidor."
       ]
     },
     {
-      "problem": "LED não responde aos comandos",
+      "problem": "O LED não responde aos comandos",
       "solutions": [
-        "Verifique as conexões do LED na protoboard",
-        "Confirme que está usando o GPIO 15",
-        "Teste o LED manualmente com um bloco 'Digital Write'",
-        "Verifique se o resistor está corretamente posicionado"
+        "Desligue a alimentação e confira as conexões do LED.",
+        "Verifique a polaridade do LED.",
+        "Confira a presença do resistor em série.",
+        "Confirme que o pino configurado no programa é GP15.",
+        "Teste o LED utilizando uma saída digital simples no BIPES.",
+        "Confira se as rotas HTTP estão associadas às operações corretas.",
+        "Observe a resposta enviada pelo servidor após cada comando."
       ]
     },
     {
-      "problem": "Servidor fica lento ou trava",
+      "problem": "O servidor fica lento ou trava",
       "solutions": [
-        "Evite requisições muito frequentes",
-        "Implemente um timeout nas requisições",
-        "Reinicie o Pico W periodicamente",
-        "Simplifique a página HTML (remova recursos pesados)"
+        "Verifique se o programa está entrando em uma rotina de espera sem limite de tempo.",
+        "Evite utilizar operações bloqueantes prolongadas durante o processamento das requisições.",
+        "Implemente tempos limite nas operações de rede, quando disponíveis.",
+        "Garanta o encerramento das conexões após o processamento das requisições.",
+        "Evite requisições excessivamente frequentes.",
+        "Reduza o tamanho do HTML e dos recursos enviados pelo servidor.",
+        "Observe mensagens de erro e possíveis problemas de memória.",
+        "Utilize a reinicialização apenas como medida de recuperação, investigando a causa do travamento."
+      ]
+    },
+    {
+      "problem": "A interface HTML carrega, mas os botões não funcionam",
+      "solutions": [
+        "Confira os caminhos das rotas /led/on e /led/off.",
+        "Verifique se os métodos HTTP utilizados pela página correspondem aos métodos aceitos pelo servidor.",
+        "Observe erros no console do navegador.",
+        "Confira se as requisições estão sendo enviadas para o endereço IP correto.",
+        "Se a página for aberta a partir de outra origem, avalie as restrições de CORS do navegador.",
+        "Prefira servir a interface pelo próprio Pico W para simplificar os testes iniciais.",
+        "Verifique se cada comando recebe uma resposta HTTP."
+      ]
+    },
+    {
+      "problem": "O endereço IP do Pico W muda após reiniciar",
+      "solutions": [
+        "Verifique se o roteador utiliza DHCP para distribuir endereços IP.",
+        "Consulte novamente o endereço IP no terminal após a conexão.",
+        "Atualize o endereço utilizado no navegador.",
+        "Considere configurar uma reserva DHCP no roteador para manter o endereço estável.",
+        "Evite utilizar endereços IP fixos sem verificar a configuração da rede."
       ]
     }
   ],
   "challenges": [
     {
       "level": "Básico",
+      "difficulty": "Básico",
       "title": "Controle de Múltiplos LEDs",
-      "description": "Adicione mais 2 LEDs e crie botões individuais para cada um na interface web."
+      "description": "Adicione mais dois LEDs ao circuito, cada um com seu próprio resistor limitador de corrente, e implemente botões individuais para controlar os três dispositivos.",
+      "objectives": [
+        "Utilizar múltiplos pinos GPIO",
+        "Criar rotas HTTP independentes",
+        "Organizar os comandos na interface HTML"
+      ]
     },
     {
       "level": "Intermediário",
+      "difficulty": "Intermediário",
       "title": "Controle de Brilho com Slider",
-      "description": "Implemente um slider HTML que controla o brilho do LED via PWM, enviando valores de 0 a 100."
+      "description": "Implemente um controle deslizante HTML que ajuste o brilho de um LED por PWM. O navegador deverá enviar um valor entre 0 e 100, que será convertido para o duty cycle adequado na aplicação.",
+      "objectives": [
+        "Utilizar PWM para variar o brilho",
+        "Enviar valores numéricos por HTTP",
+        "Validar e limitar os dados recebidos"
+      ]
     },
     {
       "level": "Avançado",
+      "difficulty": "Avançado",
       "title": "Dashboard com Status em Tempo Real",
-      "description": "Crie um dashboard que mostra temperatura do Pico, memória disponível e estado de todos os pinos, atualizando automaticamente a cada 2 segundos."
+      "description": "Crie um dashboard que apresente a temperatura interna medida pelo sensor do RP2040, a memória disponível e os estados dos GPIOs utilizados pela aplicação. Atualize os dados a cada dois segundos, respeitando os limites de processamento do Pico W.",
+      "objectives": [
+        "Criar uma rota para consulta de dados",
+        "Enviar informações em formato JSON",
+        "Implementar atualização periódica da interface",
+        "Evitar requisições concorrentes desnecessárias",
+        "Organizar indicadores de estado"
+      ]
     }
   ],
   "nextSteps": [
-    "Experimente controlar servomotores via web",
-    "Implemente autenticação com usuário e senha",
-    "Crie uma aplicação mobile que se conecta ao servidor",
-    "Adicione suporte a WebSockets para comunicação bidirecional"
+    "Experimente controlar um servomotor por meio de uma interface web, utilizando alimentação e circuito de acionamento apropriados.",
+    "Estude técnicas de autenticação e controle de acesso para aplicações embarcadas.",
+    "Crie uma interface responsiva para acesso por smartphone.",
+    "Conheça o funcionamento de WebSockets para comunicação bidirecional.",
+    "Explore protocolos de comunicação como MQTT para aplicações IoT."
   ]
 }

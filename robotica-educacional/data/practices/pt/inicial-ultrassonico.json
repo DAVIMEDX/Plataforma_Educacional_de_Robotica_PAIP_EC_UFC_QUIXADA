@@ -1,15 +1,23 @@
 {
   "id": "ultrassonico",
+  "moduleId": "inicial",
   "title": "Sensor Ultrassônico HC-SR04",
-  "description": "Use o sensor ultrassônico HC-SR04 para medir distâncias e criar sistemas de detecção de obstáculos.",
+  "description": "Utilize o sensor HC-SR04 para medir distâncias, detectar obstáculos e implementar alertas visuais e sonoros, preparando o sistema para uma função básica de prevenção de colisões.",
   "duration": "2 horas",
   "difficulty": "Iniciante",
   "objectives": [
     "Entender o funcionamento de sensores ultrassônicos",
-    "Conectar e configurar o HC-SR04",
-    "Ler distâncias com precisão",
-    "Criar alertas baseados em proximidade",
-    "Implementar um sistema anti-colisão básico"
+    "Conectar o HC-SR04 com proteção para a entrada de 3,3 V do Pico W",
+    "Medir distâncias utilizando o tempo de retorno do eco",
+    "Tratar leituras inválidas e ausência de resposta do sensor",
+    "Criar alertas baseados em limites de proximidade",
+    "Compreender a diferença entre alertar e efetivamente interromper o movimento de um robô"
+  ],
+  "prerequisites": [
+    "Conhecimentos básicos de eletrônica",
+    "Raspberry Pi Pico W configurado",
+    "Familiaridade com o BIPES",
+    "Conhecimento básico sobre GPIO e alimentação elétrica"
   ],
   "materials": [
     {
@@ -17,29 +25,37 @@
       "quantity": 1
     },
     {
-      "name": "Sensor HC-SR04",
+      "name": "Sensor HC-SR04 convencional",
       "quantity": 1,
-      "notes": "Sensor ultrassônico de distância"
+      "notes": "Modelo alimentado em 5 V; confirmar as especificações do fabricante"
     },
     {
       "name": "LED Vermelho",
-      "quantity": 1,
-      "notes": "Para alerta de proximidade"
+      "quantity": 1
     },
     {
       "name": "LED Verde",
-      "quantity": 1,
-      "notes": "Para indicar distância segura"
+      "quantity": 1
     },
     {
       "name": "Buzzer",
       "quantity": 1,
-      "notes": "Opcional, para alerta sonoro"
+      "notes": "Opcional; utilizar um modelo compatível com a saída ou um circuito de acionamento apropriado"
     },
     {
-      "name": "Resistores 220Ω",
+      "name": "Resistores de 220 Ω",
       "quantity": 2,
-      "notes": "Para os LEDs"
+      "notes": "Um resistor em série com cada LED"
+    },
+    {
+      "name": "Resistor de 1 kΩ",
+      "quantity": 1,
+      "notes": "Resistor superior do divisor de tensão do ECHO"
+    },
+    {
+      "name": "Resistor de 2 kΩ",
+      "quantity": 1,
+      "notes": "Resistor inferior do divisor de tensão do ECHO"
     },
     {
       "name": "Protoboard",
@@ -47,145 +63,179 @@
     },
     {
       "name": "Jumpers",
-      "quantity": 8
+      "quantity": 10
     }
   ],
   "wiring": {
+    "description": "Conecte o sensor ao Pico W usando um divisor resistivo na saída ECHO. A relação de conexões abaixo substitui a referência visual ausente no projeto.",
+    "diagram": "",
     "connections": [
-      "HC-SR04 VCC → Pico 5V (VBUS)",
+      "HC-SR04 VCC → VBUS do Pico W, somente quando o USB fornecer 5 V",
       "HC-SR04 GND → Pico GND",
-      "HC-SR04 TRIG → GPIO 16",
-      "HC-SR04 ECHO → GPIO 17",
-      "LED Verde (+) → GPIO 14 → Resistor 220Ω → GND",
-      "LED Vermelho (+) → GPIO 15 → Resistor 220Ω → GND",
-      "Buzzer (+) → GPIO 18",
-      "Buzzer (-) → GND"
+      "HC-SR04 TRIG → Pico GP16",
+      "HC-SR04 ECHO → resistor de 1 kΩ → nó de leitura → Pico GP17",
+      "Nó de leitura do ECHO → resistor de 2 kΩ → GND",
+      "Pico GP14 → resistor de 220 Ω → ânodo do LED verde",
+      "Cátodo do LED verde → GND",
+      "Pico GP15 → resistor de 220 Ω → ânodo do LED vermelho",
+      "Cátodo do LED vermelho → GND",
+      "Pico GP18 → circuito de acionamento do buzzer compatível, se utilizado"
     ],
-    "diagram": "assets/diagrams/ultrasonic-wiring.png",
     "warnings": [
-      "O HC-SR04 requer alimentação de 5V (use o pino VBUS)",
-      "Não conecte ECHO diretamente se usar conversores de nível lógico",
-      "Mantenha o sensor estável durante as medições"
+      "Não conecte diretamente o ECHO de 5 V ao GPIO do Raspberry Pi Pico W.",
+      "O divisor resistivo de 1 kΩ e 2 kΩ reduz aproximadamente 5 V para 3,33 V.",
+      "Verifique a identificação dos resistores antes de energizar o circuito.",
+      "O pino VBUS somente fornece a tensão USB quando ela está presente.",
+      "Não aplique 5 V ao pino 3V3 do Pico W.",
+      "O sinal TRIG de 3,3 V geralmente é reconhecido pelo HC-SR04 convencional, mas deve ser confirmado com o modelo utilizado.",
+      "Não acione um buzzer de corrente elevada diretamente pelo GPIO.",
+      "Faça a montagem com a alimentação desligada.",
+      "Não considere um sensor ultrassônico isolado um sistema de prevenção de colisões garantido.",
+      "Na ausência de uma medição válida, um robô em movimento deve adotar um comportamento conservador de segurança."
     ]
   },
   "theory": {
-    "ultrasonic": "Sensores ultrassônicos emitem ondas sonoras de alta frequência (40kHz) e medem o tempo que levam para retornar após refletir em um objeto. Distância = (tempo × velocidade do som) / 2.",
-    "hcsr04": "O HC-SR04 tem alcance de 2cm a 4m com precisão de 3mm. Funciona enviando um pulso de 10µs no pino TRIG e medindo a duração do pulso HIGH no pino ECHO.",
-    "soundspeed": "A velocidade do som no ar é ~343 m/s (a 20°C). Em microsegundos: distância_cm = duração_µs / 58."
+    "ultrasonic": "O HC-SR04 emite pulsos ultrassônicos próximos de 40 kHz e mede o intervalo entre a emissão e o retorno do eco. A distância corresponde à metade do percurso realizado pelo som.",
+    "hcsr04": "No modelo convencional, o disparo utiliza um pulso TRIG de aproximadamente 10 microssegundos. O tempo em nível alto do ECHO representa a duração do percurso acústico. A faixa típica informada para esse sensor é de aproximadamente 2 cm a 400 cm, dependendo das condições.",
+    "soundspeed": "A aproximadamente 20 °C, a velocidade do som no ar é próxima de 343 m/s. Uma estimativa comum é distância_cm = tempo_echo_us / 58.",
+    "divisor_tensao": "Um divisor resistivo com 1 kΩ entre ECHO e GP17 e 2 kΩ entre GP17 e GND fornece aproximadamente 3,33 V ao pino de entrada para um ECHO de 5 V.",
+    "timeout": "A ausência de eco deve ser tratada com um tempo limite de leitura. Um timeout não representa distância zero: representa uma medição indisponível ou inválida.",
+    "seguranca": "Um alerta visual ou sonoro não interrompe fisicamente um motor. A função de parada depende de uma rotina de controle que desabilite o acionamento dos motores quando houver obstáculo ou falha de medição."
   },
   "steps": [
     {
       "number": 1,
       "title": "Conectar o Sensor",
-      "description": "Monte o circuito com o HC-SR04 e LEDs",
+      "description": "Monte o circuito do HC-SR04, divisor resistivo e LEDs.",
       "details": [
-        "Conecte o HC-SR04 conforme o diagrama de fiação",
-        "Verifique se está usando 5V para o sensor",
-        "Conecte os LEDs verde e vermelho",
-        "Teste as conexões antes de energizar"
+        "Desligue a alimentação do Pico W.",
+        "Conecte VCC e GND do sensor.",
+        "Ligue TRIG ao GP16.",
+        "Monte o divisor resistivo na saída ECHO antes de conectá-la ao GP17.",
+        "Ligue os LEDs aos GP14 e GP15 utilizando resistores individuais.",
+        "Confira as polaridades e os valores dos resistores.",
+        "Somente então energize o circuito."
       ],
       "time": "20 minutos"
     },
     {
       "number": 2,
       "title": "Configurar o Sensor no BIPES",
-      "description": "Crie a função de leitura de distância",
+      "description": "Realize a leitura de distância com tratamento de erros.",
       "details": [
-        "Use o bloco 'Ultrasonic Sensor HC-SR04'",
-        "Configure TRIG no GPIO 16 e ECHO no GPIO 17",
-        "Adicione um bloco 'Print' para ver a distância",
-        "Configure um loop para leitura contínua"
+        "Localize o bloco compatível com HC-SR04 na versão do BIPES utilizada.",
+        "Configure TRIG no GP16 e ECHO no GP17.",
+        "Defina um tempo limite para aguardar o retorno do eco, se o bloco permitir.",
+        "Mostre as distâncias medidas no terminal.",
+        "Adicione intervalo de pelo menos 60 ms entre disparos consecutivos.",
+        "Diferencie distâncias válidas de timeout ou erro.",
+        "Teste a leitura com um obstáculo plano a diferentes distâncias."
       ],
       "time": "25 minutos"
     },
     {
       "number": 3,
       "title": "Implementar Sistema de Alerta",
-      "description": "Crie lógica de proximidade com LEDs",
+      "description": "Associe a leitura validada aos LEDs.",
       "details": [
-        "Se distância < 10cm: LED vermelho aceso, verde apagado",
-        "Se distância >= 10cm: LED verde aceso, vermelho apagado",
-        "Adicione um delay de 100ms entre leituras",
-        "Teste aproximando objetos do sensor"
+        "Para distância válida menor que 10 cm, acenda o LED vermelho.",
+        "Para distância válida igual ou superior a 10 cm, acenda o LED verde.",
+        "Quando a medição for inválida, apague o LED verde e sinalize a condição de erro.",
+        "Evite interpretar timeout como ausência de obstáculos.",
+        "Repita os testes aproximando e afastando um objeto."
       ],
       "time": "30 minutos"
     },
     {
       "number": 4,
-      "title": "Adicionar Alerta Sonoro (Opcional)",
-      "description": "Configure o buzzer para beeps de proximidade",
+      "title": "Adicionar Alerta Sonoro",
+      "description": "Implemente sinalização sonora opcional conforme a distância.",
       "details": [
-        "Conecte o buzzer ao GPIO 18",
-        "Se distância < 5cm: buzzer com beep contínuo",
-        "Se distância 5-10cm: beeps intermitentes",
-        "Se distância > 10cm: buzzer desligado"
+        "Confirme a compatibilidade elétrica do buzzer e de seu circuito de acionamento.",
+        "Para medição válida menor que 5 cm, produza alerta sonoro contínuo ou repetitivo.",
+        "Entre 5 cm e 10 cm, utilize alertas intermitentes.",
+        "Acima de 10 cm, desligue o alerta.",
+        "Para timeout ou falha, sinalize uma condição de erro diferente da condição segura.",
+        "Teste o comportamento com vários objetos e superfícies."
       ],
       "time": "25 minutos"
     }
   ],
+  "code": {
+    "description": "Pseudocódigo conceitual para a leitura e classificação da distância.",
+    "pseudocode": "inicializar_sensor(TRIG=16, ECHO=17)\n\nwhile True:\n    distancia = medir_distancia_com_timeout()\n\n    if distancia is None:\n        led_verde = False\n        led_vermelho = True\n        alerta_falha = True\n        parar_motores_se_existirem()\n    elif distancia < 10:\n        led_verde = False\n        led_vermelho = True\n        alerta_falha = False\n        parar_motores_se_existirem()\n    else:\n        led_verde = True\n        led_vermelho = False\n        alerta_falha = False\n\n    aguardar_ms(60)",
+    "notes": "Pseudocódigo ilustrativo. O comando de parada depende de um circuito de motores integrado, não presente nesta montagem básica. Uma leitura segura não autoriza automaticamente o movimento."
+  },
   "bipesProject": {
     "url": "https://bipes.net.br/beta2/ui/#load_example_hcsr04",
-    "description": "Projeto BIPES com sensor ultrassônico HC-SR04 configurado. Inclui leitura de distância e sistema de alerta visual."
+    "description": "Projeto BIPES original com sensor HC-SR04 e alertas. Antes de executá-lo no Pico W, confirme que a ligação ECHO possui proteção de nível lógico."
   },
   "troubleshooting": [
     {
-      "problem": "Sensor retorna sempre 0 ou valores inconsistentes",
+      "problem": "Sensor retorna zero ou valores inconsistentes",
       "solutions": [
-        "Verifique se TRIG e ECHO estão nos pinos corretos",
-        "Confirme que o sensor está recebendo 5V",
-        "Certifique-se de que não há objetos muito próximos (<2cm)",
-        "Verifique se o GND está bem conectado"
+        "Confira as ligações TRIG e ECHO.",
+        "Verifique a alimentação de 5 V do HC-SR04.",
+        "Confirme a montagem do divisor resistivo.",
+        "Verifique o aterramento comum.",
+        "Confira a presença de objetos na faixa de detecção."
       ]
     },
     {
       "problem": "Leituras muito instáveis",
       "solutions": [
-        "Adicione um delay de pelo menos 60ms entre leituras",
-        "Evite superfícies muito anguladas ou absorventes de som",
-        "Fixe o sensor para evitar vibrações",
-        "Calcule a média de 3-5 leituras para estabilizar"
+        "Mantenha intervalo de pelo menos 60 ms entre disparos.",
+        "Evite superfícies muito inclinadas ou absorventes.",
+        "Fixe o sensor para reduzir vibrações.",
+        "Utilize mediana de algumas medições válidas.",
+        "Não inclua timeouts como distâncias zero na filtragem."
       ]
     },
     {
       "problem": "Sensor não detecta objetos distantes",
       "solutions": [
-        "Verifique se o objeto não é muito pequeno ou absorvente",
-        "Aponte o sensor perpendicularmente à superfície",
-        "Limpe os transdutores do sensor (círculos metálicos)",
-        "Teste com uma superfície grande e plana (parede, livro)"
+        "Teste com uma superfície plana e rígida.",
+        "Aponte o sensor perpendicularmente ao obstáculo.",
+        "Confira se o objeto está dentro do alcance especificado.",
+        "Verifique a tensão de alimentação.",
+        "Inspecione possíveis obstruções nos transdutores."
       ]
     },
     {
-      "problem": "LEDs não respondem à distância",
+      "problem": "LEDs não respondem",
       "solutions": [
-        "Verifique a lógica do código (< ou > corretos)",
-        "Teste os LEDs individualmente com Digital Write",
-        "Confirme que os resistores estão presentes",
-        "Verifique se os limiares de distância estão adequados"
+        "Teste os LEDs individualmente.",
+        "Confira a polaridade e os resistores em série.",
+        "Verifique os GP14 e GP15.",
+        "Confira a lógica de comparação de distância.",
+        "Verifique como o programa trata medições inválidas."
       ]
     }
   ],
   "challenges": [
     {
       "level": "Básico",
+      "difficulty": "Básico",
       "title": "Medidor de Nível de Líquido",
-      "description": "Use o sensor para medir o nível de água em um recipiente, posicionando-o na parte superior e apontando para baixo."
+      "description": "Meça a distância entre o sensor e a superfície de um líquido em recipiente protegido. Calcule o nível a partir da altura total do recipiente, sem expor o circuito à umidade."
     },
     {
       "level": "Intermediário",
+      "difficulty": "Intermediário",
       "title": "Sistema de Estacionamento",
-      "description": "Crie um sistema com 3 LEDs (verde, amarelo, vermelho) e buzzer que aumenta a frequência de beeps conforme o carro se aproxima."
+      "description": "Crie um indicador com três LEDs e buzzer, utilizando faixas de distância e tratamento de falhas de medição."
     },
     {
       "level": "Avançado",
+      "difficulty": "Avançado",
       "title": "Mapeamento de Ambiente",
-      "description": "Monte o sensor em um servomotor para varrer 180° e criar um mapa de obstáculos ao redor, enviando dados via serial para visualização em gráfico."
+      "description": "Monte o sensor em um servomotor e realize uma varredura angular, registrando ângulo, distância e validade de cada leitura."
     }
   ],
   "nextSteps": [
-    "Combine com servomotor para criar um radar",
-    "Integre com motores DC para robô autônomo",
-    "Use múltiplos sensores para cobertura 360°",
-    "Implemente filtro de Kalman para leituras mais precisas"
+    "Combine o sensor com um servomotor para criar um radar básico.",
+    "Integre as leituras ao controle de motores DC.",
+    "Estude a utilização de vários sensores ultrassônicos.",
+    "Explore filtros digitais para medições ruidosas."
   ]
 }

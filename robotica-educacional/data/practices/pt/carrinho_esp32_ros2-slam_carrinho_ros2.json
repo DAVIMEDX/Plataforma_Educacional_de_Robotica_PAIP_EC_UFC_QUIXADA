@@ -1,6 +1,6 @@
 {
-    "id": "slam_carrinho_ros2-mapeamento_ambiente",
-    "moduleId": "slam_carrinho_ros2",
+    "id": "slam_carrinho_ros2",
+    "moduleId": "carrinho_esp32_ros2",
     "title": "Mapeamento do Ambiente com SLAM no ROS 2 Foxy",
     "description": "Prepare o robô Maker's Pet Fido com ESP32 e LiDAR Delta-2A, integre micro-ROS, teleoperação e TF, execute o slam_toolbox e diagnostique distorções no mapa usando RViz2, odometria e encoders.",
     "duration": "4-8 horas",

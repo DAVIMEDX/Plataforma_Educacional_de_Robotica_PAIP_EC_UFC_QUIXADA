@@ -1,15 +1,93 @@
 {
-  "id": "fatiamento_monitoramento",
+  "id": "impressao_operacao",
   "moduleId": "impressao_3d",
-  "title": "Fatiamento e Expotação de Modelo G-code e Monitoramento Remoto",
-  "description": "Guia completo desde a importação de modelos 3D (STL/3MF), preparação no fatiador, geração e exportação do G-code até o acompanhamento e monitoramento remoto da impressão.",
+  "title": "Fatiamento, Exportação de G-code e Monitoramento Remoto",
+  "description": "Guia prático para importar modelos 3D no PrusaSlicer, preparar o fatiamento, exportar arquivos G-code e acompanhar a impressão na GTMAX Core H5 por meio da interface web, sob supervisão do responsável.",
   "duration": "1-2 horas",
   "difficulty": "Iniciante",
+  "objectives": [
+    "Importar um modelo 3D no PrusaSlicer",
+    "Conferir os perfis de impressora, filamento e impressão",
+    "Posicionar e orientar o modelo na mesa virtual",
+    "Analisar as camadas geradas no fatiamento",
+    "Verificar o tempo e o consumo estimados",
+    "Salvar o projeto em formato apropriado",
+    "Exportar o arquivo G-code para revisão",
+    "Localizar o endereço IP da impressora",
+    "Acessar a interface web da GTMAX Core H5",
+    "Acompanhar o andamento da impressão pela interface e webcam",
+    "Reconhecer situações que exigem interrupção da operação"
+  ],
+  "prerequisites": [
+    "Ter realizado a prática de apresentação da GTMAX Core H5",
+    "Ter concluído a prática de configuração do PrusaSlicer",
+    "Possuir os perfis de impressora e filamento aprovados pelo laboratório",
+    "Ter acesso ao modelo 3D disponibilizado para a atividade",
+    "Possuir autorização para acompanhar ou iniciar uma impressão",
+    "Ter acesso à rede local autorizada da impressora"
+  ],
+  "materials": [
+    {
+      "name": "Computador",
+      "quantity": 1,
+      "notes": "Com PrusaSlicer e navegador web"
+    },
+    {
+      "name": "Impressora GTMAX Core H5",
+      "quantity": 1,
+      "notes": "Preparada e liberada para operação pelo responsável"
+    },
+    {
+      "name": "PrusaSlicer",
+      "quantity": 1,
+      "notes": "Com perfis previamente importados e conferidos"
+    },
+    {
+      "name": "Modelo 3D de teste",
+      "quantity": 1,
+      "notes": "Arquivo 3DBenchy.stl disponibilizado nesta prática"
+    },
+    {
+      "name": "Filamento ABS 1,75 mm",
+      "quantity": 1,
+      "notes": "Material aprovado e carregado conforme o procedimento do laboratório"
+    },
+    {
+      "name": "Rede local",
+      "quantity": 1,
+      "notes": "Permite o acesso autorizado à interface web e à webcam da impressora"
+    }
+  ],
+  "theory": {
+    "fatiamento": "O fatiamento é o processo de converter a geometria de um objeto tridimensional em camadas e trajetórias de fabricação.",
+    "orientacao": "A orientação do modelo influencia sua área de contato com a mesa, necessidade de suportes, acabamento e estabilidade durante a impressão.",
+    "altura_camada": "A altura de camada influencia o nível de detalhe, o tempo estimado e o comportamento do processo de fabricação.",
+    "previsualizacao": "A pré-visualização permite verificar as trajetórias, identificar regiões que exigem suporte e analisar o resultado do fatiamento antes da exportação.",
+    "gcode": "O G-code contém instruções produzidas a partir das configurações selecionadas no software. O arquivo deve ser compatível com a impressora e revisado antes de sua execução.",
+    "monitoramento": "O monitoramento remoto permite observar informações de operação, temperaturas, progresso e, quando disponível, imagens da webcam. Não substitui supervisão presencial adequada.",
+    "seguranca": "O cancelamento de um trabalho pela interface web não substitui os procedimentos de emergência definidos pelo laboratório quando houver risco imediato."
+  },
+  "wiring": {
+    "diagram": "",
+    "description": "Esta prática não exige montagem de circuito eletrônico. A impressora deverá permanecer com suas conexões elétricas e de rede previamente instaladas e verificadas.",
+    "warnings": [
+      "A preparação dos arquivos pode ser feita no computador sem iniciar a impressora.",
+      "Não envie nem execute arquivos G-code sem autorização do responsável.",
+      "Confirme a compatibilidade do perfil com a GTMAX Core H5 e com o filamento utilizado.",
+      "Não toque no bico extrusor, na mesa aquecida ou nas partes móveis.",
+      "Mantenha as condições de ventilação e controle de emissões adequadas à impressão de ABS.",
+      "A webcam não substitui a supervisão presencial.",
+      "Não exponha a interface web da impressora diretamente à internet.",
+      "Não divulgue endereços internos, credenciais ou imagens da webcam.",
+      "Em caso de fumaça, odor anormal, colisão ou outro risco, siga o procedimento de emergência estabelecido pelo laboratório.",
+      "Não utilize o botão de cancelamento do software como única medida de proteção em uma emergência."
+    ]
+  },
   "pdfUrl": "pdfs/impressao_3d_fatiamento_monitoramento.pdf",
   "resources": [
     {
       "title": "Modelo 3D para Prática (STL)",
-      "description": "Arquivo de teste para importação e fatiamento no PrusaSlicer.",
+      "description": "Arquivo 3DBenchy.stl para importação, orientação e fatiamento no PrusaSlicer. A execução física da impressão depende de autorização e revisão.",
       "icon": "🧊",
       "url": "files/3DBenchy.stl"
     }

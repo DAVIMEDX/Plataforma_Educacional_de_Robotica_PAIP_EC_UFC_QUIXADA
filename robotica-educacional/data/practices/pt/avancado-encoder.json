@@ -1,15 +1,23 @@
 {
   "id": "encoder",
+  "moduleId": "avancado",
   "title": "Controle com Encoders Rotativos",
-  "description": "Use encoders rotativos para controle preciso de posição e velocidade em sistemas robóticos, integrando com micro-ROS.",
+  "description": "Utilize encoders incrementais para medir posição e velocidade, integrar feedback ao controle de um motor DC e preparar a publicação de dados pelo ROS 2.",
   "duration": "4-5 horas",
   "difficulty": "Avançado",
   "objectives": [
-    "Entender o funcionamento de encoders incrementais e quadrature",
-    "Implementar leitura de encoder com interrupções",
-    "Calcular velocidade e posição angular",
-    "Integrar encoder com controle de motor DC",
-    "Publicar dados de odometria em ROS2"
+    "Compreender encoders incrementais em quadratura",
+    "Identificar os canais A e B",
+    "Implementar contagem de transições válidas",
+    "Calcular posição angular e velocidade em RPM",
+    "Integrar encoder e motor DC",
+    "Publicar medições utilizando ROS 2 e micro-ROS"
+  ],
+  "prerequisites": [
+    "Conhecimento de GPIO e PWM",
+    "Experiência básica com controle de motores",
+    "Noções de interrupções",
+    "Para integração ROS 2, ambiente micro-ROS funcional"
   ],
   "materials": [
     {
@@ -19,26 +27,26 @@
     {
       "name": "Encoder Rotativo Incremental",
       "quantity": 1,
-      "notes": "KY-040 ou similar, com quadrature"
+      "notes": "KY-040 ou similar para experimentos manuais"
     },
     {
       "name": "Motor DC com encoder acoplado",
       "quantity": 1,
-      "notes": "Alternativa ao encoder rotativo manual"
+      "notes": "Necessário para medir a rotação real do motor"
     },
     {
       "name": "Driver Motor L298N",
       "quantity": 1
     },
     {
-      "name": "Fonte Externa 6-12V",
+      "name": "Fonte Externa compatível",
       "quantity": 1,
-      "notes": "Para alimentar o motor"
+      "notes": "Tensão e corrente adequadas ao motor utilizado"
     },
     {
-      "name": "Display OLED 0.96\" I2C",
+      "name": "Display OLED 0,96 polegada I2C",
       "quantity": 1,
-      "notes": "Opcional, para visualização"
+      "notes": "Opcional"
     },
     {
       "name": "Protoboard",
@@ -50,171 +58,204 @@
     }
   ],
   "wiring": {
+    "description": "Conexões para um encoder manual e um motor controlado pelo L298N. Para medir o motor, utilize os canais A e B do encoder efetivamente acoplado ao eixo e verifique sua pinagem e tensão de alimentação.",
+    "diagram": "",
     "connections": [
-      "Encoder CLK (A) → GPIO 16",
-      "Encoder DT (B) → GPIO 17",
-      "Encoder SW → GPIO 18 (botão interno)",
-      "Encoder GND → Pico GND",
-      "Encoder VCC → Pico 3.3V",
-      "Motor IN1 → GPIO 10",
-      "Motor IN2 → GPIO 11",
-      "Motor ENA (PWM) → GPIO 12",
-      "L298N 12V → Fonte externa",
-      "L298N GND → Fonte GND + Pico GND",
-      "Display SDA → GPIO 4",
-      "Display SCL → GPIO 5"
+      "Encoder manual CLK/A → Pico GP16",
+      "Encoder manual DT/B → Pico GP17",
+      "Encoder manual SW → Pico GP18",
+      "Encoder manual GND → Pico GND",
+      "Encoder manual VCC → Pico 3V3",
+      "L298N IN1 → Pico GP10",
+      "L298N IN2 → Pico GP11",
+      "L298N ENA → Pico GP12, com jumper ENA removido",
+      "Motor DC → saídas do canal A do L298N",
+      "Alimentação do motor → entrada de potência do L298N",
+      "L298N GND → negativo da fonte e Pico GND",
+      "Display OLED SDA → Pico GP4",
+      "Display OLED SCL → Pico GP5",
+      "Encoder acoplado ao motor → GP16/GP17 somente após confirmar alimentação e níveis lógicos, substituindo o encoder manual quando necessário"
     ],
-    "diagram": "assets/diagrams/encoder-wiring.png",
     "warnings": [
-      "NUNCA conecte fonte externa direto no Pico (use apenas para L298N)",
-      "Compartilhe GND entre todos os componentes",
-      "Encoder deve ter pull-up habilitado nos pinos A e B",
-      "Motor requer fonte externa (mínimo 6V para maioria)"
+      "Não aplique tensão superior a 3,3 V aos GPIOs do Pico W.",
+      "Verifique a tensão de saída dos canais do encoder acoplado ao motor.",
+      "Mantenha referência de terra comum entre os circuitos de sinal e controle.",
+      "A fonte do motor deve ser compatível com suas especificações.",
+      "Não utilize o pino 3V3 para alimentar motores.",
+      "O jumper ENA do L298N deve ser removido para controle PWM externo.",
+      "Não conecte simultaneamente dois encoders aos mesmos pinos de entrada.",
+      "Confirme se o encoder está montado no eixo do motor ou no eixo de saída da redução.",
+      "Realize os testes iniciais com as rodas suspensas."
     ]
   },
   "theory": {
-    "encoder_quadrature": "Encoders de quadrature geram dois sinais defasados em 90° (canais A e B). Lendo ambos, é possível determinar direção e contabilizar pulsos com resolução 4x (bordas de subida/descida em ambos canais).",
-    "interrupts": "Interrupções (IRQ) permitem responder instantaneamente a mudanças nos pinos do encoder sem polling. GPIO IRQ no Pico suporta edge detection (RISING, FALLING, BOTH).",
-    "odometry": "Odometria calcula posição baseando-se em movimento medido. Com encoder na roda: distância = (pulsos / pulsos_por_revolução) × perímetro_roda.",
-    "velocity": "Velocidade angular = Δpulsos / Δtempo. Com filtro de média móvel para suavizar leituras."
+    "encoder_quadrature": "Um encoder incremental em quadratura possui dois sinais A e B defasados. A sequência de estados 00, 01, 11 e 10 permite identificar o sentido de movimento. O sentido positivo depende da convenção e da ordem dos sinais.",
+    "resolucao": "A contagem por revolução depende da especificação do encoder e da estratégia de decodificação: x1, x2 ou x4. Se o encoder estiver antes de uma caixa de redução, a contagem por revolução da roda também depende da relação de transmissão.",
+    "interrupts": "Interrupções permitem detectar mudanças dos sinais digitais sem depender apenas de polling. Os handlers devem ser curtos e evitar operações lentas como impressão no terminal.",
+    "odometry": "A distância percorrida por uma roda pode ser estimada por distancia = (contagem / contagens_por_revolucao_da_roda) * 2*pi*raio_da_roda.",
+    "velocity": "A velocidade em RPM é calculada por RPM = delta_contagem * 60 / (contagens_por_revolucao * delta_tempo_segundos). A estimativa melhora com um intervalo de amostragem conhecido e filtragem adequada.",
+    "debounce": "Encoders mecânicos podem produzir bounce, enquanto encoders ópticos ou magnéticos de motores possuem comportamento diferente. O condicionamento elétrico e a filtragem devem respeitar o tipo do dispositivo.",
+    "limitacoes": "A odometria baseada apenas em rodas acumula erros causados por deslizamento, diferenças mecânicas, resolução dos encoders e irregularidades do terreno."
   },
   "steps": [
     {
       "number": 1,
-      "title": "Conectar e Testar Encoder",
-      "description": "Monte o circuito e valide leituras básicas",
+      "title": "Conectar e Testar o Encoder",
+      "description": "Identifique os sinais e confira a resposta elétrica.",
       "details": [
-        "Conecte encoder conforme diagrama",
-        "Configure GPIOs 16 e 17 como INPUT com PULL_UP",
-        "Leia estado dos pinos em loop",
-        "Gire o encoder e observe mudanças no terminal serial",
-        "Confirme que ambos os canais (A e B) estão funcionando"
+        "Com a alimentação desligada, conecte A e B aos GP16 e GP17.",
+        "Configure entradas com pull-up quando adequado ao encoder.",
+        "Leia os estados A e B no terminal.",
+        "Gire lentamente o encoder manual.",
+        "Observe a sequência de estados.",
+        "Registre a ordem das transições em cada direção.",
+        "Não acople motores durante o primeiro teste do encoder manual."
       ],
       "time": "30 minutos"
     },
     {
       "number": 2,
       "title": "Implementar Leitura com Interrupções",
-      "description": "Configure IRQ para leitura eficiente",
+      "description": "Conte transições e determine o sentido de rotação.",
       "details": [
-        "Crie variável global para contador de pulsos",
-        "Configure IRQ no GPIO 16 (canal A) com BOTH edges",
-        "No callback IRQ, leia estado de A e B",
-        "Determine direção: se A=HIGH e B=LOW → CW, senão CCW",
-        "Incremente/decremente contador conforme direção",
-        "Teste girando encoder horário e anti-horário"
+        "Crie um contador de posição.",
+        "Armazene o estado anterior dos canais A e B.",
+        "Configure interrupções de mudança de estado.",
+        "Compare o estado anterior com o estado atual.",
+        "Incremente ou decremente somente nas transições válidas.",
+        "Ignore ou contabilize como erro as transições impossíveis.",
+        "Evite prints dentro das interrupções.",
+        "Compare a contagem em rotação horária e anti-horária."
       ],
       "time": "60 minutos"
     },
     {
       "number": 3,
       "title": "Calcular Velocidade Angular",
-      "description": "Implemente medição de velocidade em RPM",
+      "description": "Converta variação de contagem em RPM.",
       "details": [
-        "Armazene timestamp da última leitura",
-        "Calcule Δpulsos e Δtempo a cada update",
-        "RPM = (Δpulsos / pulsos_por_revolução) × (60 / Δtempo)",
-        "Implemente filtro média móvel com 5 amostras",
-        "Exiba velocidade no terminal ou display OLED"
+        "Identifique a quantidade de contagens por revolução usada pelo programa.",
+        "Determine a relação de redução, se houver.",
+        "Leia o contador em um período fixo, por exemplo 100 ms.",
+        "Calcule a diferença de contagens no intervalo.",
+        "Converta a variação para RPM usando o tempo real da amostragem.",
+        "Teste rotações em ambos os sentidos.",
+        "Aplique uma média móvel às medições, se necessário.",
+        "Exiba o resultado no terminal ou display OLED."
       ],
       "time": "45 minutos"
     },
     {
       "number": 4,
       "title": "Integrar com Motor e Controle",
-      "description": "Controle velocidade do motor usando feedback do encoder",
+      "description": "Utilize a velocidade medida para realimentar o acionamento do motor.",
       "details": [
-        "Conecte motor DC via L298N",
-        "Implemente controle PWM no ENA (GPIO 12)",
-        "Crie loop de controle: compare velocidade desejada vs medida",
-        "Ajuste PWM proporcionalmente ao erro (controlador P simples)",
-        "Teste com diferentes setpoints de velocidade"
+        "Substitua o encoder manual pelo encoder acoplado ao motor, conferindo sua pinagem.",
+        "Conecte o motor DC ao driver L298N.",
+        "Configure PWM no GP12.",
+        "Teste o motor em baixa velocidade com rodas suspensas.",
+        "Defina uma velocidade de referência.",
+        "Calcule o erro entre a referência e a medição.",
+        "Ajuste o PWM usando um controlador proporcional simples.",
+        "Limite o duty cycle e registre o comportamento em diferentes velocidades."
       ],
       "time": "75 minutos"
     },
     {
       "number": 5,
-      "title": "Publicar Odometria em ROS2",
-      "description": "Integre com micro-ROS para publicar dados",
+      "title": "Publicar Dados no ROS 2",
+      "description": "Disponibilize posição e velocidade medidas para monitoramento.",
       "details": [
-        "Configure micro-ROS conforme prática anterior",
-        "Crie publisher no tópico /wheel_odometry",
-        "Use mensagem sensor_msgs/JointState ou custom",
-        "Publique: posição (pulsos totais), velocidade (RPM), timestamp",
-        "Visualize no RQT ou Rviz2",
-        "Grave dados com ros2 bag para análise"
+        "Configure o micro-ROS no ambiente Foxy validado.",
+        "Crie um publisher compatível com as mensagens disponibilizadas pelo cliente.",
+        "Utilize sensor_msgs/msg/JointState para publicar posição e velocidade angular de uma roda, quando apropriado.",
+        "Converta posições para radianos e velocidades para rad/s.",
+        "Publique as medições com identificação da junta.",
+        "Verifique o tópico utilizando ros2 topic echo.",
+        "Registre dados com ros2 bag para análise.",
+        "Para odometria completa de robô diferencial, utilize medições das duas rodas e parâmetros geométricos apropriados."
       ],
       "time": "60 minutos"
     }
   ],
+  "code": {
+    "description": "Pseudocódigo de cálculo de velocidade e distância com encoder incremental.",
+    "pseudocode": "contagens_por_volta = configurar_resolucao_real()\nraio_roda_m = medir_raio_da_roda()\n\ncontador_anterior = ler_contador()\ntempo_anterior = tempo_segundos()\n\nwhile True:\n    aguardar_periodo_de_amostragem()\n\n    contador_atual = ler_contador_atomicamente()\n    tempo_atual = tempo_segundos()\n\n    delta_contagens = contador_atual - contador_anterior\n    delta_t = tempo_atual - tempo_anterior\n\n    if delta_t > 0:\n        rpm = delta_contagens * 60 / (contagens_por_volta * delta_t)\n        distancia_m = contador_atual / contagens_por_volta * 2 * pi * raio_roda_m\n        velocidade_rad_s = rpm * 2 * pi / 60\n        publicar_medicoes(rpm, distancia_m, velocidade_rad_s)\n\n    contador_anterior = contador_atual\n    tempo_anterior = tempo_atual",
+    "notes": "A rotina de leitura em quadratura é implementada separadamente. Identifique se a contagem se refere ao eixo do motor ou ao eixo da roda."
+  },
   "bipesProject": {
     "url": "https://bipes.net.br/beta2/ui/#load_example_encoder",
-    "description": "Projeto BIPES com encoder rotativo configurado usando interrupções. Inclui cálculo de velocidade e controle de motor com feedback."
+    "description": "Projeto BIPES original com encoder rotativo, leitura de posição e velocidade. A contagem por revolução deve ser calibrada para o encoder real."
   },
   "troubleshooting": [
     {
-      "problem": "Encoder conta pulsos errados ou pula",
+      "problem": "Encoder perde pulsos ou apresenta contagens incorretas",
       "solutions": [
-        "Adicione capacitores de 100nF entre cada pino e GND (debounce hardware)",
-        "Implemente debounce por software (ignora pulsos < 1ms)",
-        "Verifique se pull-ups estão habilitados",
-        "Use resolução 1x inicialmente (só canal A) para testar",
-        "Gire encoder mais devagar durante testes"
+        "Confira o aterramento e os níveis lógicos.",
+        "Verifique os pull-ups necessários.",
+        "Reduza a velocidade para realizar testes.",
+        "Avalie bounce no caso de encoder mecânico.",
+        "Verifique a frequência de interrupções e o tempo de execução do handler.",
+        "Confira se a resolução x1, x2 ou x4 corresponde à fórmula utilizada."
       ]
     },
     {
-      "problem": "Direção sempre igual independente do giro",
+      "problem": "Direção não muda",
       "solutions": [
-        "Confirme que ambos os canais (A e B) estão conectados",
-        "Verifique a lógica de determinação de direção",
-        "Teste lendo A e B sem IRQ para validar hardware",
-        "Inverta A e B se necessário (depende do encoder)",
-        "Adicione prints dentro do callback para debug"
+        "Verifique a conexão dos canais A e B.",
+        "Registre a sequência completa dos estados.",
+        "Confira a tabela de transições.",
+        "Inverta a convenção de sinais, se necessário.",
+        "Evite determinar direção por uma única combinação isolada de estados."
       ]
     },
     {
-      "problem": "Velocidade calculada muito instável",
+      "problem": "Velocidade calculada é instável",
       "solutions": [
-        "Aumente o tamanho do buffer de média móvel (10-20 amostras)",
-        "Use timer de atualização fixo (ex: 100ms) em vez de evento",
-        "Implemente filtro passa-baixa em vez de média simples",
-        "Verifique se não há jitter no timestamp",
-        "Em baixa velocidade, use contagem de tempo entre pulsos"
+        "Utilize um período de amostragem consistente.",
+        "Confira o tempo real decorrido.",
+        "Aplique filtragem às medições.",
+        "Verifique perdas de pulsos.",
+        "Em velocidades muito baixas, considere medir o intervalo entre pulsos."
       ]
     },
     {
-      "problem": "Motor não responde ao controle proporcional",
+      "problem": "Motor não responde ao controlador",
       "solutions": [
-        "Confirme que PWM está variando (osciloscópio ou LED)",
-        "Aumente o ganho proporcional (Kp) gradualmente",
-        "Verifique se encoder está mecanicamente acoplado ao motor",
-        "Adicione zona morta (motor só liga acima de certo PWM)",
-        "Implemente PID completo se P não for suficiente"
+        "Verifique a alimentação e o driver de potência.",
+        "Confirme a leitura do encoder acoplado ao motor.",
+        "Confira o sentido do erro e do acionamento.",
+        "Ajuste o ganho proporcional gradualmente.",
+        "Observe os limites mínimos e máximos de acionamento.",
+        "Verifique se há travamento mecânico."
       ]
     }
   ],
   "challenges": [
     {
       "level": "Básico",
+      "difficulty": "Básico",
       "title": "Menu Navegável com Encoder",
-      "description": "Use encoder rotativo para navegar em um menu no display OLED, e o botão integrado (SW) para selecionar opções."
+      "description": "Utilize um encoder manual e seu botão para navegar por um menu no display OLED."
     },
     {
       "level": "Intermediário",
-      "title": "Controle de Posição Absoluta",
-      "description": "Implemente controle PID para mover motor a uma posição angular específica (ex: 360°, 720°) e manter, compensando perturbações externas."
+      "difficulty": "Intermediário",
+      "title": "Controle de Posição Angular",
+      "description": "Implemente controle realimentado para alcançar uma posição angular relativa e manter a posição dentro de uma tolerância especificada."
     },
     {
       "level": "Avançado",
-      "title": "Robô com Odometria Diferencial",
-      "description": "Use 2 motores com encoders, implemente cinemática diferencial, calcule pose (x, y, θ) do robô, publique nav_msgs/Odometry em ROS2, e controle com teleop_twist_keyboard."
+      "difficulty": "Avançado",
+      "title": "Odometria Diferencial",
+      "description": "Utilize encoders nas duas rodas e as dimensões reais do robô para estimar deslocamento e orientação, publicando nav_msgs/msg/Odometry no ROS 2."
     }
   ],
   "nextSteps": [
-    "Implemente filtro de Kalman para fusão sensorial",
-    "Use encoder absoluto para referência de posição",
-    "Crie controlador de trajetória com múltiplos waypoints",
-    "Integre IMU para melhorar estimativa de orientação",
-    "Implemente SLAM (mapeamento e localização simultâneos)"
+    "Estude fusão sensorial com IMU.",
+    "Compare encoders incrementais e absolutos.",
+    "Implemente controle PID de velocidade.",
+    "Registre trajetórias e erros de odometria.",
+    "Integre os dados com sistemas de localização e SLAM."
   ]
 }

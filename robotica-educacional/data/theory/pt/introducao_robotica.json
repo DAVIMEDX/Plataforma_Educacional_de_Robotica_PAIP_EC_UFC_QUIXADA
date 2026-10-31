@@ -1,0 +1,113 @@
+{
+    "id": "introducao_robotica",
+    "moduleId": "fundamentos_robotica",
+    "type": "theory",
+    "title": "Introdução à Robótica: O que é um Robô?",
+    "subtitle": "Fundamentos, componentes e funcionamento dos sistemas robóticos",
+    "description": "Uma introdução à robótica para compreender como os robôs percebem o ambiente, processam informações, executam ações e utilizam diferentes tecnologias.",
+    "duration": "35-50 minutos",
+    "difficulty": "Iniciante",
+    "objectives": [
+        "Definir robótica e compreender o conceito de robô",
+        "Identificar aplicações e categorias de sistemas robóticos",
+        "Reconhecer os componentes fundamentais de um robô",
+        "Diferenciar sensores, controladores e atuadores",
+        "Explicar o papel da alimentação e da comunicação",
+        "Compreender o ciclo de percepção, decisão e ação",
+        "Distinguir teleoperação, automação e autonomia",
+        "Relacionar os fundamentos ao carrinho robótico da plataforma"
+    ],
+    "prerequisites": [],
+    "content": "# Aula 0.1 — Introdução à Robótica\n\n## 1. O que é robótica?\n\nA **robótica** é uma área interdisciplinar que reúne conhecimentos de mecânica, eletrônica, programação, matemática, controle e computação para desenvolver sistemas capazes de interagir fisicamente com o ambiente.\n\nUm robô pode movimentar-se, manipular objetos, executar tarefas programadas ou reagir a informações recebidas por sensores.\n\n**Exemplo:** um carrinho robótico pode utilizar um sensor para detectar obstáculos e um controlador para reduzir ou interromper o acionamento dos motores.\n\n### Robô não significa necessariamente humanoide\n\nOs robôs podem apresentar diferentes formatos:\n\n- Braços robóticos utilizados na indústria.\n- Robôs móveis utilizados em transporte e inspeção.\n- Robôs de serviço para limpeza e assistência.\n- Robôs educacionais utilizados em experimentos.\n- Robôs de pesquisa utilizados no desenvolvimento de algoritmos.\n\n**Conceito importante:** nem todo equipamento automático é classificado como robô, e nem todo robô precisa utilizar inteligência artificial.\n\n## 2. Por que estudar robótica?\n\nO estudo da robótica permite compreender como diferentes sistemas físicos e computacionais trabalham em conjunto.\n\nA robótica também oferece oportunidades de aprendizagem prática em programação, eletrônica, matemática, física, resolução de problemas e trabalho interdisciplinar.\n\nNesta plataforma, os conceitos serão aplicados progressivamente em sensores, motores, microcontroladores, comunicação, ROS 2, simulação, controle e navegação.\n\n## 3. Quais são os componentes de um robô?\n\n### 3.1. Estrutura mecânica\n\nA estrutura física sustenta os componentes do robô e determina como ele pode interagir com o ambiente.\n\nEm um carrinho robótico, ela pode incluir chassi, rodas, suportes, eixos e elementos de fixação.\n\n### 3.2. Sensores\n\nSensores são dispositivos que medem características do próprio sistema ou do ambiente.\n\n**Exemplos:**\n\n- Ultrassônico: estima distâncias a objetos.\n- Encoder: mede deslocamentos ou rotações.\n- IMU: mede grandezas associadas a aceleração e movimento angular.\n- LiDAR: utiliza medições de distância para representar partes do ambiente.\n- Sensor de temperatura: mede temperatura.\n\nSensores não interpretam sozinhos todas as situações. Normalmente, suas medições precisam ser processadas por software.\n\n### 3.3. Controlador\n\nO controlador executa instruções, recebe informações e gera comandos para outros componentes.\n\n**Exemplos utilizados na plataforma:** Raspberry Pi Pico W e ESP32.\n\nUm microcontrolador é um pequeno sistema computacional integrado que pode ler sensores e controlar saídas digitais ou analógicas.\n\n### 3.4. Atuadores\n\nAtuadores transformam comandos de controle em ações físicas.\n\n**Exemplos:** motores DC, servomotores, motores de passo, solenóides e outros mecanismos de atuação.\n\nUm motor DC produz movimento rotacional quando alimentado adequadamente. O controle de velocidade e direção geralmente exige um circuito de acionamento apropriado.\n\n### 3.5. Alimentação elétrica\n\nA alimentação fornece energia para controladores, sensores, comunicação e atuadores.\n\nDiferentes componentes podem exigir tensões e correntes diferentes. Por isso, o projeto deve separar adequadamente os circuitos de lógica e de potência.\n\n### 3.6. Comunicação\n\nA comunicação permite que componentes e sistemas troquem informações.\n\nNa plataforma, serão estudadas tecnologias como comunicação serial, Wi-Fi, HTTP, MQTT, UDP, ROS 2 e micro-ROS.\n\n**Importante:** essas tecnologias têm funções e níveis de abstração diferentes. Não são protocolos equivalentes entre si.\n\n## 4. Como um robô funciona?\n\nUm modelo didático de funcionamento utiliza quatro etapas:\n\n**Perceber:** o sensor obtém uma medição.\n\n**Processar:** o controlador interpreta a medição segundo o programa.\n\n**Agir:** o controlador envia um comando ao atuador.\n\n**Verificar:** o sistema realiza novas medições e ajusta sua ação, se necessário.\n\n### Exemplo de detecção de obstáculos\n\nImagine um robô móvel equipado com sensor ultrassônico.\n\n1. O sensor realiza uma medição de distância.\n2. O controlador verifica se a medição é válida.\n3. O programa compara a distância com um limite definido.\n4. Se houver obstáculo próximo, o controlador solicita a parada dos motores.\n5. O processo continua realizando novas medições.\n\nEssa sequência é um exemplo simplificado de controle reativo. Ela não substitui os recursos necessários para segurança física de um robô real.\n\n## 5. Controle em malha aberta e malha fechada\n\n### Malha aberta\n\nO sistema envia um comando sem utilizar a medição do resultado para corrigir continuamente sua ação.\n\n**Exemplo:** aplicar um determinado PWM ao motor durante dois segundos sem medir sua velocidade.\n\n### Malha fechada\n\nO sistema utiliza medições para comparar o resultado obtido com o resultado desejado.\n\n**Exemplo:** medir a velocidade de um motor por encoder e corrigir o PWM para reduzir o erro de velocidade.\n\nA realimentação é um dos conceitos centrais do estudo de controle robótico.\n\n## 6. Teleoperação, automação e autonomia\n\n**Teleoperação:** uma pessoa envia comandos ao robô por joystick, teclado ou outra interface.\n\n**Automação:** o sistema executa tarefas conforme regras, sequências ou condições definidas.\n\n**Autonomia:** o sistema possui algum grau de capacidade para realizar tarefas e tomar decisões operacionais sem depender continuamente de comandos humanos.\n\nEssas categorias podem coexistir em um mesmo robô. Por exemplo, um carrinho teleoperado pode possuir uma rotina automática de parada quando identifica um obstáculo.\n\n## 7. O carrinho robótico desta plataforma\n\nO projeto utiliza conceitos que serão aprofundados em módulos posteriores.\n\n| Elemento | Função principal |\n|---|---|\n| ESP32 | Executar o controle embarcado e a comunicação |\n| Ponte H | Acionar motores dentro dos limites do circuito |\n| Motores DC | Produzir o movimento das rodas |\n| Encoder | Medir a rotação das rodas |\n| Sensor ultrassônico | Estimar distância a obstáculos próximos |\n| LiDAR | Produzir medições espaciais do ambiente |\n| ROS 2 | Organizar a comunicação e a integração entre aplicações robóticas |\n| micro-ROS | Integrar dispositivos embarcados compatíveis ao sistema ROS 2 |\n| Gazebo | Simular robôs, sensores e ambientes físicos |\n| RViz2 | Visualizar dados produzidos por aplicações ROS 2 |\n\nOs elementos listados representam tecnologias estudadas na plataforma. Nem todos precisam estar instalados simultaneamente em cada montagem.\n\n## 8. Aplicação prática do conceito\n\nImagine a seguinte tarefa:\n\n**Um carrinho precisa deslocar-se por uma sala sem atingir os objetos ao seu redor.**\n\nPara pensar nessa solução, responda:\n\n- Como o carrinho identifica a presença de objetos?\n- Qual componente executa o programa de controle?\n- Como o programa modifica o acionamento dos motores?\n- Como saber se as rodas realmente giraram conforme o comando?\n- Como o sistema deve reagir caso uma medição importante falhe?\n\nEssas perguntas introduzem os assuntos que serão desenvolvidos nas próximas aulas.\n\n## 9. Síntese\n\nUm robô é um sistema que integra mecanismos físicos, processamento e acionamento para executar tarefas.\n\nSensores fornecem medições, controladores processam informações e atuadores executam ações.\n\nA alimentação disponibiliza energia, enquanto os sistemas de comunicação permitem integração local ou distribuída.\n\nA robótica combina essas tecnologias com princípios de programação, movimento, controle e segurança."
+,
+"theory": {
+    "conceito_central": "Um robô integra componentes físicos e computacionais para realizar tarefas programadas, apresentando algum grau de autonomia.",
+    "sensores": "Dispositivos que produzem medições sobre o ambiente ou o próprio robô.",
+    "controladores": "Componentes responsáveis por executar instruções e gerar comandos.",
+    "atuadores": "Dispositivos que transformam sinais de controle em ações físicas.",
+    "realimentacao": "Utilização de medições do sistema para avaliar e corrigir o resultado de uma ação.",
+    "teleoperacao": "Operação realizada a partir de comandos enviados por uma pessoa.",
+    "autonomia": "Capacidade de executar tarefas com algum grau de decisão operacional sem orientação humana contínua."
+},
+"steps": [
+    {
+        "number": 1,
+        "title": "Reconhecer sistemas robóticos",
+        "description": "Observe exemplos de robôs industriais, móveis e de serviço e identifique suas funções.",
+        "details": [
+            "Observe como o sistema se movimenta ou manipula objetos.",
+            "Identifique a tarefa que realiza.",
+            "Verifique se utiliza sensores.",
+            "Identifique quais ações são executadas automaticamente."
+        ],
+        "time": "10 minutos"
+    },
+    {
+        "number": 2,
+        "title": "Identificar os componentes",
+        "description": "Utilize como referência o carrinho robótico apresentado na plataforma.",
+        "details": [
+            "Identifique o chassi e as rodas.",
+            "Localize os motores e o driver de acionamento.",
+            "Identifique o microcontrolador.",
+            "Diferencie sensores de atuadores.",
+            "Identifique como a energia é fornecida."
+        ],
+        "time": "10 minutos"
+    },
+    {
+        "number": 3,
+        "title": "Descrever um ciclo de controle",
+        "description": "Imagine que um robô encontra um obstáculo.",
+        "details": [
+            "Defina qual sensor fornecerá a medição.",
+            "Estabeleça como a distância será interpretada.",
+            "Determine o comando que deverá ser enviado aos motores.",
+            "Explique o que fazer quando a medição não for válida.",
+            "Descreva como o robô verificará novamente o ambiente."
+        ],
+        "time": "10 minutos"
+    }
+],
+"challenges": [
+    {
+        "title": "Identifique os componentes",
+        "difficulty": "Básico",
+        "description": "Em um carrinho com motor, encoder, ESP32 e bateria, identifique qual componente executa o programa, qual fornece energia, qual mede movimento e qual produz a rotação."
+    },
+    {
+        "title": "Malha aberta ou fechada?",
+        "difficulty": "Intermediário",
+        "description": "Compare dois robôs: um aplica PWM constante; o outro mede a velocidade da roda e corrige o PWM. Explique qual utiliza realimentação e por quê."
+    },
+    {
+        "title": "Segurança de um robô móvel",
+        "difficulty": "Intermediário",
+        "description": "Descreva como um robô deve reagir quando perde a comunicação de teleoperação ou recebe uma leitura inválida de um sensor utilizado para evitar obstáculos."
+    }
+],
+"nextSteps": [
+    "Aula 0.2 — Anatomia de um Robô: Sensores, Atuadores e Controladores",
+    "Aula 0.3 — Como os Componentes se Comunicam",
+    "Aula 0.4 — Do Controle Manual à Autonomia",
+    "Módulo de práticas BIPES: Controle com Joystick"
+],
+"references": [
+    {
+        "title": "International Federation of Robotics — Definições e padronização",
+        "url": "https://ifr.org/standardisation"
+    },
+    {
+        "title": "Modern Robotics — Northwestern University",
+        "url": "https://modernrobotics.northwestern.edu/"
+    },
+    {
+        "title": "ROS 2 Foxy — Documentação oficial",
+        "url": "https://docs.ros.org/en/foxy/"
+    },
+    {
+        "title": "micro-ROS — Documentação",
+        "url": "https://micro.ros.org/docs/"
+    }
+]
+}

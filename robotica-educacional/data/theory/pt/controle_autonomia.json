@@ -1,0 +1,124 @@
+
+{
+  "id": "controle_autonomia",
+  "moduleId": "fundamentos_robotica",
+  "type": "theory",
+  "title": "Do Controle Manual à Autonomia Robótica",
+  "subtitle": "Teleoperação, realimentação, planejamento e segurança",
+  "description": "Compreenda a evolução do controle manual para sistemas que utilizam sensores, algoritmos e tomada de decisão para executar tarefas com diferentes graus de autonomia.",
+  "duration": "50-70 minutos",
+  "difficulty": "Iniciante",
+  "objectives": [
+    "Diferenciar teleoperação, automação e autonomia",
+    "Compreender os conceitos de referência, medição, erro e ação de controle",
+    "Comparar controle em malha aberta e fechada",
+    "Entender a função dos encoders na realimentação",
+    "Reconhecer o propósito do controlador PID",
+    "Explicar as relações entre percepção, localização, planejamento e movimento",
+    "Compreender a função básica de LiDAR e SLAM",
+    "Reconhecer mecanismos de segurança para robôs móveis"
+  ],
+  "prerequisites": [
+    "Aula 0.1 — Introdução à Robótica",
+    "Aula 0.2 — Anatomia de um Robô",
+    "Aula 0.3 — Como os Componentes se Comunicam"
+  ],
+  "content": "# Aula 0.4 — Do Controle Manual à Autonomia\n\n## 1. Como um robô recebe comandos?\n\nExistem diferentes maneiras de determinar o comportamento de um robô.\n\nUm operador pode comandá-lo diretamente, um programa pode executar uma sequência de tarefas ou o sistema pode utilizar medições e regras para decidir suas próximas ações.\n\nEssas possibilidades representam graus diferentes de automação e autonomia.\n\n## 2. Teleoperação\n\nNa teleoperação, uma pessoa controla o robô por meio de uma interface.\n\n**Exemplos:**\n\n- Joystick.\n- Controle remoto.\n- Teclado de computador.\n- Aplicativo ou interface web.\n\nO operador determina comandos como avançar, recuar, virar e parar.\n\nUma implementação teleoperada também pode ter recursos automáticos locais, como impedir movimentos quando um obstáculo está muito próximo.\n\n## 3. Automação\n\nNa automação, um programa executa operações previamente definidas ou determinadas por condições.\n\n**Exemplo:** um robô inicia o movimento, verifica uma distância e interrompe o motor quando a leitura válida fica abaixo de um limite estabelecido.\n\nAutomação não significa necessariamente que o robô compreende o ambiente de maneira complexa. O comportamento pode ser determinado por regras simples.\n\n## 4. Autonomia\n\nAutonomia é a capacidade de executar tarefas com algum grau de decisão operacional sem depender continuamente de comandos humanos.\n\nUm sistema autônomo pode utilizar sensores, estimativas de posição, planejamento de caminhos e estratégias de controle para executar uma missão.\n\nA autonomia depende do contexto: um robô pode ser autônomo em determinadas tarefas e exigir supervisão ou intervenção humana em outras.\n\n## 5. O que é controle robótico?\n\nControle é o processo de determinar comandos de atuação para obter um comportamento desejado.\n\nPara estudar um sistema de controle, precisamos compreender alguns termos.\n\n**Referência:** valor desejado para uma variável.\n\n**Medição:** valor estimado ou observado por um sensor.\n\n**Erro:** diferença entre a referência e a medição.\n\n**Ação de controle:** comando aplicado ao sistema para influenciar seu comportamento.\n\nExemplo:\n\n```text\nVelocidade desejada: 60 RPM\nVelocidade medida: 52 RPM\nErro: 8 RPM\n```\n\nA estratégia de controle utiliza esse erro para determinar uma ação adequada.\n\n## 6. Controle em malha aberta\n\nEm uma malha aberta, o comando não é corrigido continuamente a partir da medição da saída controlada.\n\n**Exemplo:** aplicar um PWM fixo ao motor durante determinado intervalo de tempo.\n\nO resultado depende de condições como alimentação, carga mecânica, atrito e características do motor.\n\n## 7. Controle em malha fechada\n\nEm uma malha fechada, a variável controlada é medida ou estimada e utilizada para corrigir a atuação.\n\n```text\nReferência de velocidade\n          |\n          v\n   Comparação do erro\n          |\n          v\n      Controlador\n          |\n          v\n    Driver e motor\n          |\n          v\n  Velocidade da roda\n          |\n          v\n        Encoder\n          |\n          +----> Realimentação\n```\n\n**Exemplo:** quando a velocidade medida fica abaixo da referência, o controlador pode aumentar o comando do motor, respeitando os limites de acionamento.\n\n## 8. Para que serve o encoder?\n\nO encoder produz sinais relacionados à rotação ou ao deslocamento de um eixo.\n\nCom esses sinais, o programa pode calcular estimativas como:\n\n- Contagem de movimento.\n- Posição angular relativa.\n- Velocidade de rotação.\n- Sentido de rotação, em modelos compatíveis.\n\nEm um carrinho, encoders nas rodas podem contribuir para a odometria, que estima o deslocamento do robô.\n\nEssas estimativas apresentam erros, especialmente em situações de deslizamento ou irregularidade do solo.\n\n## 9. O que é PID?\n\nPID significa Proporcional, Integral e Derivativo.\n\nÉ uma estratégia de controle que combina três ações relacionadas ao erro.\n\n### Proporcional — P\n\nReage ao erro atual.\n\n### Integral — I\n\nConsidera o acúmulo do erro ao longo do tempo.\n\n### Derivativo — D\n\nConsidera a taxa de variação do erro ou de uma variável medida, conforme a implementação.\n\n**Exemplo:** um controlador PID pode ser utilizado para manter a velocidade de um motor próxima de uma referência.\n\nO PID precisa de sintonia apropriada. Ganhos inadequados podem produzir oscilações, resposta lenta ou instabilidade.\n\n## 10. Percepção do ambiente\n\nPara se deslocar com autonomia, um robô pode precisar reconhecer obstáculos e características do ambiente.\n\nSensores como ultrassônico, LiDAR e câmeras fornecem diferentes tipos de informação.\n\nNenhum sensor é perfeito. As medições podem apresentar ruído, limitações de alcance, obstáculos não detectados ou falhas de comunicação.\n\n## 11. Localização e mapeamento\n\n### O que é localização?\n\nÉ a estimativa de onde o robô está em relação a um referencial ou mapa.\n\n### O que é mapeamento?\n\nÉ a construção de uma representação do ambiente a partir de informações disponíveis.\n\n### O que é SLAM?\n\nSLAM significa Simultaneous Localization and Mapping.\n\nÉ uma família de métodos que busca estimar simultaneamente a posição do robô e uma representação do ambiente.\n\n**Exemplo:** um robô móvel pode utilizar medições LiDAR e estimativas de movimento para construir um mapa de uma sala e atualizar sua posição relativa.\n\nO SLAM não é sinônimo de planejamento de caminhos. Produzir um mapa e escolher por onde se deslocar são problemas relacionados, mas distintos.\n\n## 12. Planejamento de caminhos\n\nO planejamento de caminhos busca determinar uma sequência de posições ou movimentos que permita alcançar um objetivo respeitando restrições do problema.\n\nMétodos de planejamento podem utilizar mapas, informações geométricas ou estratégias de amostragem.\n\nNesta plataforma, o estudante encontrará campos potenciais e Probabilistic Roadmaps (PRM).\n\n### Campos potenciais\n\nRepresentam forças ou influências artificiais de atração ao objetivo e repulsão a obstáculos.\n\nPodem apresentar problemas como mínimos locais, dependendo de sua formulação.\n\n### PRM\n\nProbabilistic Roadmap é um método baseado em amostragem que constrói uma representação de conexões entre configurações livres de colisão.\n\nOs algoritmos de planejamento não substituem o controle físico necessário para executar uma trajetória.\n\n## 13. Planejamento não é controle\n\n**Planejamento:** determina por onde o robô deve passar.\n\n**Controle:** determina comandos que procuram fazer o robô realizar o movimento desejado.\n\n**Percepção:** produz informações sobre o ambiente.\n\n**Localização:** estima onde o robô está.\n\nEssas funções podem ser implementadas em componentes de software separados e integradas por mecanismos de comunicação.\n\n## 14. O papel do ROS 2\n\nROS 2 organiza a comunicação e a integração entre aplicações robóticas.\n\nEm uma arquitetura distribuída, pode haver nós responsáveis por:\n\n- Receber dados do LiDAR.\n- Publicar estimativas de odometria.\n- Executar SLAM.\n- Calcular trajetórias.\n- Produzir comandos de movimento.\n- Exibir resultados no RViz2.\n\nO ROS 2 não torna um robô autônomo automaticamente. A autonomia depende dos algoritmos, das configurações, dos sensores e da integração efetiva do sistema.\n\n## 15. A importância da segurança\n\nUm robô móvel deve possuir comportamentos definidos para condições inesperadas.\n\n### Perda de comunicação\n\nSe os comandos deixam de chegar, o sistema deve possuir uma política segura, como desabilitar o acionamento após um tempo limite.\n\n### Falha de sensor\n\nUma medição inválida não deve ser interpretada automaticamente como ambiente livre de obstáculos.\n\n### Limites de movimento\n\nVelocidade, aceleração e potência devem respeitar os limites do sistema físico.\n\n### Parada de emergência\n\nEm robôs que apresentem riscos físicos, mecanismos de parada adequados devem ser projetados e validados para a aplicação. Um comando enviado por software não é equivalente a um dispositivo de segurança independente.\n\n## 16. Exemplo integrador: o carrinho robótico\n\nImagine que o objetivo seja deslocar o carrinho até uma região do laboratório.\n\n**Percepção:** o LiDAR produz medições do ambiente.\n\n**Estimativa de movimento:** os encoders informam a rotação das rodas.\n\n**Localização:** o sistema estima a posição do robô.\n\n**Mapeamento:** um algoritmo como SLAM pode construir uma representação do ambiente.\n\n**Planejamento:** um algoritmo calcula um caminho até o objetivo.\n\n**Controle:** o sistema gera comandos para acompanhar o movimento planejado.\n\n**Atuação:** o driver aciona os motores conforme os comandos.\n\n**Supervisão:** mecanismos de monitoramento verificam o funcionamento e as condições de segurança.\n\n## 17. Atividade de aprendizagem\n\nAnalise três situações:\n\n1. Um carrinho é movimentado manualmente por joystick.\n2. Um carrinho mede a velocidade das rodas e corrige automaticamente o PWM.\n3. Um carrinho utiliza sensores, mapa, localização e planejamento para alcançar um objetivo.\n\nPara cada situação, identifique o papel do operador, dos sensores, do programa e dos atuadores.\n\nExplique qual sistema apresenta maior grau de autonomia e por quê.\n\n## 18. Síntese\n\nO desenvolvimento de robôs pode começar com comandos manuais e evoluir para sistemas com realimentação, percepção e planejamento.\n\nControle, localização, mapeamento, planejamento e autonomia são conceitos relacionados, mas não equivalentes.\n\nAo compreender essas diferenças, o estudante estará preparado para explorar as práticas de motores, encoders, PID, micro-ROS, LiDAR, SLAM e navegação.",
+  "theory": {
+    "teleoperacao": "Operação de um robô por comandos enviados por uma pessoa.",
+    "automacao": "Execução de processos segundo regras, sequências ou condições programadas.",
+    "autonomia": "Capacidade de realizar determinadas tarefas com algum grau de decisão operacional independente.",
+    "referencia": "Valor desejado para uma variável controlada.",
+    "erro": "Diferença entre referência e medição.",
+    "malha_aberta": "Controle que não utiliza a saída medida para corrigir continuamente a ação.",
+    "malha_fechada": "Controle que utiliza realimentação para corrigir sua atuação.",
+    "pid": "Controlador que combina termos proporcional, integral e derivativo.",
+    "odometria": "Estimativa de deslocamento baseada em informações de movimento.",
+    "slam": "Família de métodos de localização e mapeamento simultâneos.",
+    "planejamento": "Processo de calcular um caminho ou sequência de ações para alcançar um objetivo."
+  },
+  "steps": [
+    {
+      "number": 1,
+      "title": "Comparar formas de operação",
+      "description": "Analise exemplos de teleoperação, automação e autonomia.",
+      "details": [
+        "Identifique quem determina os comandos.",
+        "Verifique se o robô utiliza sensores.",
+        "Descreva quais decisões são tomadas pelo programa.",
+        "Explique o grau de participação do operador."
+      ],
+      "time": "10 minutos"
+    },
+    {
+      "number": 2,
+      "title": "Entender a realimentação",
+      "description": "Compare duas estratégias de controle de velocidade.",
+      "details": [
+        "Defina uma velocidade de referência.",
+        "Considere uma velocidade medida diferente da referência.",
+        "Calcule o erro.",
+        "Explique como um controlador poderia corrigir o comando.",
+        "Compare com a aplicação de PWM fixo."
+      ],
+      "time": "15 minutos"
+    },
+    {
+      "number": 3,
+      "title": "Projetar o fluxo de autonomia",
+      "description": "Desenhe uma arquitetura simplificada para um carrinho que utiliza LiDAR e SLAM.",
+      "details": [
+        "Inclua sensores de percepção.",
+        "Inclua estimativa de movimento.",
+        "Inclua localização e mapeamento.",
+        "Inclua planejamento de caminhos.",
+        "Inclua controle e atuação.",
+        "Adicione condições de segurança e perda de comunicação."
+      ],
+      "time": "20 minutos"
+    }
+  ],
+  "challenges": [
+    {
+      "title": "Desafio 1 — Malha aberta ou fechada?",
+      "difficulty": "Básico",
+      "description": "Explique por que um motor alimentado com PWM fixo não mantém necessariamente uma velocidade constante quando a carga mecânica varia."
+    },
+    {
+      "title": "Desafio 2 — Onde entra o PID?",
+      "difficulty": "Intermediário",
+      "description": "Proponha uma estratégia para medir a velocidade real de uma roda e ajustar o acionamento do motor utilizando um controlador realimentado."
+    },
+    {
+      "title": "Desafio 3 — Sistema autônomo",
+      "difficulty": "Avançado",
+      "description": "Descreva como um carrinho equipado com LiDAR, encoders e ROS 2 poderia perceber obstáculos, estimar posição, planejar deslocamentos e reagir a falhas de comunicação."
+    }
+  ],
+  "nextSteps": [
+    "Prática de controle com joystick",
+    "Prática de segurança com ultrassônico",
+    "Prática de encoder e odometria",
+    "Prática de controle PID",
+    "Prática de integração LiDAR",
+    "Prática de mapeamento com SLAM"
+  ],
+  "references": [
+    {
+      "title": "Modern Robotics — Planejamento e Controle",
+      "url": "https://modernrobotics.northwestern.edu/"
+    },
+    {
+      "title": "ROS 2 Foxy — Documentação",
+      "url": "https://docs.ros.org/en/foxy/"
+    },
+    {
+      "title": "ROBOTIS TurtleBot3 — Manual",
+      "url": "https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/"
+    },
+    {
+      "title": "micro-ROS — Documentação",
+      "url": "https://micro.ros.org/docs/"
+    }
+  ]
+}
