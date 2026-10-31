@@ -547,7 +547,7 @@
                         <div class="loki-intro-photo">
 
                             <img
-                                src="data/images/loki-principal.jpeg"
+                                src="data/images/loki-principal.png"
                                 alt="Carrinho robótico Loki 200 mm produzido no projeto, com estrutura impressa em 3D e roda azul"
                                 loading="eager"
                                 decoding="async"
@@ -596,7 +596,7 @@
                     <div class="loki-project-photo">
 
                         <img
-                            src="data/images/loki-frontal.jpeg"
+                            src="data/images/loki-frontal.png"
                             alt="Vista frontal do carrinho Loki montado, mostrando a estrutura e o sensor superior"
                             loading="lazy"
                             decoding="async"
