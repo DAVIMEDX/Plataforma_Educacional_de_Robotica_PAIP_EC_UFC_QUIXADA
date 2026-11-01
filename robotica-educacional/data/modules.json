@@ -249,45 +249,6 @@
         "order": 6
       },
       {
-        "id": "carrinho_esp32_ros2",
-        "category": "ESP32 & ROS 2",
-        "title": "Implementação do Carrinho Robótico",
-        "subtitle": "Teleoperação, Sensoriamento e Mapeamento",
-        "icon": "🤖",
-        "color": "#16A34A",
-        "duration": "10-20 horas",
-        "level": "Intermediário",
-        "description": "Desenvolvimento de um carrinho robótico móvel baseado em ESP32 e ROS 2, abrangendo teleoperação via Wi-Fi UDP, integração de sensor LiDAR e mapeamento autônomo do ambiente utilizando técnicas de SLAM.",
-        "practiceCount": 3,
-        "practices": [
-          {
-            "id": "teleop_esp32_wifi_udp",
-            "title": "Teleoperação do Carrinho com ESP32 via Wi-Fi UDP",
-            "shortDescription": "Implementação do controle remoto do carrinho robótico por Wi-Fi UDP, utilizando ESP32, driver L298N e motores com encoders.",
-            "duration": "3-6 horas",
-            "difficulty": "Intermediário",
-            "icon": "🎮"
-          },
-          {
-            "id": "integracao_lidar",
-            "title": "Implementação e Integração do LiDAR",
-            "shortDescription": "Instalação e integração do sensor LiDAR ao sistema robótico, com configuração da comunicação, publicação dos dados e visualização no ROS 2.",
-            "duration": "3-6 horas",
-            "difficulty": "Intermediário",
-            "icon": "📡"
-          },
-          {
-            "id": "slam_carrinho_ros2",
-            "title": "Mapeamento do Ambiente com SLAM",
-            "shortDescription": "Configuração do SLAM no ROS 2 para construir e salvar mapas de ambientes internos utilizando os dados do LiDAR e a odometria do carrinho.",
-            "duration": "4-8 horas",
-            "difficulty": "Avançado",
-            "icon": "🗺️"
-          }
-        ],
-        "order": 7
-      },
-      {
         "id": "modelagem_controle_robos",
         "category": "Modelagem e Controle de Robôs",
         "title": "Modelagem e Controle de Robôs",
@@ -330,6 +291,45 @@
             "duration": "2-3 horas",
             "difficulty": "Intermediário",
             "icon": "🤖"
+          }
+        ],
+        "order": 7
+      },
+      {
+        "id": "carrinho_esp32_ros2",
+        "category": "ESP32 & ROS 2",
+        "title": "Implementação do Carrinho Robótico",
+        "subtitle": "Teleoperação, Sensoriamento e Mapeamento",
+        "icon": "🤖",
+        "color": "#16A34A",
+        "duration": "10-20 horas",
+        "level": "Intermediário",
+        "description": "Desenvolvimento de um carrinho robótico móvel baseado em ESP32 e ROS 2, abrangendo teleoperação via Wi-Fi UDP, integração de sensor LiDAR e mapeamento autônomo do ambiente utilizando técnicas de SLAM.",
+        "practiceCount": 3,
+        "practices": [
+          {
+            "id": "teleop_esp32_wifi_udp",
+            "title": "Teleoperação do Carrinho com ESP32 via Wi-Fi UDP",
+            "shortDescription": "Implementação do controle remoto do carrinho robótico por Wi-Fi UDP, utilizando ESP32, driver L298N e motores com encoders.",
+            "duration": "3-6 horas",
+            "difficulty": "Intermediário",
+            "icon": "🎮"
+          },
+          {
+            "id": "integracao_lidar",
+            "title": "Implementação e Integração do LiDAR",
+            "shortDescription": "Instalação e integração do sensor LiDAR ao sistema robótico, com configuração da comunicação, publicação dos dados e visualização no ROS 2.",
+            "duration": "3-6 horas",
+            "difficulty": "Intermediário",
+            "icon": "📡"
+          },
+          {
+            "id": "slam_carrinho_ros2",
+            "title": "Mapeamento do Ambiente com SLAM",
+            "shortDescription": "Configuração do SLAM no ROS 2 para construir e salvar mapas de ambientes internos utilizando os dados do LiDAR e a odometria do carrinho.",
+            "duration": "4-8 horas",
+            "difficulty": "Avançado",
+            "icon": "🗺️"
           }
         ],
         "order": 8
