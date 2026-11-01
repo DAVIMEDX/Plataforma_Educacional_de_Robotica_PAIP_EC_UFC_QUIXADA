@@ -217,38 +217,7 @@
         ],
         "order": 5
       },
-      {
-        "id": "avancado",
-        "category": "Controle e Odometria",
-        "title": "Módulo Avançado",
-        "subtitle": "Controle de Precisão e Feedback",
-        "icon": "🔴",
-        "color": "#F44336",
-        "duration": "7-9 horas",
-        "level": "Avançado",
-        "description": "Implemente controle de precisão utilizando encoders e algoritmos PID para ajuste fino da movimentação, lidando com problemas físicos reais.",
-        "practiceCount": 2,
-        "practices": [
-          {
-            "id": "encoder",
-            "title": "Encoder e Odometria",
-            "shortDescription": "Leitura precisa de rotação das rodas",
-            "duration": "3-4 horas",
-            "difficulty": "Avançado",
-            "icon": "📏"
-          },
-          {
-            "id": "pid",
-            "title": "Controle PID",
-            "shortDescription": "Ajuste fino com controle proporcional-integral-derivativo",
-            "duration": "4-5 horas",
-            "difficulty": "Avançado",
-            "icon": "⚙️"
-          }
-        ],
-        "order": 6
-      },
-      {
+       {
         "id": "modelagem_controle_robos",
         "category": "Modelagem e Controle de Robôs",
         "title": "Modelagem e Controle de Robôs",
@@ -291,6 +260,37 @@
             "duration": "2-3 horas",
             "difficulty": "Intermediário",
             "icon": "🤖"
+          }
+        ],
+        "order": 6
+      },
+      {
+        "id": "avancado",
+        "category": "Controle e Odometria",
+        "title": "Módulo Avançado",
+        "subtitle": "Controle de Precisão e Feedback",
+        "icon": "🔴",
+        "color": "#F44336",
+        "duration": "7-9 horas",
+        "level": "Avançado",
+        "description": "Implemente controle de precisão utilizando encoders e algoritmos PID para ajuste fino da movimentação, lidando com problemas físicos reais.",
+        "practiceCount": 2,
+        "practices": [
+          {
+            "id": "encoder",
+            "title": "Encoder e Odometria",
+            "shortDescription": "Leitura precisa de rotação das rodas",
+            "duration": "3-4 horas",
+            "difficulty": "Avançado",
+            "icon": "📏"
+          },
+          {
+            "id": "pid",
+            "title": "Controle PID",
+            "shortDescription": "Ajuste fino com controle proporcional-integral-derivativo",
+            "duration": "4-5 horas",
+            "difficulty": "Avançado",
+            "icon": "⚙️"
           }
         ],
         "order": 7
